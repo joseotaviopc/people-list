@@ -1,0 +1,4 @@
+onlyBuiltDependencies:
+  - '@vscode/ripgrep'
+  - bufferutil
+  - utf-8-validate
