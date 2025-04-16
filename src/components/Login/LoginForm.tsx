@@ -17,8 +17,8 @@ import { Checkbox } from "../ui/checkbox";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  email: z.string().email("Deve ser um email válido"),
-  password: z.string().min(8, "Deve ter pelo menos 8 caracteres"),
+  email: z.string().email("Email inválido!"),
+  password: z.string().min(8, "Senha inválida!"),
   rememberMe: z.boolean(),
 })
 
@@ -70,7 +70,7 @@ export const LoginForm: React.FC = () => {
                     <FormControl>
                       <Input
                         placeholder="Email" {...field}
-                        className="flex-1 shrink gap-2.5 self-stretch px-5 py-3 mt-1.5 w-full rounded-xl basis-0 bg-zinc-50 min-h-12"
+                        className="flex-1 shrink gap-2.5 self-stretch px-5 py-3 mt-1.5 w-full rounded-xl basis-0 bg-zinc-50 min-h-12 placeholder:text-muted-foreground"
                       />
                     </FormControl>
                     <FormMessage />
