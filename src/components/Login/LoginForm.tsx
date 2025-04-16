@@ -52,12 +52,12 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <section className="flex flex-col justify-center self-stretch my-auto min-w-60 w-[404px]">
+    <section className="flex flex-col justify-center items-center self-stretch my-auto min-w-60 w-lg">
       {/* FORM */}
-      <div className="w-full">
+      <div className="">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col w-full">
-            <h2 className="self-start text-2xl font-semibold text-center text-gray-700">
+            <h2 className="self-center text-2xl font-semibold text-center text-foreground">
               Entre agora
             </h2>
             <div className="mt-10 max-w-full w-[403px]">
@@ -117,12 +117,12 @@ export const LoginForm: React.FC = () => {
             </div>
 
             <div className="flex items-center mt-8 w-full min-h-5">
-              <div className="flex gap-3.5 items-center self-stretch px-0.5 my-auto min-w-60 w-[404px]">
+              <div className="flex gap-3.5 items-center justify-between self-stretch px-0.5 my-auto min-w-60 w-[404px]">
                 <FormField
                   control={form.control}
                   name="rememberMe"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
+                    <FormItem className="flex flex-row items-center space-x-3 space-y-0 p-4 h-6">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -140,7 +140,7 @@ export const LoginForm: React.FC = () => {
                   type="button"
                   variant="ghost"
                   onClick={handleForgotPassword}
-                  className="flex-1 text-base text-right text-slate-500"
+                  className="text-base text-right text-slate-500 justify-end px-3"
                 >
                   Esqueceu sua senha?
                 </Button>
