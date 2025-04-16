@@ -127,7 +127,7 @@ export const PeopleList: React.FC = () => {
           <div className="flex flex-col w-[120px]">
             <AlertDialog>
               <AlertDialogTrigger >
-                <button className="flex overflow-hidden justify-center items-center w-full bg-sky-600 rounded-xl shadow-sm min-h-10">
+                <Button className="flex overflow-hidden justify-center items-center w-full">
                   <div className="flex overflow-hidden justify-center items-center self-stretch pt-1 pb-1 my-auto w-3">
                     <img
                       src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/3c2f9bde013612f331a1ae0618c657307acc7135?placeholderIfAbsent=true"
@@ -135,10 +135,10 @@ export const PeopleList: React.FC = () => {
                       alt="Add"
                     />
                   </div>
-                  <span className="self-stretch my-auto text-base font-bold text-center whitespace-nowrap text-zinc-50 w-[58px]">
+                  <span className="self-stretch my-auto text-base font-bold text-center whitespace-nowrap w-[58px]">
                     Novo
                   </span>
-                </button>
+                </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -180,8 +180,8 @@ export const PeopleList: React.FC = () => {
                         />
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                          <AlertDialogAction disabled={!!form.formState.errors.description || !!form.formState.errors.role}>
-                            <Button type="submit">Salvar</Button>
+                          <AlertDialogAction type="submit" disabled={!!form.formState.errors.description || !!form.formState.errors.role}>
+                            Salvar
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </form>
