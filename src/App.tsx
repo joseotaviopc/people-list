@@ -1,14 +1,16 @@
 import './App.css'
-import LoginPage from './components/Login/LoginPage'
-import PeopleListPage from './components/People/Page'
+import DashboardPage from './components/Dashboard/DashboardPage'
+// import LoginPage from './components/Login/LoginPage'
+// import PeopleListPage from './components/People/Page'
 import { Toaster } from './components/ui/sonner'
 
 function App() {
 
   return (
     <>
-      <LoginPage />
-      {/* <PeopleListPage /> */}
+      {/* <LoginPage />
+      <PeopleListPage /> */}
+      <DashboardPage />
       <Toaster />
     </>
   )

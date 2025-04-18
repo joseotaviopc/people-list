@@ -56,12 +56,6 @@ export function OperationalCostSection() {
           >
             <header className="w-9 h-9 flex gap-4 items-center self-start">
               {item.icon()}
-              {/* <span className="min-w-9 min-h-9 border"></span> */}
-              {/* <img
-                src={item.icon}
-                className="object-contain shrink-0 self-stretch my-auto w-8 aspect-square"
-                alt={item.title}
-              /> */}
               <h3 className="self-stretch text-xl whitespace-nowrap text-zinc-800">
                 {item.title}
               </h3>

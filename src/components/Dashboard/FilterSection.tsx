@@ -58,12 +58,6 @@ export function FilterSection() {
           )}
         </div>
 
-        {/* <div className="flex flex-col flex-1 shrink justify-center items-center self-stretch px-2.5 basis-0 rotate-[3.141592653589793rad]">
-          <div className="w-0 bg-slate-500 min-h-[37px]" />
-        </div> */}
-
-        
-
         <div className="flex gap-2.5 items-center self-stretch my-auto text-sm text-gray-700 min-w-60">
         <Popover>
           <PopoverTrigger asChild>
@@ -109,22 +103,6 @@ export function FilterSection() {
             />
           </PopoverContent>
         </Popover>
-          {/* {["Data inicial", "Data Final"].map((date, index) => (
-            <Button
-              variant="outline"
-              key={index}
-              className="flex overflow-hidden flex-col justify-center items-center self-stretch px-4 my-auto whitespace-nowrap rounded-lg shadow bg-background"
-            >
-              <div className="flex gap-1.5 justify-center items-center px-5 min-h-10">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/4c0ef7d40ddc1d826b09dfa9c5810769fa8f4b39?placeholderIfAbsent=true"
-                  className="object-contain shrink-0 self-stretch my-auto w-3 aspect-square"
-                  alt="Calendar"
-                />
-                <span className="self-stretch my-auto">{date}</span>
-              </div>
-            </Button>
-          ))} */}
         </div>
       </div>
     </section>
