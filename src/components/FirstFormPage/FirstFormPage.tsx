@@ -237,7 +237,7 @@ export default function FirstFormPage() {
                     <Button
                       variant="ghost"
                       className="flex gap-1.5 items-center self-stretch bg-grey-light/10"
-                      onClick={() => handleRemoveFile(index)}
+                      onClick={() => handleRemoveFile()}
                     >
                       <XIcon size={16} className="text-grey-dark" />
                       <span className="self-stretch my-auto text-sm font-medium whitespace-nowrap text-slate-500">
