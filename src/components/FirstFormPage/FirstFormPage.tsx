@@ -76,8 +76,8 @@ export default function FirstFormPage() {
     console.log(values)
   }
   return (
-    <main className="flex overflow-hidden flex-wrap gap-10 justify-between px-20 py-10 bg-zinc-50 max-md:px-5">
-      <section className="flex flex-col justify-center self-start min-w-60 w-[722px] max-md:max-w-full">
+    <main className="flex overflow-hidden flex-wrap gap-10 justify-center items-center px-20 py-10 min-h-screen bg-zinc-50 max-md:px-5">
+      <section className="flex flex-col justify-center h-full min-w-60 w-[722px] max-md:max-w-full">
         <header className="w-40 max-w-full">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/28589217f7c95b3096b1e549983f5afc4d150520?placeholderIfAbsent=true"
@@ -90,9 +90,9 @@ export default function FirstFormPage() {
 
         <article className="max-w-full w-[693px]">
           <div className="w-full max-w-[693px] max-md:max-w-full">
-            <h1 className="flex flex-col w-full text-6xl tracking-tighter leading-none max-md:max-w-full max-md:text-4xl">
+            <h1 className="flex flex-col w-full text-6xl tracking-tighter text-[64px] max-md:max-w-full max-md:text-4xl">
               <span className="gap-6 text-gray-700 max-md:max-w-full max-md:text-4xl">
-                "Você informa os dados,
+              "Você informa os dados,
               </span>
               <div className="flex relative gap-4 items-start self-start text-gray-700 min-h-[72px] max-md:max-w-full max-md:text-4xl">
                 <span className="z-0 my-auto max-md:max-w-full max-md:text-4xl">
@@ -221,9 +221,9 @@ export default function FirstFormPage() {
             <div
               className="flex relative gap-4 items-center self-center  mt-6 w-full px-0"
             >
-              <div className="absolute left-1 cursor-pointer" onClick={handleScrollLeft}>
+              {files.length > 4 && <div className="absolute left-1 cursor-pointer" onClick={handleScrollLeft}>
                 <ScrollRight />
-              </div>
+              </div>}
               <div className="flex gap-4 items-center self-center overflow-x-hidden" ref={scrollContainerRef}>
                 {files.map((item, index) => (
                   <Button
@@ -270,9 +270,9 @@ export default function FirstFormPage() {
                   </Button>
                 ))}
               </div>
-              <div className="absolute right-1 cursor-pointer" onClick={handleScrollRight}>
+              {files.length > 4 && <div className="absolute right-1 cursor-pointer" onClick={handleScrollRight}>
                 <ScrollLeft />
-              </div>
+              </div>}
             </div>
           </section>
 

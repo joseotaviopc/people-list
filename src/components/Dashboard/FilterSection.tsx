@@ -22,7 +22,7 @@ const initialFiltersData = [
 export function FilterSection() {
   const [filtersData, setFiltersData] = useState(initialFiltersData)
   const [, setActiveFilter] = useState<string | null>(null)
-  const [, setActiveSubItem] = useState<string | null>(null)
+  // const [, setActiveSubItem] = useState<string | null>(null)
   const [initialDate, setInitialDate] = useState<Date>()
   const [finalDate, setFinalDate] = useState<Date>()
 
