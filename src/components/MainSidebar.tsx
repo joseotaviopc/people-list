@@ -126,7 +126,7 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
   if (!hideMenu) {
     return (
       <aside className="flex flex-col justify-center self-stretch px-6 py-10 h-full bg-background min-w-60 w-[261px] max-md:px-5 transition-transform duration-500">
-        <div className="flex flex-col flex-1 justify-center h-full w-full">
+        <div className="flex flex-col flex-1  h-full w-full">
           <header className="flex justify-between items-center w-full">
             <div className="flex flex-1 shrink self-stretch my-auto w-full basis-0">
               <div className="flex justify-center items-center px-1.5 pt-1 pb-1.5 my-auto bg-zinc-50 w-[38px]">
@@ -175,7 +175,7 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
               </Button>
             ))}
           </nav>
-          <div className="flex-1 self-stretch w-full min-h-[187px] h-full" />
+          <div className="flex-1 self-stretch w-full max-h-[62px] h-full" />
 
           <div className="flex gap-1 justify-center items-center self-center p-1 rounded-2xl bg-zinc-100">
             <button className="flex gap-2 justify-center items-center self-stretch my-auto rounded-2xl shadow-sm bg-zinc-50 min-h-8 w-[100px]">

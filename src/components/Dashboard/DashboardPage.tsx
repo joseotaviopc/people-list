@@ -14,7 +14,7 @@ export default function DashboardPage() {
 
   return (
     <main className="flex h-auto flex-wrap bg-background">
-      <div className="flex h-auto">
+      <div className="flex gap-6 h-auto bg-background-dark">
         <MainSidebar setHideMenu={setHideMenu} hideMenu={hideMenu} />
         <Sidebar setHideMenu={setHideMenu2} hideMenu={hideMenu2} />
       </div>

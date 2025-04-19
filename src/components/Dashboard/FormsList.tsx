@@ -9,18 +9,25 @@ export function FormsList() {
     { number: "07", name: "Pré-Diagnostico", count: 10 },
     { number: "08", name: "Croqui de viabilidade", count: 10 },
     { number: "09", name: "Croqui de viabilidade", count: 10 },
+    { number: "04", name: "Pré-Diagnostico", count: 10 },
+    { number: "05", name: "Croqui de viabilidade", count: 10 },
+    { number: "06", name: "Croqui de viabilidade", count: 10 },
+    { number: "07", name: "Pré-Diagnostico", count: 10 },
+    { number: "08", name: "Croqui de viabilidade", count: 10 },
+    { number: "09", name: "Croqui de viabilidade", count: 10 },
+    { number: "09", name: "Croqui de viabilidade", count: 10 },
   ];
 
   return (
-    <section className="px-5 py-8 mt-6 w-full rounded-2xl shadow bg-zinc-50">
-      <div className="grid grid-cols-3 gap-x-10 gap-5 ">
+    <section className="px-1 border-4 py-3 mt-6 w-full rounded-2xl shadow bg-background border-background max-h-80  overflow-y-auto">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {formItems.map((item, index) => (
           <article
             key={index}
-            className="my-auto mr-auto basis-0 min-w-60 w-fit pr-8 border-b"
+            className="my-auto basis-0  w-fit pr-8 border-b"
           >
             <div className="flex overflow-hidden justify-center items-center px-1.5 ">
-              <div className="flex gap-2.5 items-center my-auto min-h-[65px] min-w-60 ">
+              <div className="flex gap-2.5 items-center my-auto min-h-[65px]  ">
                 <div className="flex gap-2.5 justify-center items-center my-auto text-base font-medium text-center whitespace-nowrap text-slate-500">
                   <span className="my-auto min-w-[21px]">
                     {item.number}
