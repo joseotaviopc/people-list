@@ -25,6 +25,7 @@ export function StatusCards() {
   const [statusData, setStatusData] = useState(initialStatusData)
   const [, setActiveStatus] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [totalStatus, setTotalStatus] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleScrollLeft = () => {
@@ -48,11 +49,18 @@ export function StatusCards() {
   }
 
   const handleStatusClick = (selected: typeof initialStatusData[0]) => {
+    setTotalStatus(false)
     setActiveStatus(selected.label)
     setStatusData(prev => prev.map(status => ({
       ...status,
       active: status.label === selected.label
     })))
+  }
+
+  const handleTotalClick = () => {
+    setActiveStatus(null)
+    setStatusData(initialStatusData)
+    setTotalStatus(true)
   }
 
   const handleSearch = () => {
@@ -61,12 +69,12 @@ export function StatusCards() {
 
   return (
     <section className="flex flex-col mt-12 max-md:mt-10">
-      <h2 className="gap-2.5 self-start text-2xl font-semibold tracking-tight leading-6 whitespace-nowrap text-zinc-800">
+      <h2 className="gap-2.5 self-start px-2.5 text-2xl font-semibold tracking-tight leading-6 whitespace-nowrap text-zinc-800">
         Status
       </h2>
 
       <div className="flex relative gap-6 items-center mt-6 w-full">
-        <div className="flex z-0 flex-col justify-center self-stretch p-6 my-auto rounded-2xl bg-background min-h-[174px] min-w-[250px] w-[250px] max-md:px-5 border shadow-xs">
+        <div onClick={handleTotalClick} className={`flex z-0 flex-col justify-center cursor-pointer self-stretch p-6 my-auto rounded-2xl bg-background min-h-[174px] min-w-[250px] w-[250px] max-md:px-5 border shadow-xs ${totalStatus ? 'border-primary' : ''}`}>
           <div className="flex flex-col flex-1 justify-center w-full">
             <div className="flex flex-col flex-1 h-full">
               <span className="flex h-14 w-16 ">
@@ -74,7 +82,7 @@ export function StatusCards() {
               </span>
               <p className="text-3xl font-bold text-left text-grey-darker ">270</p>
             </div>
-            <p className="self-start mt-1 text-base text-grey-light">
+            <p className={`self-start mt-1 text-base text-grey-light ${totalStatus ? 'text-primary' : ''}`}>
               Total de Formulários
             </p>
           </div>

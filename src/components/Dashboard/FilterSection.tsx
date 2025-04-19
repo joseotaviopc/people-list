@@ -36,7 +36,7 @@ export function FilterSection() {
 
   return (
     <section className="flex flex-col justify-center w-full">
-      <h2 className="self-start text-2xl font-semibold whitespace-nowrap text-zinc-800">
+      <h2 className="self-start text-2xl px-2.5 font-semibold whitespace-nowrap text-zinc-800">
         Filtros
       </h2>
 
