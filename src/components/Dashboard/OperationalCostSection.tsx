@@ -46,12 +46,12 @@ export function OperationalCostSection() {
         Custo operacional
       </h2>
 
-      <div className="flex flex-wrap gap-5 items-center mt-6 w-full">
+      <div className="flex flex-wrap gap-5 items-center justify-between mt-6 w-full">
         {costData.map((item, index) => (
           <Button
             variant="outline"
             key={index}
-            className={`flex overflow-hidden flex-col justify-center items-center self-stretch px-6 py-3 min-h-[160px] min-w-60 whitespace-nowrap rounded-2xl shadow bg-background has-[>svg]:px-0 ${item.active ? 'border border-primary' : ''}`}
+            className={`flex overflow-hidden flex-col justify-center items-center self-stretch px-6 py-3 min-h-[160px] min-w-80 whitespace-nowrap rounded-2xl shadow bg-background has-[>svg]:px-0 ${item.active ? 'border border-primary' : ''}`}
             onClick={() => handleCostClick(item)}
           >
             <header className="w-9 h-9 flex gap-4 items-center self-start">
@@ -64,7 +64,7 @@ export function OperationalCostSection() {
             <div className="flex gap-8 justify-between items-center mt-6 w-full">
               <div className="self-stretch my-auto w-[89px]">
                 <div className="flex flex-col justify-center w-full">
-                  <p className="self-stretch text-base font-bold text-gray-700">
+                  <p className="self-start text-base font-bold text-gray-700">
                     {item.hours} Horas
                   </p>
                   <p className="self-stretch mt-1.5 text-sm text-slate-500">

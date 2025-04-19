@@ -13,16 +13,16 @@ export function FormsList() {
 
   return (
     <section className="px-5 py-8 mt-6 w-full rounded-2xl shadow bg-zinc-50">
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 gap-x-10 gap-5 ">
         {formItems.map((item, index) => (
           <article
             key={index}
-            className="flex-1 shrink self-stretch my-auto basis-0 min-w-60"
+            className="my-auto mr-auto basis-0 min-w-60 w-fit pr-8 border-b"
           >
-            <div className="flex overflow-hidden justify-center items-center px-1.5 w-full rounded-2xl shadow">
-              <div className="flex gap-2.5 items-center self-stretch my-auto min-h-[65px] min-w-60 w-[303px]">
-                <div className="flex gap-2.5 justify-center items-center self-stretch my-auto text-base font-medium text-center whitespace-nowrap text-slate-500">
-                  <span className="self-stretch my-auto w-[21px]">
+            <div className="flex overflow-hidden justify-center items-center px-1.5 ">
+              <div className="flex gap-2.5 items-center my-auto min-h-[65px] min-w-60 ">
+                <div className="flex gap-2.5 justify-center items-center my-auto text-base font-medium text-center whitespace-nowrap text-slate-500">
+                  <span className="my-auto min-w-[21px]">
                     {item.number}
                   </span>
                   <div className="shrink-0 self-stretch my-auto w-0 border border-solid bg-slate-200 bg-opacity-50 border-slate-200 border-opacity-50 h-[43px]" />

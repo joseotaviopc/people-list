@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Button } from "../ui/button";
-import { ScrollLeft, ScrollRight, TotalForms } from "@/assets";
+import { ScrollLeft, ScrollRight, Search, TotalForms } from "@/assets";
 import { Input } from "../ui/input";
 
 const initialTypeData = [
@@ -9,9 +9,9 @@ const initialTypeData = [
   { text: "Planejamento Tributário (85)", active: false },
   { text: "Recuperação Tributária", active: false },
   { text: "Holding Patrimonial (85)", active: false },
-  { text: "Ativos fundiários (100)", active: false },
-  { text: "Planejamento Tributário (85)", active: false },
-  { text: "Recuperação Tributária", active: false },
+  // { text: "Ativos fundiários (100)", active: false },
+  // { text: "Planejamento Tributário (85)", active: false },
+  // { text: "Recuperação Tributária", active: false },
 ]
 const initialStatusData = [
   { value: "120", label: "Completos", active: false },
@@ -24,6 +24,7 @@ export function StatusCards() {
   const [, setActiveType] = useState<string | null>(null)
   const [statusData, setStatusData] = useState(initialStatusData)
   const [, setActiveStatus] = useState<string | null>(null)
+  const [search, setSearch] = useState('')
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleScrollLeft = () => {
@@ -54,6 +55,10 @@ export function StatusCards() {
     })))
   }
 
+  const handleSearch = () => {
+    console.log("Search: ", search)
+  }
+
   return (
     <section className="flex flex-col mt-12 max-md:mt-10">
       <h2 className="gap-2.5 self-start text-2xl font-semibold tracking-tight leading-6 whitespace-nowrap text-zinc-800">
@@ -76,17 +81,24 @@ export function StatusCards() {
         </div>
 
         <div className="z-0 flex-1 shrink self-stretch my-auto basis-[50px] min-w-60">
-          <Input
-            type="search"
-            placeholder="Pesquisar em todo o sistema..."
-            className="flex flex-1 shrink gap-2 items-center self-stretch my-auto w-full basis-0 bg-background h-11 min-w-60 outline-none"
-          />
+          <div className="flex items-center relative">
+            <div className="absolute left-3" onClick={handleSearch}>
+              <Search />
+            </div>
+            <Input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Pesquisar em todo o sistema..."
+              className="flex flex-1 shrink gap-2 items-center self-stretch my-auto w-full basis-0 bg-background h-11 min-w-60 pl-9 outline-none"
+            />
+          </div>
 
           {/* STATUS FILTER */}
           <div className="flex justify-center items-center mt-6 w-full relative">
-            <div className="absolute -left-3 cursor-pointer">
-              <ScrollLeft />
-            </div>
+            {statusData.length > 4 && <div className="absolute -left-3 cursor-pointer">
+              <ScrollRight />
+            </div>}
             <div className="flex flex-wrap flex-1 shrink gap-6 items-center self-stretch my-auto w-full basis-0 min-w-60">
               {statusData.map((card, index) => (
                 <Button
@@ -100,7 +112,7 @@ export function StatusCards() {
                       <p className="text-3xl font-bold self-start text-zinc-800">
                         {card.value}
                       </p>
-                      <p className={`self-start text-base ${card.active ? 'text-primary' : 'text-zinc-400'}`}>
+                      <p className={`self-start text-base font-normal ${card.active ? 'text-primary' : 'text-grey-light'}`}>
                         {card.label}
                       </p>
                     </div>
@@ -108,9 +120,9 @@ export function StatusCards() {
                 </Button>
               ))}
             </div>
-            <div className="absolute -right-3 cursor-pointer">
-              <ScrollRight />
-            </div>
+            {statusData.length > 4 && <div className="absolute -right-3 cursor-pointer">
+              <ScrollLeft />
+            </div>}
           </div>
         </div>
       </div>
@@ -119,9 +131,9 @@ export function StatusCards() {
       <div
         className="flex relative gap-5 items-center self-center  mt-6 w-full px-4"
       >
-        <div className="absolute left-1 cursor-pointer" onClick={handleScrollLeft}>
-          <ScrollLeft />
-        </div>
+        {typeData.length > 4 && <div className="absolute left-1 cursor-pointer" onClick={handleScrollLeft}>
+          <ScrollRight />
+        </div>}
         <div className="flex gap-5 items-center self-center overflow-x-hidden" ref={scrollContainerRef}>
           {typeData.map((item, index) => (
             <Button
@@ -136,9 +148,9 @@ export function StatusCards() {
             </Button>
           ))}
         </div>
-        <div className="absolute right-1 cursor-pointer" onClick={handleScrollRight}>
-          <ScrollRight />
-        </div>
+        {typeData.length > 4 && <div className="absolute right-1 cursor-pointer" onClick={handleScrollRight}>
+          <ScrollLeft />
+        </div>}
       </div>
     </section>
   );
