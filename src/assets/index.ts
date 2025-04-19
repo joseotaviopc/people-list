@@ -22,6 +22,7 @@ import Status from "./Status";
 import Support from "./Support";
 import TotalForms from "./TotalForms";
 import Tutorial from "./Tutorial";
+import Upload from "./Upload";
 
 export {
     ArrowLeft,
@@ -48,4 +49,5 @@ export {
     Support,
     TotalForms,
     Tutorial,
+    Upload,
 };
