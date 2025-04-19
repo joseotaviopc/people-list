@@ -122,7 +122,7 @@ export const LoginForm: React.FC = () => {
                   control={form.control}
                   name="rememberMe"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center space-x-3 space-y-0 p-4 h-6">
+                    <FormItem className="flex flex-row items-center space-x-1 space-y-0 p-4 px-0 h-6">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -130,7 +130,7 @@ export const LoginForm: React.FC = () => {
                           className="h-5 w-5 aspect-square cursor-pointer"
                         />
                       </FormControl>
-                      <FormLabel className="text-base text-slate-500 cursor-pointer">
+                      <FormLabel className="text-base font-normal text-grey-light px-0 cursor-pointer">
                         Lembrar
                       </FormLabel>
                     </FormItem>
@@ -140,7 +140,7 @@ export const LoginForm: React.FC = () => {
                   type="button"
                   variant="ghost"
                   onClick={handleForgotPassword}
-                  className="text-base text-right text-slate-500 justify-end px-3"
+                  className="text-base text-right font-normal text-grey-light justify-end px-3"
                 >
                   Esqueceu sua senha?
                 </Button>
@@ -153,7 +153,7 @@ export const LoginForm: React.FC = () => {
       {/* BUTTON ACTIONS */}
       <div className="flex flex-col justify-center items-center mt-10 w-full">
         <Button type="button" onClick={form.handleSubmit(handleSubmit)} className="items-center w-[170px] max-md:px-5">
-          <span className="flex-1 text-base font-bold basis-0">
+          <span className="text-base font-bold basis-0 pr-2">
             Entrar
           </span>
           <div className="flex flex-col justify-center items-center self-stretch my-auto w-4">

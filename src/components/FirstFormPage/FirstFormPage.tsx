@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { ArrowUpRight, InfoIcon, PlusIcon } from "lucide-react";
+import { ArrowUpRight, InfoIcon, PlusIcon, XIcon } from "lucide-react";
 import { ScrollLeft, ScrollRight } from "@/assets";
 import { Upload } from "@/assets";
 import { format } from "date-fns";
@@ -71,6 +71,8 @@ export default function FirstFormPage() {
       stateTaxId: "",
     },
   })
+
+  function handleRemoveFile() {}
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
@@ -231,6 +233,17 @@ export default function FirstFormPage() {
                     key={index}
                     className="flex overflow-hidden flex-col justify-center items-center self-stretch px-0 my-auto whitespace-nowrap rounded-lg min-h-[119px] shadow bg-background border"
                   >
+                    {/* INSERIR BOTAO DE EXLUIR */}
+                    <Button
+                      variant="ghost"
+                      className="flex gap-1.5 items-center self-stretch bg-grey-light/10"
+                      onClick={() => handleRemoveFile(index)}
+                    >
+                      <XIcon size={16} className="text-grey-dark" />
+                      <span className="self-stretch my-auto text-sm font-medium whitespace-nowrap text-slate-500">
+                        Excluir
+                      </span>
+                    </Button>
                     {item.imageUrl ? (
                       <>
                         <img
