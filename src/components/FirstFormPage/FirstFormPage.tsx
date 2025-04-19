@@ -104,7 +104,7 @@ export default function FirstFormPage() {
 
             <p className="flex-1 shrink gap-2 self-stretch py-4 pl-10 mt-10 w-full text-lg tracking-normal leading-8 text-gray-700 border-l border-solid basis-0 border-l-[color:var(--Claro-Bordas-01,#D8E0F0)] border-slate-200 max-md:pl-5 max-md:max-w-full">
               Preencha seus dados e nós diagnosticamos e recuperamos o que é
-              seu! As informações são necessárias para verificarmos todos os
+              seu!<br /> As informações são necessárias para verificarmos todos os
               créditos tributários existentes em seu favor através das NFs
               emitidas.
             </p>
