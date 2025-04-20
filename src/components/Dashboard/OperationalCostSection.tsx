@@ -51,7 +51,7 @@ export function OperationalCostSection() {
           <Button
             variant="outline"
             key={index}
-            className={`flex overflow-hidden flex-col justify-center items-center self-stretch px-6 py-3 min-h-[160px] min-w-80 whitespace-nowrap rounded-2xl shadow bg-background has-[>svg]:px-0 ${item.active ? 'border border-primary' : ''}`}
+            className={`flex overflow-hidden flex-col flex-1 justify-center items-center self-stretch px-6 py-3 min-h-[160px] min-w-72 max-w-96 whitespace-nowrap rounded-2xl shadow bg-background has-[>svg]:px-0 ${item.active ? 'border border-primary' : ''}`}
             onClick={() => handleCostClick(item)}
           >
             <header className="w-9 h-9 flex gap-4 items-center self-start">

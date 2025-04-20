@@ -1,7 +1,5 @@
-import * as React from "react";
 
-const ScrollLeft = (props: React.SVGProps<SVGSVGElement>) => (
-  console.log(props),
+const ScrollLeft = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="30"

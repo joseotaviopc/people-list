@@ -24,7 +24,7 @@ export default function DashboardPage() {
           <div className="w-full">
             <FilterSection />
             <StatusCards />
-            <FormsList />
+            <FormsList hideMainMenu={hideMenu} hideSecondMenu={hideMenu2}/>
           </div>
           <OperationalCostSection />
         </div>

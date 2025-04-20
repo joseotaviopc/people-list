@@ -1,30 +1,81 @@
-export function FormsList() {
-  const formItems = [
-    { number: "01", name: "Pré-Diagnostico", count: 10 },
-    { number: "02", name: "Croqui de viabilidade", count: 10 },
-    { number: "03", name: "Croqui de viabilidade", count: 10 },
-    { number: "04", name: "Pré-Diagnostico", count: 10 },
-    { number: "05", name: "Croqui de viabilidade", count: 10 },
-    { number: "06", name: "Croqui de viabilidade", count: 10 },
-    { number: "07", name: "Pré-Diagnostico", count: 10 },
-    { number: "08", name: "Croqui de viabilidade", count: 10 },
-    { number: "09", name: "Croqui de viabilidade", count: 10 },
-    { number: "04", name: "Pré-Diagnostico", count: 10 },
-    { number: "05", name: "Croqui de viabilidade", count: 10 },
-    { number: "06", name: "Croqui de viabilidade", count: 10 },
-    { number: "07", name: "Pré-Diagnostico", count: 10 },
-    { number: "08", name: "Croqui de viabilidade", count: 10 },
-    { number: "09", name: "Croqui de viabilidade", count: 10 },
-    { number: "09", name: "Croqui de viabilidade", count: 10 },
-  ];
+import { useEffect, useState } from "react";
+
+const formItems = [
+  { number: "01", name: "Pré-Diagnostico", count: 10 },
+  { number: "02", name: "Croqui de viabilidade", count: 10 },
+  { number: "03", name: "Croqui de viabilidade", count: 10 },
+  { number: "04", name: "Pré-Diagnostico", count: 10 },
+  { number: "05", name: "Croqui de viabilidade", count: 10 },
+  { number: "06", name: "Croqui de viabilidade", count: 10 },
+  { number: "07", name: "Pré-Diagnostico", count: 10 },
+  { number: "08", name: "Croqui de viabilidade", count: 10 },
+  { number: "09", name: "Croqui de viabilidade", count: 10 },
+  { number: "04", name: "Pré-Diagnostico", count: 10 },
+  { number: "05", name: "Croqui de viabilidade", count: 10 },
+  { number: "06", name: "Croqui de viabilidade", count: 10 },
+  { number: "07", name: "Pré-Diagnostico", count: 10 },
+  { number: "08", name: "Croqui de viabilidade", count: 10 },
+  { number: "09", name: "Croqui de viabilidade", count: 10 },
+  { number: "09", name: "Croqui de viabilidade", count: 10 },
+];
+interface FormListProps {
+  hideMainMenu: boolean;
+  hideSecondMenu: boolean;
+}
+
+export function FormsList({ hideMainMenu, hideSecondMenu }: FormListProps) {
+  const [columns, setColumns] = useState(() => {
+    if (window.innerWidth >= 1536) return 4;
+    if (window.innerWidth >= 1280) return 3;
+    if (window.innerWidth >= 1024) return 2;
+    return 1;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const newColumns = getGridColumns();
+      setColumns(newColumns);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    console.log('MainMenu: ', hideMainMenu, 'SecondMenu: ', hideSecondMenu, getGridColumns())
+    if (!hideMainMenu && !hideSecondMenu && getGridColumns() <= 3) {
+      setColumns(getGridColumns());
+    }
+  }, [hideMainMenu, hideSecondMenu])
+
+  const getGridColumns = () => {
+    console.log('innerWidth', window.innerWidth)
+    if (window.innerWidth >= 1536) return 4;
+    if (window.innerWidth >= 1280) return 3;
+    if (window.innerWidth >= 1024) return 2;
+    return 1;
+  };
+  
+  const shouldShowBorder = (index: number, items: typeof formItems) => {
+    // const columns = getGridColumns();
+    console.log('columns: ', columns)
+    const totalItems = items.length;
+    const itemsPerRow = Math.ceil(totalItems / columns);
+    
+    // Calculate the position in the grid
+    const rowIndex = Math.floor(index / columns);
+    const isLastRow = rowIndex === itemsPerRow - 1;
+    
+    return !isLastRow;
+  };
 
   return (
-    <section className="px-1 border-[16px] py-8 mt-6 w-full rounded-2xl shadow bg-background border-background max-h-80  overflow-y-auto">
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+    <section className="px-1 border-[16px] 2xl py-8 mt-6 w-full rounded-2xl shadow bg-background border-background max-h-80  overflow-y-auto">
+      <div className={`grid md:grid-cols-${columns} lg:grid-cols-${columns} xl:grid-cols-${columns} gap-5`}>
         {formItems.map((item, index) => (
           <article
             key={index}
-            className="my-auto basis-0  w-full pr-8 border-b"
+            className={`my-auto basis-0 w-full pr-8 ${shouldShowBorder(index, formItems) ? 'border-b' : ''}`}
           >
             <div className="flex overflow-hidden  items-center px-1.5 ">
               <div className="flex gap-2.5 items-center my-auto min-h-[65px]  ">
