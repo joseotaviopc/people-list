@@ -23,13 +23,39 @@ interface FormListProps {
   hideSecondMenu: boolean;
 }
 
+const COLUMNS = {
+  cols4: {cols: 4, class: 'grid-cols-4'},
+  cols3: {cols: 3, class: 'grid-cols-3'},
+  cols2: {cols: 2, class: 'grid-cols-2'},
+  cols1: {cols: 1, class: 'grid-cols-1'}
+}
+
 export function FormsList({ hideMainMenu, hideSecondMenu }: FormListProps) {
-  const [columns, setColumns] = useState(() => {
-    if (window.innerWidth >= 1536) return 4;
-    if (window.innerWidth >= 1280) return 3;
-    if (window.innerWidth >= 1024) return 2;
-    return 1;
-  });
+  const [columns, setColumns] = useState(COLUMNS.cols3);
+
+  const getGridColumns = () => {
+    if (window.innerWidth >= 1536) return COLUMNS.cols4;
+    
+    if (window.innerWidth >= 1280 && !hideMainMenu && !hideSecondMenu) return COLUMNS.cols2;
+    if (window.innerWidth >= 1280 && (hideMainMenu || hideSecondMenu)) return COLUMNS.cols3;
+    
+    if (window.innerWidth >= 1024  && !hideMainMenu && !hideSecondMenu) return COLUMNS.cols1;
+    if (window.innerWidth >= 1024 && (hideMainMenu || hideSecondMenu)) return COLUMNS.cols2;
+    
+    if (window.innerWidth >= 768  && (hideMainMenu && hideSecondMenu)) return COLUMNS.cols2;
+    
+    return COLUMNS.cols1;
+  };
+  
+  const shouldShowBorder = (index: number, items: typeof formItems) => {
+    const totalItems = items.length;
+    const itemsPerRow = Math.ceil(totalItems / columns.cols);
+    
+    const rowIndex = Math.floor(index / columns.cols);
+    const isLastRow = rowIndex === itemsPerRow - 1;
+    
+    return !isLastRow;
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,36 +68,13 @@ export function FormsList({ hideMainMenu, hideSecondMenu }: FormListProps) {
   }, []);
 
   useEffect(() => {
-    console.log('MainMenu: ', hideMainMenu, 'SecondMenu: ', hideSecondMenu, getGridColumns())
-    if (!hideMainMenu && !hideSecondMenu && getGridColumns() <= 3) {
-      setColumns(getGridColumns());
-    }
+    const newColumns = getGridColumns();
+    setColumns(newColumns);
   }, [hideMainMenu, hideSecondMenu])
-
-  const getGridColumns = () => {
-    console.log('innerWidth', window.innerWidth)
-    if (window.innerWidth >= 1536) return 4;
-    if (window.innerWidth >= 1280) return 3;
-    if (window.innerWidth >= 1024) return 2;
-    return 1;
-  };
-  
-  const shouldShowBorder = (index: number, items: typeof formItems) => {
-    // const columns = getGridColumns();
-    console.log('columns: ', columns)
-    const totalItems = items.length;
-    const itemsPerRow = Math.ceil(totalItems / columns);
-    
-    // Calculate the position in the grid
-    const rowIndex = Math.floor(index / columns);
-    const isLastRow = rowIndex === itemsPerRow - 1;
-    
-    return !isLastRow;
-  };
 
   return (
     <section className="px-1 border-[16px] 2xl py-8 mt-6 w-full rounded-2xl shadow bg-background border-background max-h-80  overflow-y-auto">
-      <div className={`grid md:grid-cols-${columns} lg:grid-cols-${columns} xl:grid-cols-${columns} gap-5`}>
+      <div className={`grid ${columns.class} gap-5`}>
         {formItems.map((item, index) => (
           <article
             key={index}
