@@ -1,4 +1,5 @@
 import './App.css'
+import MainForm from './components/MainFormPage/MainForm'
 // import DashboardPage from './components/Dashboard/DashboardPage'
 // import FirstFormPage from './components/FirstFormPage/FirstFormPage'
 // import LoginPage from './components/Login/LoginPage'
@@ -14,7 +15,8 @@ function App() {
       <LoginPage />
       <PeopleListPage />
       <FirstFormPage /> */}
-      <VerificationCodeInput />
+      {/* <VerificationCodeInput /> */}
+      <MainForm />
       <Toaster />
     </>
   )
