@@ -1,5 +1,4 @@
 "use client";
-import * as React from "react";
 import { WelcomeSection } from "./WelcomeSection";
 import { FormDescription } from "./FormDescription";
 import { NavigationButton } from "./NavigationButton";

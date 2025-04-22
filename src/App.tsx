@@ -5,7 +5,7 @@ import MainForm from './components/MainFormPage/MainForm'
 // import LoginPage from './components/Login/LoginPage'
 // import PeopleListPage from './components/People/Page'
 import { Toaster } from './components/ui/sonner'
-import VerificationCodeInput from './components/VerificationCodePage/VerificationCodeInput'
+// import VerificationCodeInput from './components/VerificationCodePage/VerificationCodeInput'
 
 function App() {
 
