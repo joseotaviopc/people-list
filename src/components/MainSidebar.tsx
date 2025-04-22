@@ -125,28 +125,30 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
 
   if (!hideMenu) {
     return (
-      <aside className="flex flex-col justify-center self-stretch px-6 py-10 h-full bg-background min-w-60 w-[261px] max-md:px-5 transition-transform duration-500">
-        <div className="flex flex-col flex-1  h-full w-full">
-          <header className="flex justify-between items-center w-full">
-            <div className="flex flex-1 shrink self-stretch my-auto w-full basis-0">
-              <div className="flex justify-center items-center px-1.5 pt-1 pb-1.5 my-auto bg-zinc-50 w-[38px]">
-                <img
-                  src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/e2e7a7cdfef3c984eb0a651a7ef29d8742fbee12?placeholderIfAbsent=true"
-                  className="object-contain self-stretch my-auto w-7 aspect-[0.82]"
-                  alt="Logo"
-                />
-              </div>
-              <div className="flex flex-col items-center justify-center text-xl font-bold leading-none text-grey-light whitespace-nowrap">
-                <h1 className="self-stretch px-2.5 py-0.5 bg-zinc-50">EXECUTOR</h1>
-              </div>
+      <aside className="flex flex-col  self-stretch px-6 pt-10  bg-background min-w-60 w-[261px] max-md:px-5 transition-transform duration-500">
+        <header className="flex justify-between items-center bg-background min-w-60 w-[261px] px-6 pt-10 pb-5 max-md:px-5 fixed top-0 left-0">
+          <div className="flex flex-1 shrink self-stretch my-auto w-full basis-0">
+            <div className="flex justify-center items-center px-1.5 pt-1 pb-1.5 my-auto bg-zinc-50 w-[38px]">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/e2e7a7cdfef3c984eb0a651a7ef29d8742fbee12?placeholderIfAbsent=true"
+                className="object-contain self-stretch my-auto w-7 aspect-[0.82]"
+                alt="Logo"
+              />
             </div>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/7d376f83446c5e59ca73b6e945c4951436f0b48f?placeholderIfAbsent=true"
-              className="object-contain shrink-0 self-stretch my-auto aspect-square min-h-[18px] w-[18px]"
-              alt="Menu"
-              onClick={() => setHideMenu(prev => !prev)}
-            />
-          </header>
+            <div className="flex flex-col items-center justify-center text-xl font-bold leading-none text-grey-light whitespace-nowrap">
+              <h1 className="self-stretch px-2.5 py-0.5 bg-zinc-50">EXECUTOR</h1>
+            </div>
+          </div>
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/7d376f83446c5e59ca73b6e945c4951436f0b48f?placeholderIfAbsent=true"
+            className="object-contain shrink-0 self-stretch my-auto aspect-square min-h-[18px] w-[18px]"
+            alt="Menu"
+            onClick={() => setHideMenu(prev => !prev)}
+          />
+        </header>
+
+        {/* SCROLL */}
+        <div className="flex flex-col mt-11 h-[calc(100vh-385px)] overflow-y-auto overflow-x-hidden">
           <Separator />
           <div className="flex gap-4 items-center w-full font-semibold">
             <img
@@ -176,9 +178,12 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
             ))}
           </nav>
           <div className="flex-1 self-stretch w-full max-h-[62px] h-full" />
+        </div>
+        {/* SCROLL */}
 
+        <div className="fixed left-0 bottom-0 bg-background min-w-60 w-[261px] px-6 pt-10 pb-1 max-md:px-5 ">
           <div className="flex gap-1 justify-center items-center self-center p-1 rounded-2xl bg-zinc-100">
-            <button className="flex gap-2 justify-center items-center self-stretch my-auto rounded-2xl shadow-sm bg-zinc-50 min-h-8 w-[100px]">
+            <button className="flex gap-2 justify-center items-center self-stretch my-auto rounded-2xl shadow-xs bg-zinc-50 min-h-8 w-[100px]">
               <Light />
               <span className="self-stretch my-auto text-base font-medium text-gray-700">
                 Claro
@@ -213,8 +218,8 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
   };
 
   return (
-    <nav className="flex flex-col justify-center items-center self-stretch py-5 bg-zinc-50 w-[84px] h-auto transition-transform duration-500">
-      <div className="flex flex-col flex-1 justify-center items-center w-12 ">
+    <nav className="flex flex-col items-center self-stretch bg-background w-[84px] h-auto transition-transform duration-500">
+      <div className="flex flex-col items-center bg-background w-[84px] pt-5 pb-5 fixed top-0 left-0">
         <button className="flex gap-2 justify-center items-center px-4 w-full rounded-xl min-h-12 rotate-[3.141592653589793rad]">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/853ce39978187e5eeb7bf3077d76698f9e972730?placeholderIfAbsent=true"
@@ -228,6 +233,9 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
             className="object-contain self-stretch my-auto aspect-[0.82] w-[18px]"
           />
         </button>
+      </div>
+
+      <div className="flex flex-col items-center mt-[136px] h-[calc(100vh-380px)] overflow-y-auto overflow-x-hidden">
         <Separator className="px-4 " />
         <img
           src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/9cd0169e5a816d4cd9905d30153b5cbe58a19905?placeholderIfAbsent=true"
@@ -246,10 +254,13 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
             <span className="w-5 h-5 flex items-center justify-center">{item.icon(item.active ? 'var(--primary)' : 'var(--muted-foreground)')}</span>
           </Button>
         ))}
-        <div className="flex-1 self-stretch w-full">
-          <div className="flex flex-1 w-full min-h-[62px]" />
-        </div>
-        <button className="flex justify-center items-center w-full h-12 rounded-xl aspect-[1/1] bg-zinc-100 min-h-12">
+      </div>
+      {/* <div className="flex-1 self-stretch w-full">
+        <div className="flex flex-1 w-full min-h-[62px]" />
+      </div> */}
+
+      <div className="flex flex-col items-center w-[84px] fixed left-0 bottom-0 bg-background pt-5 pb-1">
+        <button className="flex justify-center items-center w-fit h-12 rounded-xl aspect-[1/1] bg-zinc-100 min-h-12">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/0802a6ccfdb46c7ac6d0a1d47e00960b6d010bce?placeholderIfAbsent=true"
             className="object-contain aspect-square w-[18px] fill-sky-600"
@@ -269,6 +280,8 @@ export function MainSidebar({ setHideMenu, hideMenu }: MainSidebarProps) {
           </Button>
         ))}
       </div>
+      {/* <div className="flex flex-col flex-1 justify-center items-center w-12 ">
+      </div> */}
     </nav>
   );
 };
