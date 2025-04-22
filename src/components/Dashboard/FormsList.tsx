@@ -73,7 +73,7 @@ export function FormsList({ hideMainMenu, hideSecondMenu }: FormListProps) {
   }, [hideMainMenu, hideSecondMenu])
 
   return (
-    <section className="px-1 border-[16px] 2xl py-8 mt-6 w-full rounded-2xl shadow bg-background border-background max-h-80  overflow-y-auto">
+    <section className="px-1 border-[16px] 2xl py-8 mt-6 w-full rounded-2xl shadow-xs bg-background border-background max-h-80  overflow-y-auto">
       <div className={`grid ${columns.class} gap-5`}>
         {formItems.map((item, index) => (
           <article

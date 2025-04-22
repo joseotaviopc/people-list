@@ -74,7 +74,7 @@ export function StatusCards() {
       </h2>
 
       <div className="flex relative gap-6 items-center mt-6 w-full">
-        <div onClick={handleTotalClick} className={`flex z-0 flex-col justify-center cursor-pointer self-stretch p-6 my-auto rounded-2xl bg-background min-h-[174px] min-w-[250px] w-[250px] max-md:px-5 border shadow-xs ${totalStatus ? 'border-primary' : ''}`}>
+        <div onClick={handleTotalClick} className={`flex z-0 flex-col justify-center cursor-pointer self-stretch p-6 my-auto rounded-2xl bg-background min-h-[174px] min-w-20 w-1/5 max-md:px-5 border shadow-xs ${totalStatus ? 'border-primary' : ''}`}>
           <div className="flex flex-col flex-1 justify-center w-full">
             <div className="flex flex-col flex-1 h-full">
               <span className="flex h-14 w-16 ">
@@ -88,8 +88,8 @@ export function StatusCards() {
           </div>
         </div>
 
-        <div className="z-0 flex-1 shrink self-stretch my-auto basis-[50px] min-w-60">
-          <div className="flex items-center relative">
+        <div className="z-0 flex flex-col w-4/5 self-stretch my-auto ">
+          <div className="flex w-full items-center relative">
             <div className="absolute left-3" onClick={handleSearch}>
               <Search />
             </div>
@@ -98,7 +98,7 @@ export function StatusCards() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Pesquisar em todo o sistema..."
-              className="flex flex-1 shrink gap-2 items-center self-stretch my-auto w-full basis-0 bg-background h-11 min-w-60 pl-9 outline-none"
+              className="flex flex-1 shrink gap-2 items-center self-stretch my-auto w-full basis-0 bg-background h-11  pl-9 outline-none"
             />
           </div>
 
@@ -107,12 +107,12 @@ export function StatusCards() {
             {statusData.length > 4 && <div className="absolute -left-3 cursor-pointer">
               <ScrollRight />
             </div>}
-            <div className="flex flex-wrap flex-1 shrink gap-6 items-center self-stretch my-auto w-full basis-0 min-w-60">
+            <div className="flex flex-wrap flex-1 shrink gap-6 items-center self-stretch my-auto w-full basis-0 ">
               {statusData.map((card, index) => (
                 <Button
                   variant="outline"
                   key={index}
-                  className={`flex overflow-hidden flex-1 flex-col shrink justify-center self-stretch px-4 my-auto whitespace-nowrap rounded-lg shadow min-h-[105px] bg-background ${card.active ? 'border border-primary' : ''}`}
+                  className={`flex overflow-hidden flex-1 flex-col shrink justify-center self-stretch px-4 my-auto whitespace-nowrap rounded-lg shadow-xs min-h-[105px] min-w-20 bg-background ${card.active ? 'border border-primary' : ''}`}
                   onClick={() => handleStatusClick(card)}
                 >
                   <div className="flex flex-col flex-1 justify-between items-start w-full">
@@ -137,17 +137,17 @@ export function StatusCards() {
 
       {/* TYPE FILTER */}
       <div
-        className="flex relative gap-5 items-center self-center  mt-6 w-full px-4"
+        className="flex relative gap-5 items-center self-center mt-6 w-full px-4"
       >
         {typeData.length > 4 && <div className="absolute left-1 cursor-pointer" onClick={handleScrollLeft}>
           <ScrollRight />
         </div>}
-        <div className="flex gap-5 items-center self-center overflow-x-hidden" ref={scrollContainerRef}>
+        <div className="flex gap-5 items-center py-1  self-center overflow-x-hidden" ref={scrollContainerRef}>
           {typeData.map((item, index) => (
             <Button
               variant="outline"
               key={index}
-              className={`flex overflow-hidden flex-col justify-center items-center self-stretch px-4 my-auto whitespace-nowrap rounded-lg shadow bg-background ${item.active ? 'border border-primary' : ''}`}
+              className={`flex overflow-hidden flex-col justify-center items-center self-stretch px-4 my-auto whitespace-nowrap rounded-lg shadow-xs bg-background ${item.active ? 'border border-primary' : ''}`}
               onClick={() => handleTypeClick(item)}
             >
               <span className={`px-5 ${item.active ? 'text-primary' : ''}`}>

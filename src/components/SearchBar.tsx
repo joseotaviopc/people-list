@@ -22,7 +22,7 @@ export function SearchBar({ setFilteredPeople, setHighlightedQuery }: SearchBarP
 
   return (
     <Input 
-      className="border border-gray-300 focus:border-gray-300 focus:shadow-none focus:outline-none focus:ring-0 focus-visible:shadow-none focus-visible:outline-none focus-visible:ring-0 px-2.5 pl-8.5 py-2 w-full rounded-xl shadow-sm basis-0 bg-zinc-50 min-h-10 min-w-60 max-md:max-w-full text-base text-zinc-600 placeholder:text-zinc-400" 
+      className="border border-gray-300 focus:border-gray-300 focus:shadow-none focus:outline-none focus:ring-0 focus-visible:shadow-none focus-visible:outline-none focus-visible:ring-0 px-2.5 pl-8.5 py-2 w-full rounded-xl shadow-xs basis-0 bg-zinc-50 min-h-10 min-w-60 max-md:max-w-full text-base text-zinc-600 placeholder:text-zinc-400" 
       placeholder="Pesquise aqui..."
       onChange={handleSearch}
     />

@@ -170,7 +170,7 @@ export function Sidebar({ setHideMenu, hideMenu }: SidebarProps) {
           <div className="flex-1 self-stretch w-full max-h-[62px] h-full" />
 
           <div className="flex gap-1 justify-center items-center self-center p-1 rounded-2xl bg-zinc-100">
-            <button className="flex gap-2 justify-center items-center self-stretch my-auto rounded-2xl shadow-sm bg-zinc-50 min-h-8 w-[100px]">
+            <button className="flex gap-2 justify-center items-center self-stretch my-auto rounded-2xl shadow-xs bg-zinc-50 min-h-8 w-[100px]">
               <Light />
               <span className="self-stretch my-auto text-base font-medium text-gray-700">
                 Claro

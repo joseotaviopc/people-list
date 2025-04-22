@@ -47,7 +47,7 @@ export function FilterSection() {
               <Button
                 variant="outline"
                 key={index}
-                className={`flex overflow-hidden flex-col justify-center items-center self-stretch px-4 my-auto whitespace-nowrap rounded-lg shadow bg-background ${filter.active ? 'border border-primary' : ''}`}
+                className={`flex overflow-hidden flex-col justify-center items-center self-stretch px-4 my-auto whitespace-nowrap rounded-lg shadow-xs bg-background ${filter.active ? 'border border-primary' : ''}`}
                 onClick={() => handleFilterClick(filter)}
               >
                 <span className={`px-5 ${filter.active ? 'text-primary' : ''}`}>

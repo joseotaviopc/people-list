@@ -231,7 +231,7 @@ export default function FirstFormPage() {
                   <Button
                     variant="outline"
                     key={index}
-                    className="flex overflow-hidden flex-col justify-center items-center self-stretch px-0 my-auto whitespace-nowrap rounded-lg min-h-[119px] shadow bg-background border"
+                    className="flex overflow-hidden flex-col justify-center items-center self-stretch px-0 my-auto whitespace-nowrap rounded-lg min-h-[119px] shadow-xs bg-background border"
                   >
                     {/* INSERIR BOTAO DE EXLUIR */}
                     <Button
