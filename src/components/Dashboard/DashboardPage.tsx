@@ -23,7 +23,7 @@ export default function DashboardPage() {
         <div className="flex-1 w-full">
           <div className="w-full">
             <FilterSection />
-            <StatusCards />
+            <StatusCards hideMainMenu={hideMenu} hideSecondMenu={hideMenu2}/>
             <FormsList hideMainMenu={hideMenu} hideSecondMenu={hideMenu2}/>
           </div>
           <OperationalCostSection />

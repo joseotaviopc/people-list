@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "../ui/button";
 import { ScrollLeft, ScrollRight, Search, TotalForms } from "@/assets";
 import { Input } from "../ui/input";
@@ -19,13 +19,20 @@ const initialStatusData = [
   { value: "75", label: "Aguardando doc", active: false },
   { value: "50", label: "Notas Fiscais", active: false },
 ]
-export function StatusCards() {
+
+interface StatusCardsProps {
+  hideMainMenu: boolean;
+  hideSecondMenu: boolean;
+}
+
+export function StatusCards({ hideMainMenu, hideSecondMenu }: StatusCardsProps) {
   const [typeData, setTypeData] = useState(initialTypeData)
   const [, setActiveType] = useState<string | null>(null)
   const [statusData, setStatusData] = useState(initialStatusData)
   const [, setActiveStatus] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [totalStatus, setTotalStatus] = useState(false)
+  const [hasOverflow, setHasOverflow] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleScrollLeft = () => {
@@ -66,6 +73,25 @@ export function StatusCards() {
   const handleSearch = () => {
     console.log("Search: ", search)
   }
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (scrollContainerRef.current) {
+        const container = scrollContainerRef.current;
+        setHasOverflow(container.scrollWidth > container.clientWidth);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      setHasOverflow(container.scrollWidth > container.clientWidth);
+    }
+  }, [hideMainMenu, hideSecondMenu])
 
   return (
     <section className="flex flex-col mt-12 max-md:mt-10">
@@ -137,9 +163,9 @@ export function StatusCards() {
 
       {/* TYPE FILTER */}
       <div
-        className="flex relative gap-5 items-center self-center mt-6 w-full px-4"
+        className={`flex relative gap-5 items-center self-center mt-6 w-full ${hasOverflow ? 'px-4' : 'px-0'}`}
       >
-        {typeData.length > 4 && <div className="absolute left-1 cursor-pointer" onClick={handleScrollLeft}>
+        {hasOverflow && <div className="absolute left-1 cursor-pointer" onClick={handleScrollLeft}>
           <ScrollRight />
         </div>}
         <div className="flex gap-5 items-center py-1  self-center overflow-x-hidden" ref={scrollContainerRef}>
@@ -156,7 +182,7 @@ export function StatusCards() {
             </Button>
           ))}
         </div>
-        {typeData.length > 4 && <div className="absolute right-1 cursor-pointer" onClick={handleScrollRight}>
+        {hasOverflow && <div className="absolute right-1 cursor-pointer" onClick={handleScrollRight}>
           <ScrollLeft />
         </div>}
       </div>
