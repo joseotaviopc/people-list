@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
+import { toast } from "sonner";
 
 const VerificationCodeInput: React.FC = () => {
   const [code, setCode] = useState<string>("");
@@ -43,39 +44,52 @@ const VerificationCodeInput: React.FC = () => {
     return code[index] ? "" : "_";
   };
 
+  const handleConfirm = () => {
+    toast.success("Código confirmado");
+  };
+
+  const handleResend = () => {
+    setCode("");
+    toast.success("Reenviando código");
+  };
+
+  const handleClose = () => {
+    toast.error("Saindo");
+  };
+
   return (
-    <section className="flex relative flex-col gap-2.5 justify-center items-start bg-blend-normal min-h-screen">
+    <section className="flex relative flex-col gap-2.5 justify-center items-center bg-blend-normal min-h-screen">
       <img
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/7b111fbabf0891ab0a671a7888ec71303d82a0de?placeholderIfAbsent=true"
         alt="Background"
         className="object-cover absolute inset-0 size-full"
       />
-      <div className="flex absolute right-0 bottom-0 z-0 self-start bg-background bg-opacity-10 h-screen min-h-screen w-[1440px] max-md:max-w-full" />
+      <div className="flex absolute right-0 bottom-0 z-0 self-start bg-background/10 h-screen min-h-screen w-[1440px] max-md:max-w-full" />
 
-      <article className="flex relative z-0 flex-col justify-center p-10 my-auto rounded-2xl bg-background-dark min-w-60 w-[437px] max-md:px-5 max-md:max-w-full">
-        <div className="flex overflow-hidden z-0 justify-center items-center self-center bg-primary shadow aspect-[1/1] h-[77px] min-h-[77px] rounded-[999px] w-[77px]">
+      <article className="flex relative z-0 flex-col justify-center p-[30px] my-auto rounded-2xl bg-background-dark min-w-60 w-fit max-md:px-5 max-md:max-w-full">
+        <div className="flex overflow-hidden z-0 justify-center items-center self-center bg-primary shadow aspect-[1/1] h-[41px] rounded-[999px] w-[41px]">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/2f78f74fe625cfd2f07e723367ef47a2cdf15fc6?placeholderIfAbsent=true"
             alt="Lock icon"
-            className="object-contain self-stretch my-auto aspect-square stroke-[2px] stroke-background w-[34px]"
+            className="object-contain self-stretch my-auto aspect-square stroke-[2px] stroke-background w-4"
           />
         </div>
 
-        <header className="flex z-0 flex-col mt-9 w-full text-center">
-          <h1 className="text-3xl font-bold text-grey-darker">
+        <header className="flex z-0 mt-5 flex-col w-full text-center">
+          <h1 className="text-base font-medium text-grey-darker">
             Digite o código e <br />
             clique em{" "}
-            <span className="text-primary">"Confirmar" </span>para
-            avançar
+            <span className="text-primary">"Confirmar"<br /></span>
+            para avançar
           </h1>
-          <p className="self-center mt-2.5 text-base font-medium text-grey-dark w-[289px]">
+          <p className="self-center mt-2.5 text-base text-grey-light w-[289px]">
             Ou clique em "Reenviar"
             <br />
             para receber o código por email
           </p>
         </header>
 
-        <div className="flex z-0 gap-2.5 items-start self-center p-2.5 mt-9 text-center whitespace-nowrap">
+        <div className="flex z-0 gap-1.5 items-start self-center p-2.5 mt-9 text-center whitespace-nowrap">
           {[...Array(codeLength)].map((_, index) => (
             <input
               key={index}
@@ -94,14 +108,15 @@ const VerificationCodeInput: React.FC = () => {
           ))}
         </div>
 
-        <div className="flex z-0 gap-5 items-center justify-center mt-9 w-full">
-          <Button variant="secondary" className="bg-grey-light/30">Reenviar</Button>
-          <Button>Confirmar</Button>
+        <div className="flex z-0 gap-5 items-center justify-between mt-9 w-full">
+          <Button variant="secondary" className="bg-grey-light/10 h-7 rounded-md" onClick={handleResend}>Reenviar</Button>
+          <Button className="h-7 rounded-md" onClick={handleConfirm}>Confirmar</Button>
         </div>
 
         <button
           aria-label="Close"
-          className="absolute top-6 right-6 z-0 px-3.5 w-11 h-11 rounded-2xl bg-grey-light/30 bg-opacity-30 min-h-11 flex items-center justify-center flex-col"
+          className="absolute top-5 right-5 z-0 px-3.5 w-8 h-8 rounded-sm bg-grey-light/10 bg-opacity-30 min-h-8 flex items-center justify-center flex-col"
+          onClick={handleClose}
         >
           <X className="text-grey-dark" />
         </button>
