@@ -65,7 +65,7 @@ const VerificationCodeInput: React.FC = () => {
         className="object-cover absolute inset-0 size-full"
       />
 
-      <article className="flex relative z-0 flex-col justify-center p-[30px] my-auto rounded-2xl bg-background-dark min-w-60 w-fit max-md:px-5 max-md:max-w-full">
+      <article className="flex relative z-0 flex-col justify-center p-[30px] my-auto rounded-2xl bg-background-dark min-w-60 w-fit max-md:max-w-full">
         <div className="flex overflow-hidden z-0 justify-center items-center self-center bg-primary shadow aspect-[1/1] h-[41px] rounded-[999px] w-[41px]">
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/2f78f74fe625cfd2f07e723367ef47a2cdf15fc6?placeholderIfAbsent=true"
@@ -75,13 +75,13 @@ const VerificationCodeInput: React.FC = () => {
         </div>
 
         <header className="flex z-0 mt-5 flex-col w-full text-center">
-          <h1 className="text-base font-medium text-grey-darker">
+          <h1 className="text-sm font-semibold text-grey-darker">
             Digite o código e <br />
             clique em{" "}
             <span className="text-primary">"Confirmar"<br /></span>
             para avançar
           </h1>
-          <p className="self-center mt-2.5 text-base text-grey-light w-[289px]">
+          <p className="self-center mt-2.5 text-xs text-grey-light w-[289px]">
             Ou clique em "Reenviar"
             <br />
             para receber o código por email
@@ -108,8 +108,8 @@ const VerificationCodeInput: React.FC = () => {
         </div>
 
         <div className="flex z-0 gap-5 items-center justify-between mt-9 w-full">
-          <Button variant="secondary" className="bg-grey-light/10 h-7 rounded-md" onClick={handleResend}>Reenviar</Button>
-          <Button className="h-7 rounded-md" onClick={handleConfirm}>Confirmar</Button>
+          <Button variant="secondary" className="bg-grey-light/10 h-7 rounded-md font-semibold text-xs shadow-sm" onClick={handleResend}>Reenviar</Button>
+          <Button className="h-7 rounded-md font-semibold text-xs" onClick={handleConfirm}>Confirmar</Button>
         </div>
 
         <button
