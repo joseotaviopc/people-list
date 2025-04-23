@@ -108,8 +108,8 @@ const VerificationCodeInput: React.FC = () => {
         </div>
 
         <div className="flex z-0 gap-5 items-center justify-between mt-9 w-full">
-          <Button variant="secondary" className="bg-grey-light/10  font-semibold text-xs shadow-sm" onClick={handleResend}>Reenviar</Button>
-          <Button className=" font-semibold text-xs" onClick={handleConfirm}>Confirmar</Button>
+          <Button variant="secondary" className="bg-grey-light/10 h-9 rounded-lg font-semibold text-xs shadow-sm" onClick={handleResend}>Reenviar</Button>
+          <Button className="h-9 rounded-lg font-semibold text-xs" onClick={handleConfirm}>Confirmar</Button>
         </div>
 
         <button
