@@ -64,7 +64,6 @@ const VerificationCodeInput: React.FC = () => {
         alt="Background"
         className="object-cover absolute inset-0 size-full"
       />
-      <div className="flex absolute right-0 bottom-0 z-0 self-start bg-background/10 h-screen min-h-screen w-[1440px] max-md:max-w-full" />
 
       <article className="flex relative z-0 flex-col justify-center p-[30px] my-auto rounded-2xl bg-background-dark min-w-60 w-fit max-md:px-5 max-md:max-w-full">
         <div className="flex overflow-hidden z-0 justify-center items-center self-center bg-primary shadow aspect-[1/1] h-[41px] rounded-[999px] w-[41px]">
