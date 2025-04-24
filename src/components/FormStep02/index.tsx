@@ -76,7 +76,7 @@ function Progress({ setShowSteps, activeStep }: { setShowSteps: (showSteps: bool
 
 export default function FormStep02() {
   const [showSteps, setShowSteps] = useState(false)
-  const [activeStep, setActiveStep] = useState(9)
+  const [activeStep, ] = useState(9)
   return (
     // VERSAO MOBILE
     <main className="flex relative flex-col gap-2.5  items-center bg-blend-normal h-dvh text-background">
