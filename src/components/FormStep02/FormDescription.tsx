@@ -1,10 +1,10 @@
 export function FormDescription() {
   return (
     <section className="flex flex-col justify-center w-full  max-md:max-w-full">
-      <h2 className="flex-1 shrink gap-2.5 self-stretch w-full text-2xl font-bold basis-0 max-md:max-w-full">
-        FORMULÁRIO PRÉ-DIAGNÓSTICO
+      <h2 className="flex-1 shrink gap-2.5 self-stretch w-full text-2xl font-semibold basis-0 max-md:max-w-full">
+        Formulário Pré-Diagnóstico
       </h2>
-      <div className="flex-1 shrink gap-2.5 self-stretch mt-2.5 w-full text-base text-justify basis-0 max-md:max-w-full">
+      <div className="flex-1 shrink gap-2.5 self-stretch mt-2.5 w-full text-sm font-normal basis-0 max-md:max-w-full">
         <p>
           Sobre nossa consultoria em HOLDING PATRIMONIAL FAMILIAR nós da Lima
           Neto Advogados, somos focados em resultados quando o assunto é
