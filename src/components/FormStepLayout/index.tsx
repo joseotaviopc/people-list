@@ -13,12 +13,24 @@ import {
 import LogoImage from "@/assets/Logo.png"
 import DesktopSidebar from "./DesktopSidebar";
 import ProgressBar from "./ProgressBar";
-import FormStepContent from "../FormStep02/FormStepContent";
+import FormStep02Content from "../FormStep02/FormStepContent";
+import FormStep03 from "../FormStep03/FormStep03";
 
 export default function FormStepLayout() {
   const [showSteps, setShowSteps] = useState(false)
-  const [activeStep, setActiveStep] = useState(9)
-  const [completedSteps, ] = useState(8)
+  const [activeStep, setActiveStep] = useState(1) // 1 ao 25
+  const [completedSteps, setCompletedSteps] = useState(0) // 1 ao 25
+
+  const handleNextStep = () => {
+    setActiveStep((prev) => prev + 1);
+    setCompletedSteps((prev) => prev + 1);
+  };
+
+  const handlePreviousStep = () => {
+    setActiveStep((prev) => prev - 1);
+    setCompletedSteps((prev) => prev - 1);
+  };
+
   return (
     <main className="flex relative flex-col p-2.5 items-center bg-blend-normal h-dvh sm:h-auto text-background">
       <div className="fixed inset-0 h-screen overflow-hidden">
@@ -62,14 +74,38 @@ export default function FormStepLayout() {
         {!showSteps && (
           <>
             <div className="flex overflow-y-scroll sm:overflow-auto gap-10 z-0 flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-auto sm:flex-1">
-              <FormStepContent />
+              {activeStep === 1 && <FormStep02Content handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
+              {activeStep === 2 && <FormStep03 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
+              {activeStep === 3 && <h1>Etapa 3</h1>}
+              {activeStep === 4 && <h1>Etapa 4</h1>}
+              {activeStep === 5 && <h1>Etapa 5</h1>}
+              {activeStep === 6 && <h1>Etapa 6</h1>}
+              {activeStep === 7 && <h1>Etapa 7</h1>}
+              {activeStep === 8 && <h1>Etapa 8</h1>}
+              {activeStep === 9 && <h1>Etapa 9</h1>}
+              {activeStep === 10 && <h1>Etapa 10</h1>}
+              {activeStep === 11 && <h1>Etapa 11</h1>}
+              {activeStep === 12 && <h1>Etapa 12</h1>}
+              {activeStep === 13 && <h1>Etapa 13</h1>}
+              {activeStep === 14 && <h1>Etapa 14</h1>}
+              {activeStep === 15 && <h1>Etapa 15</h1>}
+              {activeStep === 16 && <h1>Etapa 16</h1>}
+              {activeStep === 17 && <h1>Etapa 17</h1>}
+              {activeStep === 18 && <h1>Etapa 18</h1>}
+              {activeStep === 19 && <h1>Etapa 19</h1>}
+              {activeStep === 20 && <h1>Etapa 20</h1>}
+              {activeStep === 21 && <h1>Etapa 21</h1>}
+              {activeStep === 22 && <h1>Etapa 22</h1>}
+              {activeStep === 23 && <h1>Etapa 23</h1>}
+              {activeStep === 24 && <h1>Etapa 24</h1>}
+              {activeStep === 25 && <h1>Etapa 25</h1>}
             </div>
-            
+
             {/* Mobile footer*/}
             <footer className="w-full sm:hidden flex z-10 gap-4 justify-between items-center">
-              <Button variant="ghost" className="flex-1 bg-grey-light text-grey-dark rounded-md h-9 px-2">Anterior</Button>
-              <Button variant="ghost" className="flex-1 bg-background/10 rounded-md text-grey-light h-9 px-2">Etapa {completedSteps < 10 ? `0${completedSteps}` : completedSteps}/25</Button>
-              <Button className="flex-1 rounded-md h-9 px-2">Próximo</Button>
+              <Button variant={activeStep === 1 ? 'ghost' : 'default'} className={`flex-1 rounded-md h-9 px-2 ${activeStep === 1 ? 'bg-grey-light text-grey-dark' : ''}`} onClick={activeStep === 1 ? undefined : handlePreviousStep}>Anterior</Button>
+              <Button variant="ghost" className="flex-1 bg-background/10 rounded-md text-grey-light h-9 px-2">Etapa {activeStep < 10 ? `0${activeStep}` : activeStep}/25</Button>
+              <Button variant={activeStep === 25 ? 'ghost' : 'default'} className={`flex-1 rounded-md h-9 px-2 ${activeStep === 25 ? 'bg-grey-light text-grey-dark' : ''}`} onClick={activeStep === 25 ? undefined : handleNextStep}>Próximo</Button>
             </footer>
           </>
         )}

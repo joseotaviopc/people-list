@@ -26,7 +26,7 @@ export default function ProgressBar({ setShowSteps, activeStep, setActiveStep, c
             {Array.from({ length: 25 }).map((_, index) => (
               <div key={index} onClick={() => setActiveStep(index + 1)} className="flex flex-col justify-between items-center w-[35px] h-[49px]">
                 <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md ${index + 1 <= completedSteps ? 'bg-primary' : 'bg-background/10'}`}>
-                  <span className="flex gap-2 items-center text-background font-medium">{index + 1}</span>
+                  <span className="flex gap-2 items-center text-background font-medium">{index < 9 ? `0${index + 1}` : index + 1}</span>
                 </div>
                 {index + 1 === activeStep && (
                   <span className="w-full h-[5px] rounded-xs bg-primary" />
