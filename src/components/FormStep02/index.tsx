@@ -18,7 +18,8 @@ import ProgressBar from "./ProgressBar";
 
 export default function FormStep02() {
   const [showSteps, setShowSteps] = useState(false)
-  const [activeStep,] = useState(9)
+  const [activeStep, setActiveStep] = useState(9)
+  const [completedSteps, setCompletedSteps] = useState(8)
   return (
     <main className="flex relative flex-col p-2.5 items-center bg-blend-normal h-dvh sm:h-auto text-background">
       <div className="fixed inset-0 h-screen overflow-hidden">
@@ -78,10 +79,10 @@ export default function FormStep02() {
         )}
 
         {/* Desktop sidebar*/}
-        <DesktopSidebar activeStep={activeStep} setShowSteps={setShowSteps} />
+        <DesktopSidebar activeStep={activeStep} setShowSteps={setShowSteps} setActiveStep={setActiveStep} completedSteps={completedSteps} />
 
         {/* Mobile Progress */}
-        {showSteps && <ProgressBar activeStep={activeStep} setShowSteps={setShowSteps} />}
+        {showSteps && <ProgressBar activeStep={activeStep} setShowSteps={setShowSteps} setActiveStep={setActiveStep} completedSteps={completedSteps} />}
       </article>
     </main>
   );

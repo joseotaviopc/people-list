@@ -13,7 +13,14 @@ import LogoImage from "@/assets/Logo.png"
 import ProgressBar from "./ProgressBar"
 import { Play } from "lucide-react"
 
-export default function DesktopSidebar({ setShowSteps, activeStep }: { setShowSteps: (showSteps: boolean) => void, activeStep: number }) {
+interface DesktopSidebarProps  { 
+    setShowSteps: (showSteps: boolean) => void, 
+    activeStep: number, 
+    setActiveStep: (activeStep: number) => void, 
+    completedSteps: number
+}
+
+export default function DesktopSidebar({ setShowSteps, activeStep, setActiveStep, completedSteps }: DesktopSidebarProps) {
     return (
         <Dialog>
             <DialogContent className="aspect-video min-w-2/3 bg-black/90 rounded-2xl border border-gray-800 text-grey-light">
@@ -49,7 +56,7 @@ export default function DesktopSidebar({ setShowSteps, activeStep }: { setShowSt
                         </Button>
                     </DialogTrigger>
                 </div>
-                <ProgressBar activeStep={activeStep} setShowSteps={setShowSteps} />
+                <ProgressBar activeStep={activeStep} setShowSteps={setShowSteps} setActiveStep={setActiveStep} completedSteps={completedSteps} />
             </div>
         </Dialog>
     )

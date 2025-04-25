@@ -1,7 +1,14 @@
 import { EscadaIcon, IconAtividades, StepsIcon } from "@/assets";
 import { X } from "lucide-react";
 
-export default function ProgressBar({ setShowSteps, activeStep }: { setShowSteps: (showSteps: boolean) => void, activeStep: number }) {
+interface ProgressBarProps  { 
+  setShowSteps: (showSteps: boolean) => void, 
+  activeStep: number, 
+  setActiveStep: (activeStep: number) => void, 
+  completedSteps: number
+}
+
+export default function ProgressBar({ setShowSteps, activeStep, setActiveStep, completedSteps }: ProgressBarProps) {
   return (
     <>
       {/* STEPS */}
@@ -17,11 +24,11 @@ export default function ProgressBar({ setShowSteps, activeStep }: { setShowSteps
           </div>
           <div className="grid grid-cols-6 gap-y-3">
             {Array.from({ length: 25 }).map((_, index) => (
-              <div key={index} className="flex flex-col justify-between items-center w-[35px] h-[49px]">
-                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md ${index + 1 <= activeStep ? 'bg-primary' : 'bg-background/10'}`}>
+              <div key={index} onClick={() => setActiveStep(index + 1)} className="flex flex-col justify-between items-center w-[35px] h-[49px]">
+                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md ${index + 1 <= completedSteps ? 'bg-primary' : 'bg-background/10'}`}>
                   <span className="flex gap-2 items-center text-background font-medium">{index + 1}</span>
                 </div>
-                {index + 1 <= activeStep && (
+                {index + 1 === activeStep && (
                   <span className="w-full h-[5px] rounded-xs bg-primary" />
                 )}
               </div>
@@ -38,7 +45,7 @@ export default function ProgressBar({ setShowSteps, activeStep }: { setShowSteps
           <div
             className="w-[42px] h-[42px] flex items-center justify-center rounded-full"
             style={{
-              background: `conic-gradient(var(--primary) ${(activeStep / 25) * 360}deg, transparent 0)`
+              background: `conic-gradient(var(--primary) ${(completedSteps / 25) * 360}deg, transparent 0)`
             }}
           >
             <div className="w-[35px] h-[35px] bg-[#403a33] rounded-full flex items-center justify-center ">
@@ -50,13 +57,13 @@ export default function ProgressBar({ setShowSteps, activeStep }: { setShowSteps
         </div>
         <div className="flex-1 space-y-2.5 h-[41px]">
           <div className="flex justify-between items-center">
-            <span className="text-primary font-semibold">{(activeStep / 25) * 100}%</span>
+            <span className="text-primary font-semibold">{((completedSteps / 25) * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%</span>
             <span className="text-grey-light text-sm">{activeStep < 10 ? `0${activeStep}` : activeStep} / 25</span>
           </div>
           <div className="flex w-full h-[5px] bg-background/10 rounded-md">
             <div
               className="h-full bg-primary rounded-md transition-all duration-300"
-              style={{ width: `${(activeStep / 25) * 100}%` }}
+              style={{ width: `${(completedSteps / 25) * 100}%` }}
             />
           </div>
         </div>
