@@ -19,7 +19,7 @@ import ProgressBar from "./ProgressBar";
 export default function FormStep02() {
   const [showSteps, setShowSteps] = useState(false)
   const [activeStep, setActiveStep] = useState(9)
-  const [completedSteps, setCompletedSteps] = useState(8)
+  const [completedSteps, ] = useState(8)
   return (
     <main className="flex relative flex-col p-2.5 items-center bg-blend-normal h-dvh sm:h-auto text-background">
       <div className="fixed inset-0 h-screen overflow-hidden">
