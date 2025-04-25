@@ -4,7 +4,7 @@ import './App.css'
 // import PeopleListPage from './components/People/Page'
 // import FirstFormPage from './components/FirstFormPage/FirstFormPage'
 // import FormStep01VerificationCode from './components/FormStep01VerificationCode/index'
-import FormStep02 from './components/FormStep02'
+import FormStepLayout from './components/FormStepLayout'
 import { Toaster } from './components/ui/sonner'
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
       <FirstFormPage />
       */}
       {/* <FormStep01VerificationCode /> */}
-      <FormStep02 /> 
+      <FormStepLayout /> 
       {/* 
       */}
       <Toaster toastOptions={{ classNames: {error: "!text-destructive"}}}/>

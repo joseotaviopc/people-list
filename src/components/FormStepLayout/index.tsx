@@ -10,13 +10,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { WelcomeSection } from "./WelcomeSection";
-import { FormDescription } from "./FormDescription";
 import LogoImage from "@/assets/Logo.png"
 import DesktopSidebar from "./DesktopSidebar";
 import ProgressBar from "./ProgressBar";
+import FormStepContent from "../FormStep02/FormStepContent";
 
-export default function FormStep02() {
+export default function FormStepLayout() {
   const [showSteps, setShowSteps] = useState(false)
   const [activeStep, setActiveStep] = useState(9)
   const [completedSteps, ] = useState(8)
@@ -31,7 +30,7 @@ export default function FormStep02() {
       </div>
       <article className="flex flex-col sm:flex-row gap-6 px-6 py-5 sm:py-16 overflow-y-scroll sm:overflow-y-autorelative sm:justify-center h-full min-h-full sm:min-h-fit w-full">
 
-        {/* Desktop Header */}
+        {/* Mobile Header */}
         <header className="flex flex-col z-10 sm:hidden w-full">
           <div className="w-full flex items-center justify-center h-[70px] bg-background rounded-md mb-2.5">
             <img src={LogoImage} alt="Logo" height={43} width={75} />
@@ -63,16 +62,13 @@ export default function FormStep02() {
         {!showSteps && (
           <>
             <div className="flex overflow-y-scroll sm:overflow-auto gap-10 z-0 flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-auto sm:flex-1">
-              <WelcomeSection />
-              <FormDescription />
-              <div className="hidden sm:flex sm:flex-1 sm:items-end sm:justify-end">
-                <Button className="rounded-md h-9 px-2">Próximo</Button>
-              </div>
+              <FormStepContent />
             </div>
+            
             {/* Mobile footer*/}
             <footer className="w-full sm:hidden flex z-10 gap-4 justify-between items-center">
               <Button variant="ghost" className="flex-1 bg-grey-light text-grey-dark rounded-md h-9 px-2">Anterior</Button>
-              <Button variant="ghost" className="flex-1 bg-background/10 rounded-md text-grey-light h-9 px-2">Etapa 01/25</Button>
+              <Button variant="ghost" className="flex-1 bg-background/10 rounded-md text-grey-light h-9 px-2">Etapa {completedSteps < 10 ? `0${completedSteps}` : completedSteps}/25</Button>
               <Button className="flex-1 rounded-md h-9 px-2">Próximo</Button>
             </footer>
           </>
