@@ -205,3 +205,24 @@ button:focus-visible {
     @apply bg-background text-foreground font-inter;
   }
 }
+
+/* Override browser autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--background) !important;
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+    background-color: transparent !important;
+    color: var(--background) !important;
+}
+
+/* For Firefox */
+input:-moz-autofill,
+input:-moz-autofill:hover,
+input:-moz-autofill:focus,
+input:-moz-autofill:active {
+    color: var(--background) !important;
+    background-color: transparent !important;
+}
