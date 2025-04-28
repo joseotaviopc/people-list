@@ -50,7 +50,7 @@ export default function DesktopSidebar({ setShowSteps, activeStep, setActiveStep
                         alt="Video"
                         className="object-cover absolute inset-0 size-full"
                     />
-                    <DialogTrigger className="z-10">
+                    <DialogTrigger asChild className="z-10">
                         <Button className="w-[71px] h-[50px] rounded-lg  flex items-center justify-center z-10">
                             <Play size={24} />
                         </Button>

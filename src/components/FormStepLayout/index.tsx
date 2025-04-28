@@ -15,6 +15,7 @@ import DesktopSidebar from "./DesktopSidebar";
 import ProgressBar from "./ProgressBar";
 import FormStep02Content from "../FormStep02/FormStepContent";
 import FormStep03 from "../FormStep03/FormStep03";
+import { FormProvider } from "../FormStep03/FormContext";
 
 export default function FormStepLayout() {
   const [showSteps, setShowSteps] = useState(false)
@@ -60,8 +61,11 @@ export default function FormStepLayout() {
               </div> */}
             </DialogContent>
             <div className="w-full flex gap-4 justify-between items-center">
-              <DialogTrigger className="z-10">
-                <Button variant="ghost" className="flex-1 bg-background/10 rounded-md gap-2"><Tutorial fill="var(--background)" />Explicação</Button>
+              <DialogTrigger asChild className="z-10" >
+                <Button variant="ghost" className="flex-1 bg-background/10 rounded-md gap-2">
+                  <Tutorial fill="var(--background)" />
+                  Explicação
+                </Button>
               </DialogTrigger>
               <Button variant="ghost" className="flex-1 bg-background/10 rounded-md" onClick={() => setShowSteps(true)}>
                 <IconAtividades fill="var(--background)" />Todas Etapas
@@ -73,9 +77,13 @@ export default function FormStepLayout() {
         {/* CONTENT */}
         {!showSteps && (
           <>
-            <div className="flex overflow-y-scroll sm:overflow-auto gap-10 z-0 flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-auto sm:flex-1">
+            <div className="flex overflow-y-scroll sm:overflow-auto gap-10 z-0 flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1">
               {activeStep === 1 && <FormStep02Content handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 2 && <FormStep03 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
+              {activeStep === 2 && (
+                <FormProvider>
+                  <FormStep03 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />
+                </FormProvider>
+              )}
               {activeStep === 3 && <h1>Etapa 3</h1>}
               {activeStep === 4 && <h1>Etapa 4</h1>}
               {activeStep === 5 && <h1>Etapa 5</h1>}
