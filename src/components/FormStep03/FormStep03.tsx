@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
-import { IconAtividades } from "@/assets";
+import { ChildIcon, CoupleIcon,  PersonIcon } from "@/assets";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,17 +31,17 @@ enum FormType {
 
 const personSteps = [
     {
-        icon: () => <IconAtividades fill="var(--background)" />,
+        icon: () => <PersonIcon />,
         label: "Pessoal",
         type: FormType.PERSONAL
     },
     {
-        icon: () => <IconAtividades fill="var(--background)" />,
+        icon: () => <CoupleIcon />,
         label: "Cônjugue",
         type: FormType.COUPLE
     },
     {
-        icon: () => <IconAtividades fill="var(--background)" />,
+        icon: () => <ChildIcon />,
         label: "Filho(a)s",
         type: FormType.CHILD
     }
@@ -79,8 +78,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
     const [activeChildStep, setActiveChildStep] = useState(FormType.PERSONAL)
     const [activeGrandChildStep, setActiveGrandChildStep] = useState(FormType.PERSONAL)
 
-    const [childCount, setChildCount] = useState(1)
-    const [grandChildCount, setGrandChildCount] = useState(1)
+    const [childCount, setChildCount] = useState(0)
+    const [grandChildCount, setGrandChildCount] = useState(0)
     const [showLegalForm, setShowLegalForm] = useState(false)
 
     const personForm = useForm<PersonFormData>({
@@ -184,15 +183,15 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     <div className="flex justify-center items-center gap-4 w-full">
                         <div className="flex items-center gap-2 text-nowrap">
                             <Input type="checkbox" />
-                            Filhos (03)
+                            Filhos ({childCount})
                         </div>
                         <div className="flex items-center gap-2 text-nowrap">
                             <Input type="checkbox" />
-                            Netos (03)
+                            Netos ({grandChildCount})
                         </div>
                         <div className="flex items-center gap-2 text-nowrap">
                             <Input type="checkbox" />
-                            Bisnetos (03)
+                            Bisnetos
                         </div>
                     </div>
 
@@ -213,7 +212,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     ))}
                                 </div>
                                 <div className="flex gap-1">
-                                    {childCount > 1 && (
+                                    {childCount > 0 && (
                                         <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
                                             <Trash2 size={16} />
                                         </Button>
@@ -260,7 +259,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                             ))}
                                         </div>
                                         <div className="flex gap-1">
-                                            {grandChildCount > 1 && (
+                                            {grandChildCount > 0 && (
                                                 <Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
                                                     <Trash2 size={16} />
                                                 </Button>
