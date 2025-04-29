@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { IconAtividades } from "@/assets";
 import { z } from "zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import {
@@ -15,268 +16,322 @@ import {
 } from "@/components/ui/form"
 import { Input } from "../ui/input";
 // import { FormType } from "./FormContext";
-import { validateCPF, validatePhone, cpfMask, phoneMask } from "@/helpers";
+import { cpfMask, phoneMask } from "@/helpers";
 
 interface FormStep03Props {
     handleNextStep: () => void,
     handlePreviousStep: () => void,
 }
 
+enum FormType {
+    PERSONAL = 'personal',
+    COUPLE = 'couple',
+    CHILD = 'child',
+    LEGAL_REPRESENTATIVE = 'legalRepresentative'
+}
+
 const personSteps = [
     {
         icon: () => <IconAtividades fill="var(--background)" />,
         label: "Pessoal",
+        type: FormType.PERSONAL
     },
     {
         icon: () => <IconAtividades fill="var(--background)" />,
         label: "Cônjugue",
+        type: FormType.COUPLE
     },
     {
         icon: () => <IconAtividades fill="var(--background)" />,
         label: "Filho(a)s",
+        type: FormType.CHILD
     }
 ]
 
 const personSchema = z.object({
-    name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-    email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
-        .transform((cpf) => cpf.replace(/[.|-]/g, ''))
-        .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
-        .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
-        .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    name: z.string(),
+    // .min(2, "Nome deve ter pelo menos 2 caracteres"),
+    email: z.string(),
+    // .email("Deve ser um email válido"),
+    cpf: z.string(),
+    // .min(14, "CPF deve ter 11 dígitos")
+    // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    celphone: z.string(),
+    // .min(15, "Telefone deve ter 11 dígitos")
+    // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    // .refine((phone) => validatePhone(phone), "Telefone inválido"),
     type: z.enum(["PERSONAL", "COUPLE", "CHILD", "LEGAL_REPRESENTATIVE"]),
 });
 
 const formSchema = z.object({
-    people: z.array(z.object({
+    people: z.object({
         ...personSchema.shape,
         legalRepresentatives: z.array(personSchema).optional()
-    }))
+    })
 });
 
-export type FormData = z.infer<typeof formSchema>;
-
-// function mapFormTypeFromActivePersonStep(index: number) {
-//     switch (index) {
-//         case 2:
-//             return FormType.COUPLE;
-//         case 3:
-//             return FormType.CHILD;
-//         default:
-//             return FormType.PERSONAL;
-//     }
-// }
+export type PersonFormData = z.infer<typeof formSchema>;
+type LegalFormData = z.infer<typeof personSchema>;
 
 export default function FormStep03({ handleNextStep, handlePreviousStep }: FormStep03Props) {
-    // const { formValues, updateFormValue } = useFormContext()
+    const [activePersonStep, setActivePersonStep] = useState(FormType.PERSONAL)
+    const [activeChildStep, setActiveChildStep] = useState(FormType.PERSONAL)
+    const [activeGrandChildStep, setActiveGrandChildStep] = useState(FormType.PERSONAL)
 
-    // const [activeHeaderStep, setActiveHeaderStep] = useState(1) // 1 ao 3
-    const [completedHeaderSteps,] = useState(0) // 1 ao 3
-    const [activePersonStep, setActivePersonStep] = useState(1) // 1 ao 3
-    const [activeRepresentativeStep, setActiveRepresentativeStep] = useState(0) // 0 means no representative selected
+    const [childCount, setChildCount] = useState(1)
+    const [grandChildCount, setGrandChildCount] = useState(1)
     const [showLegalForm, setShowLegalForm] = useState(false)
-    // const [data, setData] = useState<FormData[]>([])
 
-    // const defaultValues = formValues[activePersonStep - 1] && formValues[activePersonStep - 1].data || {
-    //     data: {
-    //         name: "",
-    //         email: "",
-    //         cpf: "",
-    //         celphone: "",
-    //     }
-    // };
-
-    const form = useForm<FormData>({
+    const personForm = useForm<PersonFormData>({
         resolver: zodResolver(formSchema),
         mode: "onChange",
         defaultValues: {
-            people: [
-                {
-                    name: "",
-                    email: "",
-                    cpf: "",
-                    celphone: "",
-                    type: "PERSONAL",
-                    legalRepresentatives: []
-                }
-            ]
-        }
-    })
-
-    // Get both field arrays
-    const { fields: peopleFields, append: appendPerson, remove: removePerson } = useFieldArray({
-        control: form.control,
-        name: "people"
-    })
-
-    const { fields: representativeFields, append: appendRepresentative, remove: removeRepresentative } = useFieldArray({
-        control: form.control,
-        name: `people.${activePersonStep - 1}.legalRepresentatives`
-    })
-
-    // console.log('peopleFields ', peopleFields)
-    // console.log('representativeFields ', representativeFields)
-
-    function handleChangePerson(index: number) {
-        // Get the current person's index
-        const currentPersonIndex = activePersonStep - 1;
-
-        if (currentPersonIndex !== 0) {// Get all form errors for the current person
-            const errors = form.formState.errors;
-            const currentPersonErrors = errors?.people?.[currentPersonIndex];
-
-            // If there are any errors, show them in the UI and don't change person
-            if (currentPersonErrors) {
-                // You can also add a toast or alert to inform the user
-                // toast.error('Por favor, corrija os erros nos campos antes de prosseguir');
-                return;
+            people: {
+                name: "",
+                email: "",
+                cpf: "",
+                celphone: "",
+                type: "PERSONAL",
+                legalRepresentatives: []
             }
         }
+    })
 
-        // If no errors, proceed with changing person
-        setActivePersonStep(index + 1);
-        setActiveRepresentativeStep(0);
-        setShowLegalForm(false);
-    }
-
-    function handleAddPerson(type: "PERSONAL" | "COUPLE" | "CHILD") {
-        appendPerson({
-            name: "",
-            email: "",
-            cpf: "",
-            celphone: "",
-            type,
-            legalRepresentatives: []
-        });
-    }
-
-    function handleRemovePerson(index: number) {
-        if (peopleFields.length > 1) {
-            removePerson(index);
-        }
-    }
-
-    function handleAddLegalRepresentative() {
-        appendRepresentative({
+    const legalForm = useForm<LegalFormData>({
+        resolver: zodResolver(personSchema),
+        mode: "onChange",
+        defaultValues: {
             name: "",
             email: "",
             cpf: "",
             celphone: "",
             type: "LEGAL_REPRESENTATIVE"
-        });
-        setShowLegalForm(true);
-    }
-
-    function handleRemoveLegalRepresentative(index: number) {
-        if (representativeFields.length > 0) {
-            removeRepresentative(index);
-            return;
         }
+    })
+
+    function handleChangePerson(type: FormType) {
+        setActivePersonStep(type);
         setShowLegalForm(false);
     }
 
-    function handleChangeRepresentative(index: number) {
-        setActiveRepresentativeStep(index + 1);
+    function handleChangeChild(type: FormType) {
+        setActiveChildStep(type);
+        setShowLegalForm(false);
     }
 
-    // function handleChangePerson(index: number) {
-    //     // Check if we have existing values for the target step
-    //     const targetStepValues = formValues.find((value) => value.type === mapFormTypeFromActivePersonStep(index + 1));
+    function handleChangeGrandChild(type: FormType) {
+        setActiveGrandChildStep(type);
+        setShowLegalForm(false);
+    }
 
-    //     if (!targetStepValues && activePersonStep !== 1) {
-    //         form.clearErrors()
-    //         setActivePersonStep(index + 1);
-    //         return;
-    //     }
-
-    //     if (targetStepValues) {
-    //         // If we have values, set them in the form
-    //         form.reset({ ...targetStepValues.data, cpf: cpfMask(targetStepValues.data.cpf), celphone: phoneMask(targetStepValues.data.celphone) });
-    //         setActivePersonStep(index + 1);
-    //     } else {
-    //         // If no values exist, validate and save current form
-    //         form.handleSubmit((values) => {
-    //             // If form is valid, update the form value and switch steps
-    //             updateFormValue(activePersonStep - 1, {
-    //                 type: mapFormTypeFromActivePersonStep(activePersonStep),
-    //                 data: values
-    //             });
-    //             // Reset the form for the new step
-    //             form.reset();
-    //             setActivePersonStep(index + 1);
-    //         })();
-    //     }
-    // }
-
-
-
-    // function onSubmit(values: FormData) {
-    //     updateFormValue(activePersonStep - 1, values);
-    // }
+    function handleAddLegalRepresentative() {
+        setShowLegalForm(true);
+    }
 
     return (
         <>
-            {/* QUANTIDADE DE SÓCIOS */}
+            {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
             <header className="flex justify-center items-start gap-4 w-full relative">
-                {peopleFields.map((field, index) => (
-                    <div key={field.id} onClick={() => setActivePersonStep(index + 1)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                        <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md ${index + 1 <= completedHeaderSteps ? 'bg-primary' : 'bg-background/10'}`}>
-                            <span className="flex gap-2 items-center text-background font-medium">{index < 9 ? `0${index + 1}` : index + 1}</span>
-                        </div>
-                        {index + 1 === activePersonStep && (
-                            <span className="w-full h-[5px] rounded-xs bg-primary" />
-                        )}
+                {/* {peopleFields.map((field, index) => (
+                ))} */}
+                <div onClick={() => { }} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                        <span className="flex gap-2 items-center text-background font-medium">01</span>
                     </div>
-                ))}
+
+                    {/* Indica o sócio atual */}
+                    {/* {index + 1 === activePersonStep && (
+                    )} */}
+                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                </div>
+
                 {/* Remove person button in each person's form */}
-                {peopleFields.length > 1 && (
+                {/* {peopleFields.length > 1 && (
                     < Button onClick={() => handleRemovePerson(activePersonStep - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
                         <Trash2 size={16} />
                     </Button>
-                )}
-                <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer absolute right-0 top-0" onClick={() => handleAddPerson("PERSONAL")} >
+                )} */}
+                <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer absolute right-0 top-0" onClick={() => { }} >
                     <Plus />
                 </div>
             </header >
 
 
-            <Form {...form}>
-                {/* PESSOAL, CÔNJUGE, FILHO(A) */}
-                <nav className="flex justify-center items-center gap-4 w-full">
-                    {personSteps.map((step, index) => (
-                        <div
-                            key={index}
-                            onClick={() => handleChangePerson(index)}
-                            className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
-                        >
-                            <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label}</span>
-                            </div>
-                            {index + 1 === activePersonStep && (
-                                <span className="w-full h-[5px] rounded-xs bg-primary" />
-                            )}
-                        </div>
-                    ))}
-                </nav>
+            <Form {...personForm}>
+                <div className="space-y-5 relative">
 
+
+                    {/* BOTOES - PESSOAL, CÔNJUGE, FILHO(A) */}
+                    <nav className="flex justify-center items-center gap-4 w-full">
+                        {personSteps.map((step, index) => (
+                            <div
+                                key={index}
+                                onClick={() => handleChangePerson(step.type)}
+                                className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
+                            >
+                                <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
+                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label}</span>
+                                </div>
+                                {step.type === activePersonStep && (
+                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                )}
+                            </div>
+                        ))}
+                    </nav>
+
+                    {/* CHECKBOX - FILHOS, NETOS, BISNETOS */}
+                    <div className="flex justify-center items-center gap-4 w-full">
+                        <div className="flex items-center gap-2 text-nowrap">
+                            <Input type="checkbox" />
+                            Filhos (03)
+                        </div>
+                        <div className="flex items-center gap-2 text-nowrap">
+                            <Input type="checkbox" />
+                            Netos (03)
+                        </div>
+                        <div className="flex items-center gap-2 text-nowrap">
+                            <Input type="checkbox" />
+                            Bisnetos (03)
+                        </div>
+                    </div>
+
+                    {activePersonStep === FormType.CHILD && (
+                        <>
+                            {/* BOTAO - SELECIONA FILHO */}
+                            <div className="flex justify-between items-center w-full">
+                                <div className="flex items-center gap-2">
+                                    <div className="flex h-[30px]">Filhos:</div>
+                                    {Array.from({ length: childCount }).map((_, index) => (
+                                        <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
+                                            <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
+                                                <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
+                                            </div>
+
+                                            {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="flex gap-1">
+                                    {childCount > 1 && (
+                                        <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                            <Trash2 size={16} />
+                                        </Button>
+                                    )}
+                                    <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="items-start h-[30px] text-background my-0 py-0 pt-0.5 has-[>svg]:px-1">
+                                        <Plus size={22} />
+                                    </Button>
+                                </div>
+                            </div>
+                            <p className="flex items-center w-full">João Henrique da Silva</p>
+
+                            {/* BOTOES FILHO */}
+                            <nav className="flex justify-center items-center gap-4 w-full">
+                                {personSteps.map((step, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleChangeChild(step.type)}
+                                        className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
+                                    >
+                                        <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
+                                            <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label}</span>
+                                        </div>
+                                        {step.type === activeChildStep && (
+                                            <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                        )}
+                                    </div>
+                                ))}
+                            </nav>
+
+                            {activeChildStep === FormType.CHILD && (
+                                <>
+                                    {/* BOTAO - SELECIONA NETO */}
+                                    <div className="flex justify-between items-center w-full">
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex h-[30px]">Netos:</div>
+                                            {Array.from({ length: grandChildCount }).map((_, index) => (
+                                                <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
+                                                    <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
+                                                        <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
+                                                    </div>
+
+                                                    {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="flex gap-1">
+                                            {grandChildCount > 1 && (
+                                                <Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                                    <Trash2 size={16} />
+                                                </Button>
+                                            )}
+                                            <Button onClick={() => setGrandChildCount(grandChildCount + 1)} variant="link" className="items-start h-[30px] text-background my-0 py-0 pt-0.5 has-[>svg]:px-1">
+                                                <Plus size={22} />
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    {/* BOTOES NETO */}
+                                    <nav className="flex justify-center items-center gap-4 w-full">
+                                        {personSteps.map((step, index) => (
+                                            <div
+                                                key={index}
+                                                onClick={() => handleChangeGrandChild(step.type)}
+                                                className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
+                                            >
+                                                <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
+                                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label}</span>
+                                                </div>
+                                                {step.type === activeGrandChildStep && (
+                                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                )}
+                                            </div>
+                                        ))}
+                                    </nav>
+                                </>
+                            )}
+
+                            {/* SIDEBAR BOLAS - FILHO */}
+                            <div className="flex flex-row rotate-90 h-[17px] absolute top-[4.25rem] -left-[5rem]">
+                                <span className="w-[17px] h-[17px] rounded-full bg-primary" />
+                                <span className="flex flex-row gap-0.5">
+                                    {Array.from({ length: 11 }).map((_, index) => (
+                                        <span key={index} className="flex items-center justify-center">{'-'}</span>
+                                    ))}
+                                </span>
+                                <span className="w-[17px] h-[17px] rounded-full bg-primary" />
+                            </div>
+
+                            {/* SIDEBAR BOLAS - NETO */}
+                            {activeChildStep === FormType.CHILD && (
+                                <div className="flex flex-row rotate-90 h-[17px] absolute top-[13.5rem] -left-[5.875rem]">
+                                    <span className="flex flex-row gap-0.5">
+                                        {Array.from({ length: 16 }).map((_, index) => (
+                                            <span key={index} className="flex items-center justify-center">{'-'}</span>
+                                        ))}
+                                    </span>
+                                    <span className="w-[17px] h-[17px] rounded-full bg-primary" />
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
+
+                {/* TEXTO RELATIVO AOS BOTOES */}
                 <div className="flex flex-col gap-2 w-full">
                     <h2 className="text-background font-bold text-2xl">Dados Pessoais</h2>
                     <p className="text-background">
-                        {activePersonStep === 1 && 'Informe seus dados pessoais'}
-                        {activePersonStep === 2 && 'Informe os dados pessoais do seu cônjuge'}
-                        {activePersonStep === 3 && 'Informe os dados pessoais do seu neto'}
+                        {activePersonStep === FormType.PERSONAL && 'Informe seus dados pessoais'}
+                        {activePersonStep === FormType.COUPLE && 'Informe os dados pessoais do seu cônjuge'}
+                        {activePersonStep === FormType.CHILD && 'Informe os dados pessoais do seu filho(a)'}
                     </p>
                 </div>
 
                 {/* FORMULÁRIO */}
                 <form className="w-full max-md:max-w-full space-y-6">
                     <FormField
-                        control={form.control}
-                        name={`people.${activePersonStep - 1}.name`}
+                        control={personForm.control}
+                        name="people.name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
@@ -288,8 +343,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                         )}
                     />
                     <FormField
-                        control={form.control}
-                        name={`people.${activePersonStep - 1}.email`}
+                        control={personForm.control}
+                        name="people.email"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
@@ -301,8 +356,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                         )}
                     />
                     <FormField
-                        control={form.control}
-                        name={`people.${activePersonStep - 1}.cpf`}
+                        control={personForm.control}
+                        name="people.cpf"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
@@ -322,8 +377,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                         )}
                     />
                     <FormField
-                        control={form.control}
-                        name={`people.${activePersonStep - 1}.celphone`}
+                        control={personForm.control}
+                        name="people.celphone"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
@@ -343,45 +398,52 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                         )}
                     />
                 </form>
+            </Form>
 
-                {/* ADICIONAR REPRESENTANTE LEGAL */}
+            <Form {...legalForm}>
+                {/* ADICIONAR REPRESENTANTE LEGAL - SEM FUNCIONALIDADE*/}
                 <div className="flex self-end items-center gap-2">
                     <p>Representante Legal</p>
                     <Button onClick={handleAddLegalRepresentative} variant="link" className="h-[35px] text-background my-0 py-0">
                         <Plus />
                     </Button>
+
                     {/* Remove legal representative button in each representative's form */}
-                    {representativeFields.length > 0 && (
+                    {/* {representativeFields.length > 0 && (
                         <Button onClick={() => handleRemoveLegalRepresentative(activeRepresentativeStep - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
                             <Trash2 size={16} />
                         </Button>
-                    )}
+                    )} */}
                 </div>
+
                 {/* Legal representative form */}
                 {showLegalForm && (
                     <form className="w-full max-md:max-w-full space-y-6">
-                        {/* Representative tabs */}
+
+                        {/* Representative tabs - SEM FUNCIONALIDADE */}
                         <nav className="flex justify-center items-center gap-4 w-full">
-                            {representativeFields.map((field, index) => (
-                                <div
-                                    key={field.id}
-                                    onClick={() => handleChangeRepresentative(index)}
-                                    className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer"
-                                >
-                                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md ${index + 1 <= completedHeaderSteps ? 'bg-primary' : 'bg-background/10'}`}>
-                                        <span className="flex gap-2 items-center text-background font-medium">{index + 1}</span>
-                                    </div>
-                                    {index + 1 === activeRepresentativeStep && (
-                                        <span className="w-full h-[5px] rounded-xs bg-primary" />
-                                    )}
+                            {/* {representativeFields.map((field, index) => (
+                            ))} */}
+                            <div
+                                // key={field.id}
+                                onClick={() => { }}
+                                className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer"
+                            >
+                                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                    <span className="flex gap-2 items-center text-background font-medium">01</span>
                                 </div>
-                            ))}
+
+                                {/* Indicação do representante legal atual */}
+                                {/* {index + 1 === activeRepresentativeStep && (
+                                )} */}
+                                <span className="w-full h-[5px] rounded-xs bg-primary" />
+                            </div>
                         </nav>
 
                         {/* Representative form fields */}
                         <FormField
-                            control={form.control}
-                            name={`people.${activePersonStep - 1}.legalRepresentatives.${activeRepresentativeStep - 1}.name`}
+                            control={legalForm.control}
+                            name="name"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
@@ -393,8 +455,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             )}
                         />
                         <FormField
-                            control={form.control}
-                            name={`people.${activePersonStep - 1}.legalRepresentatives.${activeRepresentativeStep - 1}.email`}
+                            control={legalForm.control}
+                            name="email"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
@@ -406,8 +468,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             )}
                         />
                         <FormField
-                            control={form.control}
-                            name={`people.${activePersonStep - 1}.legalRepresentatives.${activeRepresentativeStep - 1}.cpf`}
+                            control={legalForm.control}
+                            name="cpf"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
@@ -427,8 +489,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             )}
                         />
                         <FormField
-                            control={form.control}
-                            name={`people.${activePersonStep - 1}.legalRepresentatives.${activeRepresentativeStep - 1}.celphone`}
+                            control={legalForm.control}
+                            name="celphone"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
@@ -454,7 +516,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
             {/* NAVEGAÇÃO ENTRE STEPS */}
             <div className="hidden sm:flex sm:flex-1 sm:items-end sm:justify-between">
                 <Button variant="ghost" className="rounded-md h-9 px-2 bg-grey-light text-grey-dark" onClick={handlePreviousStep}>Anterior</Button>
-                <Button type="button" disabled={peopleFields.length === 0} className="rounded-md h-9 px-2" onClick={handleNextStep}>Próximo</Button>
+                <Button type="button" disabled className="rounded-md h-9 px-2" onClick={handleNextStep}>Próximo</Button>
             </div>
         </>
     )
