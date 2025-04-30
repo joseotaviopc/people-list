@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
-import { ChildIcon, CoupleIcon,  PersonIcon } from "@/assets";
+import { ChildIcon, CoupleIcon, PersonIcon } from "@/assets";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -77,10 +77,15 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
     const [activePersonStep, setActivePersonStep] = useState(FormType.PERSONAL)
     const [activeChildStep, setActiveChildStep] = useState(FormType.PERSONAL)
     const [activeGrandChildStep, setActiveGrandChildStep] = useState(FormType.PERSONAL)
+    const [activePartnerStep, setActivePartnerStep] = useState(0)
 
+    const [partnerCount, setPartnerCount] = useState(1)
     const [childCount, setChildCount] = useState(0)
     const [grandChildCount, setGrandChildCount] = useState(0)
+    const [greatGrandChildrenCount, setGreatGrandChildrenCount] = useState(0)
     const [showLegalForm, setShowLegalForm] = useState(false)
+    const [legalRepresentativesCount, setLegalRepresentativesCount] = useState(0)
+    const [activeRepresentativeStep, setActiveRepresentativeStep] = useState(0)
 
     const personForm = useForm<PersonFormData>({
         resolver: zodResolver(formSchema),
@@ -126,40 +131,74 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
     function handleAddLegalRepresentative() {
         setShowLegalForm(true);
+        setLegalRepresentativesCount(legalRepresentativesCount + 1);
+    }
+
+    function handleRemoveLegalRepresentative() {
+        setLegalRepresentativesCount(legalRepresentativesCount - 1);
+    }
+
+    function handleAddPartner() {
+        setActivePersonStep(FormType.PERSONAL);
+        setActiveChildStep(FormType.PERSONAL);
+        setActiveGrandChildStep(FormType.PERSONAL);
+        setChildCount(0);
+        setGrandChildCount(0);
+        setGreatGrandChildrenCount(0);
+        setPartnerCount(partnerCount + 1);
+        setActivePartnerStep(partnerCount);
+        setLegalRepresentativesCount(0);
+        setActiveRepresentativeStep(0);
+        setShowLegalForm(false);
+    }
+
+    function handleRemovePartner() {
+        setActivePartnerStep(partnerCount - 2);
+        setPartnerCount(partnerCount - 1);
     }
 
     return (
         <>
-            {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
+            {/* RESUMO STATES */}
+            <div className="hidden space-y-1 py-0 my-0">
+                <p className="text-[10px] text-zinc-400">partnerCount: {partnerCount} - activePartnerStep: {activePartnerStep}</p>
+                <p className="text-[10px] text-zinc-400">activePersonStep: {activePersonStep}</p>
+                <p className="text-[10px] text-zinc-400">childCount: {childCount} - activeChildStep: {activeChildStep}</p>
+                <p className="text-[10px] text-zinc-400">grandChildCount: {grandChildCount} - activeGrandChildStep: {activeGrandChildStep}</p>
+                <p className="text-[10px] text-zinc-400">greatGrandChildrenCount: {greatGrandChildrenCount}</p>
+            </div>
+
             <header className="flex justify-center items-start gap-4 w-full relative">
-                {/* {peopleFields.map((field, index) => (
-                ))} */}
-                <div onClick={() => { }} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                        <span className="flex gap-2 items-center text-background font-medium">01</span>
+                {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
+                {Array.from({ length: partnerCount }).map((partner, index) => (
+                    <div key={index} onClick={() => setActivePartnerStep(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                        <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                            <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                        </div>
+
+                        {/* Indica o sócio atual */}
+                        {index === activePartnerStep && (
+                            <span className="w-full h-[5px] rounded-xs bg-primary" />
+                        )}
                     </div>
+                ))}
 
-                    {/* Indica o sócio atual */}
-                    {/* {index + 1 === activePersonStep && (
-                    )} */}
-                    <span className="w-full h-[5px] rounded-xs bg-primary" />
-                </div>
-
-                {/* Remove person button in each person's form */}
-                {/* {peopleFields.length > 1 && (
-                    < Button onClick={() => handleRemovePerson(activePersonStep - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
-                        <Trash2 size={16} />
-                    </Button>
-                )} */}
-                <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer absolute right-0 top-0" onClick={() => { }} >
-                    <Plus />
+                <div className="flex gap-1 absolute right-0 top-0">
+                    {/* Remove person button in each person's form */}
+                    {partnerCount > 1 && (
+                        < Button onClick={handleRemovePartner} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                            <Trash2 size={16} />
+                        </Button>
+                    )}
+                    <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={handleAddPartner} >
+                        <Plus />
+                    </div>
                 </div>
             </header >
 
 
             <Form {...personForm}>
                 <div className="space-y-5 relative">
-
 
                     {/* BOTOES - PESSOAL, CÔNJUGE, FILHO(A) */}
                     <nav className="flex justify-center items-center gap-4 w-full">
@@ -170,7 +209,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
                             >
                                 <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && childCount > 0 &&`(${childCount.toString().padStart(2, '0')})`}</span>
+                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && childCount > 0 && `(${childCount.toString().padStart(2, '0')})`}</span>
                                 </div>
                                 {step.type === activePersonStep && (
                                     <span className="w-full h-[5px] rounded-xs bg-primary" />
@@ -191,7 +230,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                         </div>
                         <div className="flex items-center gap-2 text-nowrap">
                             <Input type="checkbox" />
-                            Bisnetos
+                            Bisnetos {greatGrandChildrenCount > 0 && `(${greatGrandChildrenCount.toString().padStart(2, '0')})`}
                         </div>
                     </div>
 
@@ -213,11 +252,11 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 </div>
                                 <div className="flex gap-1">
                                     {childCount > 0 && (
-                                        <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="border rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                        <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
                                             <Trash2 size={16} />
                                         </Button>
                                     )}
-                                    <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="border rounded-none items-start h-[30px] text-background my-0 py-0 pt-0.5 has-[>svg]:px-1">
+                                    <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
                                         <Plus size={22} />
                                     </Button>
                                 </div>
@@ -260,11 +299,11 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                         </div>
                                         <div className="flex gap-1">
                                             {grandChildCount > 0 && (
-                                                <Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="border rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                                <Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
                                                     <Trash2 size={16} />
                                                 </Button>
                                             )}
-                                            <Button onClick={() => setGrandChildCount(grandChildCount + 1)} variant="link" className="border rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
+                                            <Button onClick={() => setGrandChildCount(grandChildCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
                                                 <Plus size={22} />
                                             </Button>
                                         </div>
@@ -290,26 +329,74 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 </>
                             )}
 
+                            {activeGrandChildStep === FormType.CHILD && (
+                                <>
+                                    {/* BOTAO - SELECIONA BISNETO */}
+                                    <div className="flex justify-between items-center w-full">
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex h-[30px]">Bisnetos:</div>
+                                            {Array.from({ length: greatGrandChildrenCount }).map((_, index) => (
+                                                <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
+                                                    <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
+                                                        <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
+                                                    </div>
+
+                                                    {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="flex gap-1">
+                                            {grandChildCount > 0 && (
+                                                <Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                                    <Trash2 size={16} />
+                                                </Button>
+                                            )}
+                                            <Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
+                                                <Plus size={22} />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
                             {/* SIDEBAR BOLAS - FILHO */}
-                            <div className="flex flex-row rotate-90 h-[17px] absolute top-[4.25rem] -left-[5rem]">
-                                <span className="w-[17px] h-[17px] rounded-full bg-primary" />
-                                <span className="flex flex-row gap-0.5">
-                                    {Array.from({ length: 11 }).map((_, index) => (
-                                        <span key={index} className="flex items-center justify-center">{'-'}</span>
+                            <div className="flex flex-col w-[17px] absolute top-2.5 -left-6">
+                                <span className="z-20 w-[17px] h-[17px] rounded-full bg-primary" />
+                                <span className="z-10 flex flex-col gap-2 pl-[1px]">
+                                    {Array.from({ length: 14 }).map((_, index) => (
+                                        <span key={index} className="flex items-center justify-center w-[17px] relative">
+                                            <span className="absolute rotate-90">{'-'}</span>
+                                        </span>
                                     ))}
                                 </span>
-                                <span className="w-[17px] h-[17px] rounded-full bg-primary" />
+                                <span className="-mt-0.5 z-20 w-[17px] h-[17px] rounded-full bg-primary" />
                             </div>
 
                             {/* SIDEBAR BOLAS - NETO */}
                             {activeChildStep === FormType.CHILD && (
-                                <div className="flex flex-row rotate-90 h-[17px] absolute top-[13.5rem] -left-[5.875rem]">
-                                    <span className="flex flex-row gap-0.5">
-                                        {Array.from({ length: 16 }).map((_, index) => (
-                                            <span key={index} className="flex items-center justify-center">{'-'}</span>
+                                <div className="flex flex-col w-[17px] absolute top-[9rem] -left-6">
+                                    <span className="z-10 flex flex-col gap-2 pl-[1px]">
+                                        {Array.from({ length: 20 }).map((_, index) => (
+                                            <span key={index} className="flex items-center justify-center w-[17px] relative">
+                                                <span className="absolute rotate-90">{'-'}</span>
+                                            </span>
                                         ))}
                                     </span>
-                                    <span className="w-[17px] h-[17px] rounded-full bg-primary" />
+                                    <span className="-mt-1 z-20 w-[17px] h-[17px] rounded-full bg-primary" />
+                                </div>
+                            )}
+
+                            {/* SIDEBAR BOLAS - BISNETOS */}
+                            {activeGrandChildStep === FormType.CHILD && (
+                                <div className="flex flex-col w-[17px] absolute top-[18rem] -left-6">
+                                    <span className="z-10 flex flex-col gap-2 pl-[1px]">
+                                        {Array.from({ length: 17 }).map((_, index) => (
+                                            <span key={index} className="flex items-center justify-center w-[17px] relative">
+                                                <span className="absolute rotate-90">{'-'}</span>
+                                            </span>
+                                        ))}
+                                    </span>
+                                    <span className="-mt-1 z-20 w-[17px] h-[17px] rounded-full bg-primary" />
                                 </div>
                             )}
                         </>
@@ -401,18 +488,18 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
             <Form {...legalForm}>
                 {/* ADICIONAR REPRESENTANTE LEGAL - SEM FUNCIONALIDADE*/}
-                <div className="flex self-end items-center gap-2">
-                    <p>Representante Legal</p>
-                    <Button onClick={handleAddLegalRepresentative} variant="link" className="h-[35px] text-background my-0 py-0">
-                        <Plus />
-                    </Button>
-
+                <div className="flex self-end items-center gap-1">
+                    <p className="mr-2">Representante Legal</p>
                     {/* Remove legal representative button in each representative's form */}
-                    {/* {representativeFields.length > 0 && (
-                        <Button onClick={() => handleRemoveLegalRepresentative(activeRepresentativeStep - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                    {legalRepresentativesCount > 0 && (
+                        // <Button onClick={handleRemoveLegalRepresentative} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                        <Button onClick={handleRemoveLegalRepresentative} variant="destructive" className="rounded-none h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0 has-[>svg]:px-1">
                             <Trash2 size={16} />
                         </Button>
-                    )} */}
+                    )}
+                    <Button onClick={handleAddLegalRepresentative} variant="link" className="rounded-none h-[35px] text-background my-0 py-0 has-[>svg]:px-1">
+                        <Plus />
+                    </Button>
                 </div>
 
                 {/* Legal representative form */}
@@ -421,22 +508,22 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                         {/* Representative tabs - SEM FUNCIONALIDADE */}
                         <nav className="flex justify-center items-center gap-4 w-full">
-                            {/* {representativeFields.map((field, index) => (
-                            ))} */}
-                            <div
-                                // key={field.id}
-                                onClick={() => { }}
-                                className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer"
-                            >
-                                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                    <span className="flex gap-2 items-center text-background font-medium">01</span>
-                                </div>
+                            {Array.from({ length: legalRepresentativesCount }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    onClick={() => setActiveRepresentativeStep(index)}
+                                    className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer"
+                                >
+                                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                        <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                    </div>
 
-                                {/* Indicação do representante legal atual */}
-                                {/* {index + 1 === activeRepresentativeStep && (
-                                )} */}
-                                <span className="w-full h-[5px] rounded-xs bg-primary" />
-                            </div>
+                                    {/* Indicação do representante legal atual */}
+                                    {index === activeRepresentativeStep && (
+                                        <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                    )}
+                                </div>
+                            ))}
                         </nav>
 
                         {/* Representative form fields */}
