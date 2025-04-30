@@ -170,7 +170,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
                             >
                                 <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label}</span>
+                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && childCount > 0 &&`(${childCount.toString().padStart(2, '0')})`}</span>
                                 </div>
                                 {step.type === activePersonStep && (
                                     <span className="w-full h-[5px] rounded-xs bg-primary" />
@@ -183,11 +183,11 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     <div className="flex justify-center items-center gap-4 w-full">
                         <div className="flex items-center gap-2 text-nowrap">
                             <Input type="checkbox" />
-                            Filhos ({childCount})
+                            Filhos {childCount > 0 && `(${childCount.toString().padStart(2, '0')})`}
                         </div>
                         <div className="flex items-center gap-2 text-nowrap">
                             <Input type="checkbox" />
-                            Netos ({grandChildCount})
+                            Netos {grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}
                         </div>
                         <div className="flex items-center gap-2 text-nowrap">
                             <Input type="checkbox" />
@@ -213,11 +213,11 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 </div>
                                 <div className="flex gap-1">
                                     {childCount > 0 && (
-                                        <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                        <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="border rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
                                             <Trash2 size={16} />
                                         </Button>
                                     )}
-                                    <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="items-start h-[30px] text-background my-0 py-0 pt-0.5 has-[>svg]:px-1">
+                                    <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="border rounded-none items-start h-[30px] text-background my-0 py-0 pt-0.5 has-[>svg]:px-1">
                                         <Plus size={22} />
                                     </Button>
                                 </div>
@@ -233,7 +233,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                         className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
                                     >
                                         <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                            <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label}</span>
+                                            <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}</span>
                                         </div>
                                         {step.type === activeChildStep && (
                                             <span className="w-full h-[5px] rounded-xs bg-primary" />
@@ -260,11 +260,11 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                         </div>
                                         <div className="flex gap-1">
                                             {grandChildCount > 0 && (
-                                                <Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                                <Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="border rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
                                                     <Trash2 size={16} />
                                                 </Button>
                                             )}
-                                            <Button onClick={() => setGrandChildCount(grandChildCount + 1)} variant="link" className="items-start h-[30px] text-background my-0 py-0 pt-0.5 has-[>svg]:px-1">
+                                            <Button onClick={() => setGrandChildCount(grandChildCount + 1)} variant="link" className="border rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
                                                 <Plus size={22} />
                                             </Button>
                                         </div>
