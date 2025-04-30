@@ -1,9 +1,5 @@
-import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { ChildIcon, CoupleIcon, PersonIcon } from "@/assets";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import {
     Form,
@@ -16,6 +12,7 @@ import {
 import { Input } from "../ui/input";
 // import { FormType } from "./FormContext";
 import { cpfMask, phoneMask } from "@/helpers";
+import { useFormStep03 } from "./useFormStep03";
 
 interface FormStep03Props {
     handleNextStep: () => void,
@@ -47,115 +44,14 @@ const personSteps = [
     }
 ]
 
-const personSchema = z.object({
-    name: z.string(),
-    // .min(2, "Nome deve ter pelo menos 2 caracteres"),
-    email: z.string(),
-    // .email("Deve ser um email válido"),
-    cpf: z.string(),
-    // .min(14, "CPF deve ter 11 dígitos")
-    // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
-    // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string(),
-    // .min(15, "Telefone deve ter 11 dígitos")
-    // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
-    // .refine((phone) => validatePhone(phone), "Telefone inválido"),
-    type: z.enum(["PERSONAL", "COUPLE", "CHILD", "LEGAL_REPRESENTATIVE"]),
-});
-
-const formSchema = z.object({
-    people: z.object({
-        ...personSchema.shape,
-        legalRepresentatives: z.array(personSchema).optional()
-    })
-});
-
-export type PersonFormData = z.infer<typeof formSchema>;
-type LegalFormData = z.infer<typeof personSchema>;
-
 export default function FormStep03({ handleNextStep, handlePreviousStep }: FormStep03Props) {
-    const [activePersonStep, setActivePersonStep] = useState(FormType.PERSONAL)
-    const [activeChildStep, setActiveChildStep] = useState(FormType.PERSONAL)
-    const [activeGrandChildStep, setActiveGrandChildStep] = useState(FormType.PERSONAL)
-    const [activePartnerStep, setActivePartnerStep] = useState(0)
-
-    const [partnerCount, setPartnerCount] = useState(1)
-    const [childCount, setChildCount] = useState(0)
-    const [grandChildCount, setGrandChildCount] = useState(0)
-    const [greatGrandChildrenCount, setGreatGrandChildrenCount] = useState(0)
-    const [showLegalForm, setShowLegalForm] = useState(false)
-    const [legalRepresentativesCount, setLegalRepresentativesCount] = useState(0)
-    const [activeRepresentativeStep, setActiveRepresentativeStep] = useState(0)
-
-    const personForm = useForm<PersonFormData>({
-        resolver: zodResolver(formSchema),
-        mode: "onChange",
-        defaultValues: {
-            people: {
-                name: "",
-                email: "",
-                cpf: "",
-                celphone: "",
-                type: "PERSONAL",
-                legalRepresentatives: []
-            }
-        }
-    })
-
-    const legalForm = useForm<LegalFormData>({
-        resolver: zodResolver(personSchema),
-        mode: "onChange",
-        defaultValues: {
-            name: "",
-            email: "",
-            cpf: "",
-            celphone: "",
-            type: "LEGAL_REPRESENTATIVE"
-        }
-    })
-
-    function handleChangePerson(type: FormType) {
-        setActivePersonStep(type);
-        setShowLegalForm(false);
-    }
-
-    function handleChangeChild(type: FormType) {
-        setActiveChildStep(type);
-        setShowLegalForm(false);
-    }
-
-    function handleChangeGrandChild(type: FormType) {
-        setActiveGrandChildStep(type);
-        setShowLegalForm(false);
-    }
-
-    function handleAddLegalRepresentative() {
-        setShowLegalForm(true);
-        setLegalRepresentativesCount(legalRepresentativesCount + 1);
-    }
-
-    function handleRemoveLegalRepresentative() {
-        setLegalRepresentativesCount(legalRepresentativesCount - 1);
-    }
-
-    function handleAddPartner() {
-        setActivePersonStep(FormType.PERSONAL);
-        setActiveChildStep(FormType.PERSONAL);
-        setActiveGrandChildStep(FormType.PERSONAL);
-        setChildCount(0);
-        setGrandChildCount(0);
-        setGreatGrandChildrenCount(0);
-        setPartnerCount(partnerCount + 1);
-        setActivePartnerStep(partnerCount);
-        setLegalRepresentativesCount(0);
-        setActiveRepresentativeStep(0);
-        setShowLegalForm(false);
-    }
-
-    function handleRemovePartner() {
-        setActivePartnerStep(partnerCount - 2);
-        setPartnerCount(partnerCount - 1);
-    }
+    const { childActions, grandChildActions, greatGrandChildActions, legalActions, partnerActions, personActions } = useFormStep03()
+    const { childCount, activeChildStep, childSelected, handleChangeChild, setChildCount, setChildSelected } = childActions
+    const { grandChildCount, activeGrandChildStep, grandChildSelected, handleChangeGrandChild, setGrandChildCount, setGrandChildSelected } = grandChildActions
+    const { greatGrandChildSelected, greatGrandChildrenCount, setGreatGrandChildSelected, setGreatGrandChildrenCount } = greatGrandChildActions
+    const { activeRepresentativeStep, handleAddLegalRepresentative, handleRemoveLegalRepresentative, legalForm, legalRepresentativesCount, setActiveRepresentativeStep, showLegalForm } = legalActions
+    const { partnerCount, activePartnerStep, handleAddPartner, handleRemovePartner, setActivePartnerStep } = partnerActions
+    const { activePersonStep, handleChangePerson, personForm } = personActions
 
     return (
         <>
@@ -219,47 +115,79 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     </nav>
 
                     {/* CHECKBOX - FILHOS, NETOS, BISNETOS */}
-                    <div className="flex justify-center items-center gap-4 w-full">
-                        <div className="flex items-center gap-2 text-nowrap">
-                            <Input type="checkbox" />
-                            Filhos {childCount > 0 && `(${childCount.toString().padStart(2, '0')})`}
+                    {childCount > 0 && (
+                        <div className="flex justify-center items-center gap-4 w-full">
+                            <div className="flex items-center gap-2 text-nowrap">
+                                <Input type="checkbox" />
+                                Filhos {childCount > 0 && `(${childCount.toString().padStart(2, '0')})`}
+                            </div>
+                            {grandChildCount > 0 && (
+                                <div className="flex items-center gap-2 text-nowrap">
+                                    <Input type="checkbox" />
+                                    Netos {grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}
+                                </div>
+                            )}
+                            {greatGrandChildrenCount > 0 && (
+                                <div className="flex items-center gap-2 text-nowrap">
+                                    <Input type="checkbox" />
+                                    Bisnetos {`(${greatGrandChildrenCount.toString().padStart(2, '0')})`}
+                                </div>
+                            )}
                         </div>
-                        <div className="flex items-center gap-2 text-nowrap">
-                            <Input type="checkbox" />
-                            Netos {grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}
-                        </div>
-                        <div className="flex items-center gap-2 text-nowrap">
-                            <Input type="checkbox" />
-                            Bisnetos {greatGrandChildrenCount > 0 && `(${greatGrandChildrenCount.toString().padStart(2, '0')})`}
-                        </div>
-                    </div>
+                    )}
 
                     {activePersonStep === FormType.CHILD && (
                         <>
-                            {/* BOTAO - SELECIONA FILHO */}
-                            <div className="flex justify-between items-center w-full">
-                                <div className="flex items-center gap-2">
-                                    <div className="flex h-[30px]">Filhos:</div>
+{/* ======================= BOTAO - SELECIONA FILHO ======================= */}
+                            <div className="relative flex justify-center gap-2 items-center w-full">
+                                <>
                                     {Array.from({ length: childCount }).map((_, index) => (
-                                        <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
-                                            <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
-                                                <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
+                                        <div key={index} onClick={() => setChildSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                            <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                                <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
                                             </div>
 
-                                            {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
+                                            {/* Indica o sócio atual */}
+                                            {index === childSelected && (
+                                                <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                            )}
                                         </div>
                                     ))}
-                                </div>
-                                <div className="flex gap-1">
-                                    {childCount > 0 && (
-                                        <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
-                                            <Trash2 size={16} />
+
+                                    <div className="flex gap-1 absolute right-0 top-0">
+                                        {/* Remove person button in each person's form */}
+                                        {childCount > 1 && (
+                                            < Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                                <Trash2 size={16} />
+                                            </Button>
+                                        )}
+                                        <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={() => setChildCount(childCount + 1)} >
+                                            <Plus />
+                                        </div>
+                                    </div>
+                                    {/* <div className="flex items-center gap-2">
+                                        <div className="flex h-[30px]">Filhos:</div>
+                                        {Array.from({ length: childCount }).map((_, index) => (
+                                            <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
+                                                <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
+                                                    <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
+                                                </div>
+
+                                                {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="flex gap-1">
+                                        {childCount > 0 && (
+                                            <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
+                                                <Trash2 size={16} />
+                                            </Button>
+                                        )}
+                                        <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
+                                            <Plus size={22} />
                                         </Button>
-                                    )}
-                                    <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
-                                        <Plus size={22} />
-                                    </Button>
-                                </div>
+                                    </div> */}
+                                </>
                             </div>
                             <p className="flex items-center w-full">João Henrique da Silva</p>
 
@@ -283,9 +211,33 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                             {activeChildStep === FormType.CHILD && (
                                 <>
-                                    {/* BOTAO - SELECIONA NETO */}
-                                    <div className="flex justify-between items-center w-full">
-                                        <div className="flex items-center gap-2">
+{/* =============================== BOTAO - SELECIONA NETO =============================== */}
+                                    <div className="flex relative justify-center items-center gap-2 w-full">
+                                        {Array.from({ length: grandChildCount }).map((_, index) => (
+                                            <div key={index} onClick={() => setGrandChildSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                                    <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                                </div>
+
+                                                {/* Indica o neto atual */}
+                                                {index === grandChildSelected && (
+                                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                )}
+                                            </div>
+                                        ))}
+
+                                        <div className="flex gap-1 absolute right-0 top-0">
+                                            {/* Remove person button in each person's form */}
+                                            {grandChildCount > 1 && (
+                                                < Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                                    <Trash2 size={16} />
+                                                </Button>
+                                            )}
+                                            <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={() => setGrandChildCount(grandChildCount + 1)} >
+                                                <Plus />
+                                            </div>
+                                        </div>
+                                        {/* <div className="flex items-center gap-2">
                                             <div className="flex h-[30px]">Netos:</div>
                                             {Array.from({ length: grandChildCount }).map((_, index) => (
                                                 <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
@@ -306,7 +258,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                             <Button onClick={() => setGrandChildCount(grandChildCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
                                                 <Plus size={22} />
                                             </Button>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     {/* BOTOES NETO */}
@@ -331,9 +283,33 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                             {activeGrandChildStep === FormType.CHILD && (
                                 <>
-                                    {/* BOTAO - SELECIONA BISNETO */}
-                                    <div className="flex justify-between items-center w-full">
-                                        <div className="flex items-center gap-2">
+{/* =============================== BOTAO - SELECIONA BISNETO =============================== */}
+                                    <div className="flex relative justify-center items-center gap-2 w-full">
+                                        {Array.from({ length: greatGrandChildrenCount }).map((_, index) => (
+                                            <div key={index} onClick={() => setGreatGrandChildSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                                    <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                                </div>
+
+                                                {/* Indica o bisneto atual */}
+                                                {index === greatGrandChildSelected && (
+                                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                )}
+                                            </div>
+                                        ))}
+
+                                        <div className="flex gap-1 absolute right-0 top-0">
+                                            {/* Remove person button in each person's form */}
+                                            {greatGrandChildrenCount > 1 && (
+                                                < Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                                    <Trash2 size={16} />
+                                                </Button>
+                                            )}
+                                            <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount + 1)} >
+                                                <Plus />
+                                            </div>
+                                        </div>
+                                        {/* <div className="flex items-center gap-2">
                                             <div className="flex h-[30px]">Bisnetos:</div>
                                             {Array.from({ length: greatGrandChildrenCount }).map((_, index) => (
                                                 <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
@@ -354,13 +330,13 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                             <Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
                                                 <Plus size={22} />
                                             </Button>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </>
                             )}
 
                             {/* SIDEBAR BOLAS - FILHO */}
-                            <div className="flex flex-col w-[17px] absolute top-2.5 -left-6">
+                            <div className="hidden flex-col w-[17px] absolute top-2.5 -left-6">
                                 <span className="z-20 w-[17px] h-[17px] rounded-full bg-primary" />
                                 <span className="z-10 flex flex-col gap-2 pl-[1px]">
                                     {Array.from({ length: 14 }).map((_, index) => (
@@ -374,7 +350,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                             {/* SIDEBAR BOLAS - NETO */}
                             {activeChildStep === FormType.CHILD && (
-                                <div className="flex flex-col w-[17px] absolute top-[9rem] -left-6">
+                                <div className="hidden flex-col w-[17px] absolute top-[9rem] -left-6">
                                     <span className="z-10 flex flex-col gap-2 pl-[1px]">
                                         {Array.from({ length: 20 }).map((_, index) => (
                                             <span key={index} className="flex items-center justify-center w-[17px] relative">
@@ -388,7 +364,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                             {/* SIDEBAR BOLAS - BISNETOS */}
                             {activeGrandChildStep === FormType.CHILD && (
-                                <div className="flex flex-col w-[17px] absolute top-[18rem] -left-6">
+                                <div className="hidden flex-col w-[17px] absolute top-[18rem] -left-6">
                                     <span className="z-10 flex flex-col gap-2 pl-[1px]">
                                         {Array.from({ length: 17 }).map((_, index) => (
                                             <span key={index} className="flex items-center justify-center w-[17px] relative">
