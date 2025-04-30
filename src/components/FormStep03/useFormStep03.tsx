@@ -47,16 +47,16 @@ export function useFormStep03() {
     
     // CHILD
     const [activeChildStep, setActiveChildStep] = useState(FormType.PERSONAL)
-    const [childCount, setChildCount] = useState(0)
+    const [childCount, setChildCount] = useState(1)
     const [childSelected, setChildSelected] = useState(0)
     
     // GRANDCHILD
     const [activeGrandChildStep, setActiveGrandChildStep] = useState(FormType.PERSONAL)
-    const [grandChildCount, setGrandChildCount] = useState(0)
+    const [grandChildCount, setGrandChildCount] = useState(1)
     const [grandChildSelected, setGrandChildSelected] = useState(0)
     
     // GREAT GRANDCHILD
-    const [greatGrandChildrenCount, setGreatGrandChildrenCount] = useState(0)
+    const [greatGrandChildrenCount, setGreatGrandChildrenCount] = useState(1)
     const [greatGrandChildSelected, setGreatGrandChildSelected] = useState(0)
 
     // LEGAL REPRESENTATIVE
@@ -94,16 +94,53 @@ export function useFormStep03() {
     function handleChangePerson(type: FormType) {
         setActivePersonStep(type);
         setShowLegalForm(false);
+        if (type === FormType.CHILD) {
+            setActiveChildStep(FormType.PERSONAL);
+            setActiveGrandChildStep(FormType.PERSONAL);
+        }
+        if (type === FormType.CHILD && childCount === 0) {
+            setChildCount(1);
+        }
     }
 
     function handleChangeChild(type: FormType) {
         setActiveChildStep(type);
         setShowLegalForm(false);
+        if (type === FormType.CHILD) {
+            setActiveGrandChildStep(FormType.PERSONAL);
+        }
+        if (type === FormType.CHILD && grandChildCount === 0) {
+            setGrandChildCount(1);
+        }
     }
 
     function handleChangeGrandChild(type: FormType) {
         setActiveGrandChildStep(type);
         setShowLegalForm(false);
+        if (type === FormType.CHILD && greatGrandChildrenCount === 0) {
+            setGreatGrandChildrenCount(1);
+        }
+    }
+
+    function handleAddChild() {
+        if (childCount === 0) {
+            setActiveChildStep(FormType.PERSONAL);
+            setGrandChildCount(0);
+            setGreatGrandChildrenCount(0);
+        }
+        setChildCount(childCount + 1);
+    }
+
+    function handleRemoveChild() {
+        if (childCount === 1) {
+            setGrandChildCount(0);
+            setGreatGrandChildrenCount(0);
+        }
+        setChildCount(childCount - 1);
+    }
+
+    function handleChildCheckboxChange() {
+        
     }
 
     function handleAddLegalRepresentative() {
@@ -156,6 +193,9 @@ export function useFormStep03() {
         childSelected,
         setChildSelected,
         handleChangeChild,
+        handleAddChild,
+        handleRemoveChild,
+        handleChildCheckboxChange,
     }
     
     const grandChildActions = {
