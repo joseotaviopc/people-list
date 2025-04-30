@@ -170,7 +170,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
             <header className="flex justify-center items-start gap-4 w-full relative">
                 {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
-                {Array.from({ length: partnerCount }).map((partner, index) => (
+                {Array.from({ length: partnerCount }).map((_, index) => (
                     <div key={index} onClick={() => setActivePartnerStep(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
                         <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
                             <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
