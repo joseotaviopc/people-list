@@ -47,9 +47,9 @@ const personSteps = [
 
 export default function FormStep03({ handleNextStep, handlePreviousStep }: FormStep03Props) {
     const { childActions, grandChildActions, greatGrandChildActions, legalActions, partnerActions, personActions } = useFormStep03()
-    const { childCount, activeChildStep, childSelected, handleChangeChild, setChildSelected, handleAddChild, handleRemoveChild, handleChildCheckboxChange } = childActions
-    const { grandChildCount, activeGrandChildStep, grandChildSelected, handleChangeGrandChild, setGrandChildCount, setGrandChildSelected } = grandChildActions
-    const { greatGrandChildSelected, greatGrandChildrenCount, setGreatGrandChildSelected, setGreatGrandChildrenCount } = greatGrandChildActions
+    const { childCount, activeChildStep, childSelected, handleChangeChild, setChildSelected, handleAddChild, handleRemoveChild, handleChildCheckboxChange, showChild } = childActions
+    const { grandChildCount, activeGrandChildStep, grandChildSelected, handleChangeGrandChild, setGrandChildCount, setGrandChildSelected, showGrandChild, handleGrandChildCheckboxChange } = grandChildActions
+    const { greatGrandChildSelected, greatGrandChildrenCount, setGreatGrandChildSelected, setGreatGrandChildrenCount, showGreatGrandChild } = greatGrandChildActions
     const { activeRepresentativeStep, handleAddLegalRepresentative, handleRemoveLegalRepresentative, legalForm, legalRepresentativesCount, setActiveRepresentativeStep, showLegalForm } = legalActions
     const { partnerCount, activePartnerStep, handleAddPartner, handleRemovePartner, setActivePartnerStep } = partnerActions
     const { activePersonStep, handleChangePerson, personForm } = personActions
@@ -63,6 +63,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 <p className="text-[10px] text-zinc-400">childCount: {childCount} - activeChildStep: {activeChildStep}</p>
                 <p className="text-[10px] text-zinc-400">grandChildCount: {grandChildCount} - activeGrandChildStep: {activeGrandChildStep}</p>
                 <p className="text-[10px] text-zinc-400">greatGrandChildrenCount: {greatGrandChildrenCount}</p>
+                <p className="text-[10px] text-zinc-400">showGrandChild: {`${showGrandChild}`} - showGreatGrandChild: {`${showGreatGrandChild}`}</p>
             </div>
 
             <header className="flex justify-center items-start gap-4 w-full relative">
@@ -124,7 +125,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             </div>
                             {grandChildCount > 0 && (
                                 <div className="flex items-center gap-2 text-nowrap">
-                                    <Checkbox />
+                                    <Checkbox onCheckedChange={handleGrandChildCheckboxChange}/>
                                     Netos {grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}
                                 </div>
                             )}
@@ -141,59 +142,63 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                         <>
                             {/* <hr className="border-t border-t-orange-400" /> */}
 {/* ======================= FILHO ======================= */}
-                            <div className="relative flex justify-center gap-2 items-center w-full">
+                            {showChild && (
                                 <>
-                                    {Array.from({ length: childCount }).map((_, index) => (
-                                        <div key={index} onClick={() => setChildSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                                            <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                                <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
-                                            </div>
+                                    <div className="relative flex justify-center gap-2 items-center w-full">
+                                        <>
+                                            {Array.from({ length: childCount }).map((_, index) => (
+                                                <div key={index} onClick={() => setChildSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                                        <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                                    </div>
 
-                                            {/* Indica o sócio atual */}
-                                            {index === childSelected && (
-                                                <span className="w-full h-[5px] rounded-xs bg-primary" />
-                                            )}
-                                        </div>
-                                    ))}
-
-                                    <div className="flex gap-1 absolute right-0 top-0">
-                                        {/* Remove person button in each person's form */}
-                                        {childCount > 0 && (
-                                            < Button onClick={handleRemoveChild} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
-                                                <Trash2 size={16} />
-                                            </Button>
-                                        )}
-                                        <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={handleAddChild} >
-                                            <Plus />
-                                        </div>
-                                    </div>
-                                </>
-                            </div>
-
-                            {/* BOTOES FILHO */}
-                            {childCount > 0 && (
-                                <>
-                                    <p className="flex items-center w-full">João Henrique da Silva</p>
-                                    <nav className="flex justify-center items-center gap-4 w-full">
-                                        {personSteps.map((step, index) => (
-                                            <div
-                                                key={index}
-                                                onClick={() => handleChangeChild(step.type)}
-                                                className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
-                                            >
-                                                <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}</span>
+                                                    {/* Indica o filho atual */}
+                                                    {index === childSelected && (
+                                                        <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                    )}
                                                 </div>
-                                                {step.type === activeChildStep && (
-                                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                            ))}
+
+                                            <div className="flex gap-1 absolute right-0 top-0">
+                                                {/* Remove person button in each person's form */}
+                                                {childCount > 0 && (
+                                                    < Button onClick={handleRemoveChild} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                                        <Trash2 size={16} />
+                                                    </Button>
                                                 )}
+                                                <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={handleAddChild} >
+                                                    <Plus />
+                                                </div>
                                             </div>
-                                        ))}
-                                    </nav>
+                                        </>
+                                    </div>
+
+                                    {/* BOTOES FILHO */}
+                                    {childCount > 0 && (
+                                        <>
+                                            <p className="flex items-center w-full">João Henrique da Silva</p>
+                                            <nav className="flex justify-center items-center gap-4 w-full">
+                                                {personSteps.map((step, index) => (
+                                                    <div
+                                                        key={index}
+                                                        onClick={() => handleChangeChild(step.type)}
+                                                        className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
+                                                    >
+                                                        <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
+                                                            <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}</span>
+                                                        </div>
+                                                        {step.type === activeChildStep && (
+                                                            <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </nav>
+                                        </>
+                                    )}
                                 </>
                             )}
 
-                            {childCount > 0 && activeChildStep === FormType.CHILD && (
+                            {showGrandChild && childCount > 0 && activeChildStep === FormType.CHILD && (
                                 <>
                                     {/* <hr className="border-t border-t-orange-400" /> */}
 {/* =============================== NETO =============================== */}
@@ -246,7 +251,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 </>
                             )}
 
-                            {grandChildCount > 0 && activeChildStep === FormType.CHILD && activeGrandChildStep === FormType.CHILD && (
+                            {showGreatGrandChild && grandChildCount > 0 && activeChildStep === FormType.CHILD && activeGrandChildStep === FormType.CHILD && (
                                 <>
                                     {/* <hr className="border-t border-t-orange-400" /> */}
 {/* =============================== BISNETO =============================== */}

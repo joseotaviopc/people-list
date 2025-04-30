@@ -49,15 +49,18 @@ export function useFormStep03() {
     const [activeChildStep, setActiveChildStep] = useState(FormType.PERSONAL)
     const [childCount, setChildCount] = useState(1)
     const [childSelected, setChildSelected] = useState(0)
+    const [showChild, setShowChild] = useState(true)
     
     // GRANDCHILD
     const [activeGrandChildStep, setActiveGrandChildStep] = useState(FormType.PERSONAL)
     const [grandChildCount, setGrandChildCount] = useState(1)
     const [grandChildSelected, setGrandChildSelected] = useState(0)
+    const [showGrandChild, setShowGrandChild] = useState(true)
     
     // GREAT GRANDCHILD
     const [greatGrandChildrenCount, setGreatGrandChildrenCount] = useState(1)
     const [greatGrandChildSelected, setGreatGrandChildSelected] = useState(0)
+    const [showGreatGrandChild, setShowGreatGrandChild] = useState(true)
 
     // LEGAL REPRESENTATIVE
     const [showLegalForm, setShowLegalForm] = useState(false)
@@ -140,7 +143,15 @@ export function useFormStep03() {
     }
 
     function handleChildCheckboxChange() {
-        
+        if (!showChild) {
+            setShowChild(true);
+        }
+        setShowGrandChild(!showGrandChild);
+        setShowGreatGrandChild(!showGreatGrandChild);
+    }
+
+    function handleGrandChildCheckboxChange() {
+        setShowGreatGrandChild(!showGreatGrandChild);
     }
 
     function handleAddLegalRepresentative() {
@@ -196,6 +207,7 @@ export function useFormStep03() {
         handleAddChild,
         handleRemoveChild,
         handleChildCheckboxChange,
+        showChild
     }
     
     const grandChildActions = {
@@ -206,13 +218,16 @@ export function useFormStep03() {
         grandChildSelected,
         setGrandChildSelected,
         handleChangeGrandChild,
+        showGrandChild,
+        handleGrandChildCheckboxChange
     }
 
     const greatGrandChildActions = {
         greatGrandChildrenCount,
         setGreatGrandChildrenCount,
         greatGrandChildSelected,
-        setGreatGrandChildSelected
+        setGreatGrandChildSelected,
+        showGreatGrandChild,
     }
 
     const legalActions = {
