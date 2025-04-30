@@ -13,6 +13,7 @@ import { Input } from "../ui/input";
 // import { FormType } from "./FormContext";
 import { cpfMask, phoneMask } from "@/helpers";
 import { useFormStep03 } from "./useFormStep03";
+import { Checkbox } from "../ui/checkbox";
 
 interface FormStep03Props {
     handleNextStep: () => void,
@@ -46,7 +47,7 @@ const personSteps = [
 
 export default function FormStep03({ handleNextStep, handlePreviousStep }: FormStep03Props) {
     const { childActions, grandChildActions, greatGrandChildActions, legalActions, partnerActions, personActions } = useFormStep03()
-    const { childCount, activeChildStep, childSelected, handleChangeChild, setChildCount, setChildSelected } = childActions
+    const { childCount, activeChildStep, childSelected, handleChangeChild, setChildSelected, handleAddChild, handleRemoveChild, handleChildCheckboxChange } = childActions
     const { grandChildCount, activeGrandChildStep, grandChildSelected, handleChangeGrandChild, setGrandChildCount, setGrandChildSelected } = grandChildActions
     const { greatGrandChildSelected, greatGrandChildrenCount, setGreatGrandChildSelected, setGreatGrandChildrenCount } = greatGrandChildActions
     const { activeRepresentativeStep, handleAddLegalRepresentative, handleRemoveLegalRepresentative, legalForm, legalRepresentativesCount, setActiveRepresentativeStep, showLegalForm } = legalActions
@@ -79,8 +80,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     </div>
                 ))}
 
+                {/* ADICIONA OU REMOVE SÓCIO, AO REMOVER, LIMPAR TODOS OS DADOS */}
                 <div className="flex gap-1 absolute right-0 top-0">
-                    {/* Remove person button in each person's form */}
                     {partnerCount > 1 && (
                         < Button onClick={handleRemovePartner} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
                             <Trash2 size={16} />
@@ -96,7 +97,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
             <Form {...personForm}>
                 <div className="space-y-5 relative">
 
-                    {/* BOTOES - PESSOAL, CÔNJUGE, FILHO(A) */}
+{/* ======================= BOTAO - SELECIONA PESSOA, COJUGUE, FILHO(A) ======================= */}
                     <nav className="flex justify-center items-center gap-4 w-full">
                         {personSteps.map((step, index) => (
                             <div
@@ -118,18 +119,18 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     {childCount > 0 && (
                         <div className="flex justify-center items-center gap-4 w-full">
                             <div className="flex items-center gap-2 text-nowrap">
-                                <Input type="checkbox" />
+                                {grandChildCount > 0 && (<Checkbox onCheckedChange={handleChildCheckboxChange}/>)}
                                 Filhos {childCount > 0 && `(${childCount.toString().padStart(2, '0')})`}
                             </div>
                             {grandChildCount > 0 && (
                                 <div className="flex items-center gap-2 text-nowrap">
-                                    <Input type="checkbox" />
+                                    <Checkbox />
                                     Netos {grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}
                                 </div>
                             )}
                             {greatGrandChildrenCount > 0 && (
                                 <div className="flex items-center gap-2 text-nowrap">
-                                    <Input type="checkbox" />
+                                    <Checkbox />
                                     Bisnetos {`(${greatGrandChildrenCount.toString().padStart(2, '0')})`}
                                 </div>
                             )}
@@ -138,7 +139,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                     {activePersonStep === FormType.CHILD && (
                         <>
-{/* ======================= BOTAO - SELECIONA FILHO ======================= */}
+                            {/* <hr className="border-t border-t-orange-400" /> */}
+{/* ======================= FILHO ======================= */}
                             <div className="relative flex justify-center gap-2 items-center w-full">
                                 <>
                                     {Array.from({ length: childCount }).map((_, index) => (
@@ -156,62 +158,45 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                                     <div className="flex gap-1 absolute right-0 top-0">
                                         {/* Remove person button in each person's form */}
-                                        {childCount > 1 && (
-                                            < Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                        {childCount > 0 && (
+                                            < Button onClick={handleRemoveChild} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
                                                 <Trash2 size={16} />
                                             </Button>
                                         )}
-                                        <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={() => setChildCount(childCount + 1)} >
+                                        <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={handleAddChild} >
                                             <Plus />
                                         </div>
                                     </div>
-                                    {/* <div className="flex items-center gap-2">
-                                        <div className="flex h-[30px]">Filhos:</div>
-                                        {Array.from({ length: childCount }).map((_, index) => (
-                                            <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
-                                                <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
-                                                    <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
-                                                </div>
-
-                                                {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="flex gap-1">
-                                        {childCount > 0 && (
-                                            <Button onClick={() => setChildCount(childCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
-                                                <Trash2 size={16} />
-                                            </Button>
-                                        )}
-                                        <Button onClick={() => setChildCount(childCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
-                                            <Plus size={22} />
-                                        </Button>
-                                    </div> */}
                                 </>
                             </div>
-                            <p className="flex items-center w-full">João Henrique da Silva</p>
 
                             {/* BOTOES FILHO */}
-                            <nav className="flex justify-center items-center gap-4 w-full">
-                                {personSteps.map((step, index) => (
-                                    <div
-                                        key={index}
-                                        onClick={() => handleChangeChild(step.type)}
-                                        className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
-                                    >
-                                        <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                            <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}</span>
-                                        </div>
-                                        {step.type === activeChildStep && (
-                                            <span className="w-full h-[5px] rounded-xs bg-primary" />
-                                        )}
-                                    </div>
-                                ))}
-                            </nav>
-
-                            {activeChildStep === FormType.CHILD && (
+                            {childCount > 0 && (
                                 <>
-{/* =============================== BOTAO - SELECIONA NETO =============================== */}
+                                    <p className="flex items-center w-full">João Henrique da Silva</p>
+                                    <nav className="flex justify-center items-center gap-4 w-full">
+                                        {personSteps.map((step, index) => (
+                                            <div
+                                                key={index}
+                                                onClick={() => handleChangeChild(step.type)}
+                                                className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
+                                            >
+                                                <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
+                                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && grandChildCount > 0 && `(${grandChildCount.toString().padStart(2, '0')})`}</span>
+                                                </div>
+                                                {step.type === activeChildStep && (
+                                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                )}
+                                            </div>
+                                        ))}
+                                    </nav>
+                                </>
+                            )}
+
+                            {childCount > 0 && activeChildStep === FormType.CHILD && (
+                                <>
+                                    {/* <hr className="border-t border-t-orange-400" /> */}
+{/* =============================== NETO =============================== */}
                                     <div className="flex relative justify-center items-center gap-2 w-full">
                                         {Array.from({ length: grandChildCount }).map((_, index) => (
                                             <div key={index} onClick={() => setGrandChildSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
@@ -228,7 +213,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                                         <div className="flex gap-1 absolute right-0 top-0">
                                             {/* Remove person button in each person's form */}
-                                            {grandChildCount > 1 && (
+                                            {grandChildCount > 0 && (
                                                 < Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
                                                     <Trash2 size={16} />
                                                 </Button>
@@ -237,36 +222,15 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                                 <Plus />
                                             </div>
                                         </div>
-                                        {/* <div className="flex items-center gap-2">
-                                            <div className="flex h-[30px]">Netos:</div>
-                                            {Array.from({ length: grandChildCount }).map((_, index) => (
-                                                <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
-                                                    <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
-                                                        <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
-                                                    </div>
-
-                                                    {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="flex gap-1">
-                                            {grandChildCount > 0 && (
-                                                <Button onClick={() => setGrandChildCount(grandChildCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
-                                                    <Trash2 size={16} />
-                                                </Button>
-                                            )}
-                                            <Button onClick={() => setGrandChildCount(grandChildCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
-                                                <Plus size={22} />
-                                            </Button>
-                                        </div> */}
                                     </div>
 
                                     {/* BOTOES NETO */}
-                                    <nav className="flex justify-center items-center gap-4 w-full">
-                                        {personSteps.map((step, index) => (
-                                            <div
-                                                key={index}
-                                                onClick={() => handleChangeGrandChild(step.type)}
+                                    {grandChildCount > 0 && (
+                                        <nav className="flex justify-center items-center gap-4 w-full">
+                                            {personSteps.map((step, index) => (
+                                                <div
+                                                    key={index}
+                                                    onClick={() => handleChangeGrandChild(step.type)}
                                                 className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
                                             >
                                                 <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
@@ -277,13 +241,15 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                                 )}
                                             </div>
                                         ))}
-                                    </nav>
+                                        </nav>
+                                    )}
                                 </>
                             )}
 
-                            {activeGrandChildStep === FormType.CHILD && (
+                            {grandChildCount > 0 && activeChildStep === FormType.CHILD && activeGrandChildStep === FormType.CHILD && (
                                 <>
-{/* =============================== BOTAO - SELECIONA BISNETO =============================== */}
+                                    {/* <hr className="border-t border-t-orange-400" /> */}
+{/* =============================== BISNETO =============================== */}
                                     <div className="flex relative justify-center items-center gap-2 w-full">
                                         {Array.from({ length: greatGrandChildrenCount }).map((_, index) => (
                                             <div key={index} onClick={() => setGreatGrandChildSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
@@ -298,82 +264,19 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                             </div>
                                         ))}
 
+                                        {greatGrandChildrenCount > 0 && (
                                         <div className="flex gap-1 absolute right-0 top-0">
                                             {/* Remove person button in each person's form */}
-                                            {greatGrandChildrenCount > 1 && (
                                                 < Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
                                                     <Trash2 size={16} />
                                                 </Button>
-                                            )}
                                             <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount + 1)} >
                                                 <Plus />
                                             </div>
                                         </div>
-                                        {/* <div className="flex items-center gap-2">
-                                            <div className="flex h-[30px]">Bisnetos:</div>
-                                            {Array.from({ length: greatGrandChildrenCount }).map((_, index) => (
-                                                <div key={index} onClick={() => { }} className="flex flex-col justify-between items-center w-[22px] h-[30px] cursor-pointer">
-                                                    <div className={`flex items-center justify-center w-[22px] h-[22px] rounded-md bg-transparent`}>
-                                                        <span className="flex gap-2 items-center text-background font-medium">{`0${index + 1}`}</span>
-                                                    </div>
-
-                                                    {index === 0 && <span className="w-full h-[5px] rounded-xs bg-primary" />}
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="flex gap-1">
-                                            {grandChildCount > 0 && (
-                                                <Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount - 1)} variant="destructive" className="rounded-none items-start h-[30px] text-background bg-transparent hover:bg-transparent my-0 py-0 pt-1 has-[>svg]:px-1">
-                                                    <Trash2 size={16} />
-                                                </Button>
-                                            )}
-                                            <Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount + 1)} variant="link" className="rounded-none items-start h-[30px] text-background my-0 py-0 pt-[1px] has-[>svg]:px-1">
-                                                <Plus size={22} />
-                                            </Button>
-                                        </div> */}
+                                        )}
                                     </div>
                                 </>
-                            )}
-
-                            {/* SIDEBAR BOLAS - FILHO */}
-                            <div className="hidden flex-col w-[17px] absolute top-2.5 -left-6">
-                                <span className="z-20 w-[17px] h-[17px] rounded-full bg-primary" />
-                                <span className="z-10 flex flex-col gap-2 pl-[1px]">
-                                    {Array.from({ length: 14 }).map((_, index) => (
-                                        <span key={index} className="flex items-center justify-center w-[17px] relative">
-                                            <span className="absolute rotate-90">{'-'}</span>
-                                        </span>
-                                    ))}
-                                </span>
-                                <span className="-mt-0.5 z-20 w-[17px] h-[17px] rounded-full bg-primary" />
-                            </div>
-
-                            {/* SIDEBAR BOLAS - NETO */}
-                            {activeChildStep === FormType.CHILD && (
-                                <div className="hidden flex-col w-[17px] absolute top-[9rem] -left-6">
-                                    <span className="z-10 flex flex-col gap-2 pl-[1px]">
-                                        {Array.from({ length: 20 }).map((_, index) => (
-                                            <span key={index} className="flex items-center justify-center w-[17px] relative">
-                                                <span className="absolute rotate-90">{'-'}</span>
-                                            </span>
-                                        ))}
-                                    </span>
-                                    <span className="-mt-1 z-20 w-[17px] h-[17px] rounded-full bg-primary" />
-                                </div>
-                            )}
-
-                            {/* SIDEBAR BOLAS - BISNETOS */}
-                            {activeGrandChildStep === FormType.CHILD && (
-                                <div className="hidden flex-col w-[17px] absolute top-[18rem] -left-6">
-                                    <span className="z-10 flex flex-col gap-2 pl-[1px]">
-                                        {Array.from({ length: 17 }).map((_, index) => (
-                                            <span key={index} className="flex items-center justify-center w-[17px] relative">
-                                                <span className="absolute rotate-90">{'-'}</span>
-                                            </span>
-                                        ))}
-                                    </span>
-                                    <span className="-mt-1 z-20 w-[17px] h-[17px] rounded-full bg-primary" />
-                                </div>
                             )}
                         </>
                     )}
