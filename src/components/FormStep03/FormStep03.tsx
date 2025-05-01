@@ -49,9 +49,9 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
     const { childActions, grandChildActions, greatGrandChildActions, legalActions, partnerActions, personActions } = useFormStep03()
     const { childCount, activeChildStep, childSelected, handleChangeChild, setChildSelected, handleAddChild, handleRemoveChild, handleChildCheckboxChange, showChild } = childActions
     const { grandChildCount, activeGrandChildStep, grandChildSelected, handleChangeGrandChild, setGrandChildCount, setGrandChildSelected, showGrandChild, handleGrandChildCheckboxChange } = grandChildActions
-    const { greatGrandChildSelected, greatGrandChildrenCount, setGreatGrandChildSelected, setGreatGrandChildrenCount, showGreatGrandChild } = greatGrandChildActions
+    const { greatGrandChildSelected, greatGrandChildrenCount, setGreatGrandChildSelected, setGreatGrandChildrenCount, showGreatGrandChild, handleGreatGrandChildCheckboxChange } = greatGrandChildActions
     const { activeRepresentativeStep, handleAddLegalRepresentative, handleRemoveLegalRepresentative, legalForm, legalRepresentativesCount, setActiveRepresentativeStep, showLegalForm } = legalActions
-    const { partnerCount, activePartnerStep, handleAddPartner, handleRemovePartner, setActivePartnerStep } = partnerActions
+    const { partnerCount, activePartnerStep, handleAddPartner, handleRemovePartner, handleChangeActivePartner } = partnerActions
     const { activePersonStep, handleChangePerson, personForm } = personActions
 
     return (
@@ -63,13 +63,13 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 <p className="text-[10px] text-zinc-400">childCount: {childCount} - activeChildStep: {activeChildStep}</p>
                 <p className="text-[10px] text-zinc-400">grandChildCount: {grandChildCount} - activeGrandChildStep: {activeGrandChildStep}</p>
                 <p className="text-[10px] text-zinc-400">greatGrandChildrenCount: {greatGrandChildrenCount}</p>
-                <p className="text-[10px] text-zinc-400">showGrandChild: {`${showGrandChild}`} - showGreatGrandChild: {`${showGreatGrandChild}`}</p>
+                <p className="text-[10px] text-zinc-400">showChild: {`${showChild}`} - showGrandChild: {`${showGrandChild}`} - showGreatGrandChild: {`${showGreatGrandChild}`}</p>
             </div>
 
             <header className="flex justify-center items-start gap-4 w-full relative">
                 {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
                 {Array.from({ length: partnerCount }).map((_, index) => (
-                    <div key={index} onClick={() => setActivePartnerStep(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                    <div key={index} onClick={() => handleChangeActivePartner(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
                         <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
                             <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
                         </div>
@@ -131,7 +131,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             )}
                             {greatGrandChildrenCount > 0 && (
                                 <div className="flex items-center gap-2 text-nowrap">
-                                    <Checkbox />
+                                    <Checkbox onCheckedChange={handleGreatGrandChildCheckboxChange}/>
                                     Bisnetos {`(${greatGrandChildrenCount.toString().padStart(2, '0')})`}
                                 </div>
                             )}
@@ -140,7 +140,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                     {activePersonStep === FormType.CHILD && (
                         <>
-                            {/* <hr className="border-t border-t-orange-400" /> */}
+                            {/* <hr className="border-t border-t-orange-400" />
+                            <span className="text-orange-400">Filhos</span> */}
 {/* ======================= FILHO ======================= */}
                             {showChild && (
                                 <>
@@ -200,7 +201,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                             {showGrandChild && childCount > 0 && activeChildStep === FormType.CHILD && (
                                 <>
-                                    {/* <hr className="border-t border-t-orange-400" /> */}
+                                    {/* <hr className="border-t border-t-orange-400" />
+                                    <span className="text-orange-400">Netos</span> */}
 {/* =============================== NETO =============================== */}
                                     <div className="flex relative justify-center items-center gap-2 w-full">
                                         {Array.from({ length: grandChildCount }).map((_, index) => (
@@ -253,7 +255,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                             {showGreatGrandChild && grandChildCount > 0 && activeChildStep === FormType.CHILD && activeGrandChildStep === FormType.CHILD && (
                                 <>
-                                    {/* <hr className="border-t border-t-orange-400" /> */}
+                                    {/* <hr className="border-t border-t-orange-400" />
+                                    <span className="text-orange-400">Bisnetos</span> */}
 {/* =============================== BISNETO =============================== */}
                                     <div className="flex relative justify-center items-center gap-2 w-full">
                                         {Array.from({ length: greatGrandChildrenCount }).map((_, index) => (
@@ -269,17 +272,17 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                             </div>
                                         ))}
 
-                                        {greatGrandChildrenCount > 0 && (
                                         <div className="flex gap-1 absolute right-0 top-0">
                                             {/* Remove person button in each person's form */}
+                                            {greatGrandChildrenCount > 0 && (
                                                 < Button onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount - 1)} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
                                                     <Trash2 size={16} />
                                                 </Button>
+                                            )}
                                             <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={() => setGreatGrandChildrenCount(greatGrandChildrenCount + 1)} >
                                                 <Plus />
                                             </div>
                                         </div>
-                                        )}
                                     </div>
                                 </>
                             )}
@@ -301,7 +304,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 <form className="w-full max-md:max-w-full space-y-6">
                     <FormField
                         control={personForm.control}
-                        name="people.name"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
@@ -314,7 +317,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     />
                     <FormField
                         control={personForm.control}
-                        name="people.email"
+                        name="email"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
@@ -327,7 +330,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     />
                     <FormField
                         control={personForm.control}
-                        name="people.cpf"
+                        name="cpf"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
@@ -348,7 +351,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     />
                     <FormField
                         control={personForm.control}
-                        name="people.celphone"
+                        name="celphone"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
