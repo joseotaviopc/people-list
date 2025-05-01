@@ -54,6 +54,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
     const { partnerCount, activePartnerStep, handleAddPartner, handleRemovePartner, handleChangeActivePartner } = partnerActions
     const { activePersonStep, handleChangePerson, personForm } = personActions
 
+
+    
     return (
         <>
             {/* RESUMO STATES */}
@@ -64,6 +66,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 <p className="text-[10px] text-zinc-400">grandChildCount: {grandChildCount} - activeGrandChildStep: {activeGrandChildStep}</p>
                 <p className="text-[10px] text-zinc-400">greatGrandChildrenCount: {greatGrandChildrenCount}</p>
                 <p className="text-[10px] text-zinc-400">showChild: {`${showChild}`} - showGrandChild: {`${showGrandChild}`} - showGreatGrandChild: {`${showGreatGrandChild}`}</p>
+                <p className="text-[10px] text-zinc-400">showLegalForm: {`${showLegalForm}`}</p>
+                <p className="text-[10px] text-zinc-400">legalRepresentativesCount: {legalRepresentativesCount} - activeRepresentativeStep: {activeRepresentativeStep}</p>
             </div>
 
             <header className="flex justify-center items-start gap-4 w-full relative">
@@ -177,7 +181,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     {/* BOTOES FILHO */}
                                     {childCount > 0 && (
                                         <>
-                                            <p className="flex items-center w-full">João Henrique da Silva</p>
+                                            <p className="flex items-center w-full">Nome do filho dinamico</p>
                                             <nav className="flex justify-center items-center gap-4 w-full">
                                                 {personSteps.map((step, index) => (
                                                     <div

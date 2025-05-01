@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod";
 
@@ -37,15 +37,12 @@ type LegalFormData = z.infer<typeof personSchema>;
 type PartnerData = {
     [FormType.PERSONAL]: {
         data: PersonFormData,
-        legalRepresentatives?: LegalFormData[]
     },
     [FormType.COUPLE]?: {
         data: PersonFormData,
-        legalRepresentatives?: LegalFormData[]
     },
     [FormType.CHILD]?: {
         data: PersonFormData,
-        legalRepresentatives?: LegalFormData[]
     }[]
 }
 
@@ -65,7 +62,9 @@ export function useFormStep03() {
     // PARTNER
     const [activePartnerStep, setActivePartnerStep] = useState(0)
     const [partnerCount, setPartnerCount] = useState(1)
-    const [partnerData, setPartnerData] = useState<PartnerData[]>([newPartnerData])
+    const [partnerData, setPartnerData] = useState<PartnerData[]>(
+        window.localStorage.getItem('partnerData') ? JSON.parse(window.localStorage.getItem('partnerData') || '[]') as PartnerData[] : [newPartnerData]
+    )
     // console.log(JSON.stringify(partnerData, null, 4))
 
     // PERSON
@@ -119,28 +118,62 @@ export function useFormStep03() {
     })
 
     async function handleChangePerson(type: FormType) {
-        const validForm = await personForm.trigger()
-        if (!validForm) return;
+        // valido se legalForm tá aberto e se tocou no form
+        if (showLegalForm) {
+            const validForm = await legalForm.trigger()
+            if (!validForm) return;
 
-        await personForm.handleSubmit((values) => {
-            // console.log(values)
-            // console.log(activePersonStep)
-            // console.log(type)
+            await legalForm.handleSubmit((values) => {
+                // console.log(values)
+                // console.log('partnerData ', JSON.stringify(partnerData, null, 4))
+                // console.log(activePersonStep)
+                // console.log(type)
+    
+                // console.log('activePersonStep', (activePersonStep === FormType.PERSONAL || activePersonStep === FormType.COUPLE))
+                // console.log('partnerData',(partnerData[activePartnerStep][activePersonStep]))
+                setPartnerData(prev => {
+                    const newData = prev;
+                    if (activePersonStep === FormType.PERSONAL || activePersonStep === FormType.COUPLE) {
+                        if (newData[activePartnerStep][activePersonStep]) {
+                            const oldLegalRepresentatives = newData[activePartnerStep][activePersonStep].data.legalRepresentatives || [];
+                            console.log('oldLegalRepresentatives ', oldLegalRepresentatives)
+                            newData[activePartnerStep][activePersonStep].data.legalRepresentatives = [...oldLegalRepresentatives, values]
+                        }
+                    }
+                    window.localStorage.setItem('partnerData', JSON.stringify(newData))
+                    console.log('newData ', JSON.stringify(newData, null, 4))
+                    return newData;
+                });
+            })();
+        }
 
-            setPartnerData(prev => {
-                const newData = prev;
-                if (activePersonStep === FormType.PERSONAL || activePersonStep === FormType.COUPLE) {
-                    newData[activePartnerStep][activePersonStep] = {
-                        data: values,
-                        legalRepresentatives: values.legalRepresentatives || []
-                    };
-                }
-                return newData;
-            });
-        })();
+        // valido se tocou no form ou se é socio
+        if (activePersonStep === FormType.PERSONAL || personForm.formState.isDirty) {
+
+            const validForm = await personForm.trigger()
+            if (!validForm) return;
+    
+            await personForm.handleSubmit((values) => {
+                // console.log(values)
+                // console.log(activePersonStep)
+                // console.log(type)
+    
+                setPartnerData(prev => {
+                    const newData = prev;
+                    if (activePersonStep === FormType.PERSONAL || activePersonStep === FormType.COUPLE) {
+                        newData[activePartnerStep][activePersonStep] = {
+                            data: values
+                        };
+                    }
+                    window.localStorage.setItem('partnerData', JSON.stringify(newData))
+                    return newData;
+                });
+            })();
+        }
 
         // Check if there's existing data for this type
         if (type === FormType.PERSONAL || type === FormType.COUPLE) {
+            
             const existingData = partnerData[activePartnerStep][type];
             if (existingData) {
                 personForm.setValue('name', existingData.data.name);
@@ -148,7 +181,6 @@ export function useFormStep03() {
                 personForm.setValue('cpf', existingData.data.cpf);
                 personForm.setValue('celphone', existingData.data.celphone);
                 personForm.setValue('type', existingData.data.type);
-                personForm.setValue('legalRepresentatives', existingData.legalRepresentatives || []);
             } else {
                 personForm.reset();
             }
@@ -165,6 +197,8 @@ export function useFormStep03() {
         if (type === FormType.CHILD && childCount === 0) {
             setChildCount(1);
         }
+
+        console.log('partnerData ', JSON.stringify(partnerData, null, 4))
     }
 
     async function handleChangeChild(type: FormType) {
@@ -191,6 +225,7 @@ export function useFormStep03() {
                 //         }
                 //     ]
                 // }
+                window.localStorage.setItem('partnerData', JSON.stringify(newData))
                 return newData;
             });
         })();
@@ -207,7 +242,6 @@ export function useFormStep03() {
             personForm.setValue('cpf', existingData.data.cpf);
             personForm.setValue('celphone', existingData.data.celphone);
             personForm.setValue('type', existingData.data.type);
-            personForm.setValue('legalRepresentatives', existingData.legalRepresentatives || []);
         } else {
             personForm.reset();
         }
@@ -265,10 +299,18 @@ export function useFormStep03() {
     function handleAddLegalRepresentative() {
         setShowLegalForm(true);
         setLegalRepresentativesCount(legalRepresentativesCount + 1);
+        setActiveRepresentativeStep(legalRepresentativesCount);
+        legalForm.reset();
+        legalForm.clearErrors();
     }
 
     function handleRemoveLegalRepresentative() {
+        setActiveRepresentativeStep(legalRepresentativesCount - 2);
         setLegalRepresentativesCount(legalRepresentativesCount - 1);
+        if (legalRepresentativesCount === 1) {
+            setShowLegalForm(false);
+            legalForm.clearErrors();
+        }
     }
 
     function handleAddPartner() {
@@ -285,7 +327,10 @@ export function useFormStep03() {
         setLegalRepresentativesCount(0);
         setActiveRepresentativeStep(0);
         setShowLegalForm(false);
-        setPartnerData(prev => [...prev, newPartnerData]);
+        setPartnerData(prev => {
+            window.localStorage.setItem('partnerData', JSON.stringify([...prev, newPartnerData]))
+            return [...prev, newPartnerData]
+        });
     }
 
     function handleRemovePartner() {
@@ -300,18 +345,23 @@ export function useFormStep03() {
             personForm.setValue('cpf', existingData.data.cpf);
             personForm.setValue('celphone', existingData.data.celphone);
             personForm.setValue('type', existingData.data.type);
-            personForm.setValue('legalRepresentatives', existingData.legalRepresentatives || []);
         }
-        setPartnerData(prev => prev.slice(0, -1));
+        setPartnerData(prev => {
+            window.localStorage.setItem('partnerData', JSON.stringify(prev.slice(0, -1)))
+            return prev.slice(0, -1)
+        });
         setActivePersonStep(FormType.PERSONAL);
         setActiveChildStep(FormType.PERSONAL);
         setActiveGrandChildStep(FormType.PERSONAL);
     }
 
     function handleChangeActivePartner(index: number) {
+        console.log('DATA', JSON.stringify(partnerData, null, 4))
+        console.log('index', index)
         const existingData = partnerData[index][FormType.PERSONAL].data.name ? partnerData[index][FormType.PERSONAL].data : null;
 
         // If there's existing data, set it in the form
+        personForm.clearErrors();
         if (existingData) {
             personForm.setValue('name', existingData.name);
             personForm.setValue('email', existingData.email);
@@ -321,13 +371,31 @@ export function useFormStep03() {
             personForm.setValue('legalRepresentatives', existingData.legalRepresentatives || []);
         } else {
             personForm.reset();
-            personForm.clearErrors();
         }
         setActivePersonStep(FormType.PERSONAL);
         setActiveChildStep(FormType.PERSONAL);
         setActiveGrandChildStep(FormType.PERSONAL);
         setActivePartnerStep(index);
     }
+
+    useEffect(() => {
+        if (partnerData[0][FormType.PERSONAL]) {
+            personForm.setValue('name', partnerData[0][FormType.PERSONAL].data.name);
+            personForm.setValue('email', partnerData[0][FormType.PERSONAL].data.email);
+            personForm.setValue('cpf', partnerData[0][FormType.PERSONAL].data.cpf);
+            personForm.setValue('celphone', partnerData[0][FormType.PERSONAL].data.celphone);
+        }
+        if (partnerData[0][FormType.PERSONAL].data.legalRepresentatives && partnerData[0][FormType.PERSONAL].data.legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            setLegalRepresentativesCount(partnerData[0][FormType.PERSONAL].data.legalRepresentatives.length)
+            partnerData[0][FormType.PERSONAL].data.legalRepresentatives.map(legal => {
+                legalForm.setValue('name', legal.name);
+                legalForm.setValue('email', legal.email);
+                legalForm.setValue('cpf', legal.cpf);
+                legalForm.setValue('celphone', legal.celphone);
+            })
+        }
+    }, [])
     
 
     const partnerActions = {
