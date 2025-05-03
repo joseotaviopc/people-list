@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { z } from "zod";
 import {
     BisnetoFormData, bisnetoSchema,
     FilhoFormData, filhoSchema,
@@ -23,70 +22,6 @@ enum FormType {
     // LEGAL_REPRESENTATIVE = 'legalRepresentative'
 }
 
-enum LegalType {
-    LEGAL_REPRESENTATIVE = 'legalRepresentative'
-}
-
-const personSchema = z.object({
-    name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-    email: z.string().email("Deve ser um email válido"),
-    cpf: z.string(),
-    // .min(14, "CPF deve ter 11 dígitos")
-    // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
-    // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string(),
-    // .min(15, "Telefone deve ter 11 dígitos")
-    // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
-    // .refine((phone) => validatePhone(phone), "Telefone inválido"),
-    // type: z.enum(["PERSONAL", "COUPLE", "CHILD", "LEGAL_REPRESENTATIVE"]),
-    type: z.nativeEnum(FormType),
-});
-
-const legalSchema = z.object({
-    name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-    email: z.string().email("Deve ser um email válido"),
-    cpf: z.string(),
-    // .min(14, "CPF deve ter 11 dígitos")
-    // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
-    // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string(),
-    // .min(15, "Telefone deve ter 11 dígitos")
-    // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
-    // .refine((phone) => validatePhone(phone), "Telefone inválido"),
-    // type: z.enum(["PERSONAL", "COUPLE", "CHILD", "LEGAL_REPRESENTATIVE"]),
-    type: z.nativeEnum(LegalType),
-});
-
-const formSchema = z.object({
-    ...personSchema.shape,
-    legalRepresentatives: z.array(legalSchema).optional()
-});
-
-type PersonFormData = z.infer<typeof formSchema>;
-type LegalFormData = z.infer<typeof legalSchema>;
-
-type PartnerData = {
-    [FormType.PERSONAL]: {
-        data: PersonFormData,
-    },
-    [FormType.COUPLE]?: {
-        data: PersonFormData,
-    },
-    [FormType.CHILD]?: PartnerData[]
-}
-
-const newPartnerData: PartnerData = {
-    [FormType.PERSONAL]: {
-        data: {
-            name: "",
-            email: "",
-            cpf: "",
-            celphone: "",
-            type: FormType.PERSONAL,
-            legalRepresentatives: []
-        }
-    }
-}
 const newSocio: TodosDadosFormData = [{
     socio: {
         name: "",
@@ -113,10 +48,7 @@ export function useFormStep03() {
     // SOCIO
     const [activePartnerStep, setActivePartnerStep] = useState(0)
     const [partnerCount, setPartnerCount] = useState(1)
-    const [partnerData, setPartnerData] = useState<PartnerData[]>([newPartnerData])
     const [todosDadosValidados, setTodosDadosValidados] = useState<TodosDadosFormData>(newSocio)
-    // window.localStorage.getItem('partnerData') ? JSON.parse(window.localStorage.getItem('partnerData') || '[]') as PartnerData[] : [newPartnerData]
-    // console.log(JSON.stringify(partnerData, null, 4))
 
     // PESSOA
     const [activePersonStep, setActivePersonStep] = useState(FormType.PERSONAL)
@@ -135,38 +67,13 @@ export function useFormStep03() {
 
     // BISNETO
     const [bisnetoCount, setBisnetoCount] = useState(0)
-    const [greatNetoSelected, setGreatNetoSelected] = useState(0)
+    const [bisnetoSelected, setBisnetoSelected] = useState(0)
     const [showGreatNeto,] = useState(true)
 
     // LEGAL REPRESENTATIVE
     const [showLegalForm, setShowLegalForm] = useState(false)
     const [legalRepresentativesCount, setLegalRepresentativesCount] = useState(0)
     const [activeRepresentativeStep, setActiveRepresentativeStep] = useState(0)
-
-    const personForm = useForm<PersonFormData>({
-        resolver: zodResolver(formSchema),
-        mode: "onChange",
-        defaultValues: {
-            name: "",
-            email: "",
-            cpf: "",
-            celphone: "",
-            type: FormType.PERSONAL,
-            legalRepresentatives: []
-        }
-    })
-
-    const legalForm = useForm<LegalFormData>({
-        resolver: zodResolver(legalSchema),
-        mode: "onChange",
-        defaultValues: {
-            name: "",
-            email: "",
-            cpf: "",
-            celphone: "",
-            type: LegalType.LEGAL_REPRESENTATIVE
-        }
-    })
 
     // NOVOS USEFORMS
     const socioForm = useForm<SocioFormData>({
@@ -263,7 +170,7 @@ export function useFormStep03() {
                         legalRepresentatives: novoDadoValidado[activePartnerStep].socio.legalRepresentatives
                     };
                 }
-                console.log('novoDadoValidado validaSocioForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                // console.log('novoDadoValidado validaSocioForm() ', JSON.stringify(novoDadoValidado, null, 4))
                 return novoDadoValidado;
             });
         })();
@@ -279,7 +186,7 @@ export function useFormStep03() {
                         legalRepresentatives: novoDadoValidado[activePartnerStep].mulher.legalRepresentatives
                     };
                 }
-                console.log('novoDadoValidado validaMulherForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                // console.log('novoDadoValidado validaMulherForm() ', JSON.stringify(novoDadoValidado, null, 4))
                 return novoDadoValidado;
             });
         })();
@@ -302,7 +209,7 @@ export function useFormStep03() {
                         }
                     }
                 }
-                console.log('novoDadoValidado validaFilhoForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                // console.log('novoDadoValidado validaFilhoForm() ', JSON.stringify(novoDadoValidado, null, 4))
                 return novoDadoValidado;
             });
         })();
@@ -325,7 +232,7 @@ export function useFormStep03() {
                         }
                     }
                 }
-                console.log('novoDadoValidado validaMulherDoFilhoForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                // console.log('novoDadoValidado validaMulherDoFilhoForm() ', JSON.stringify(novoDadoValidado, null, 4))
                 return novoDadoValidado;
             });
         })();
@@ -348,7 +255,7 @@ export function useFormStep03() {
                         }
                     }
                 }
-                console.log('novoDadoValidado validaNetoForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                // console.log('novoDadoValidado validaNetoForm() ', JSON.stringify(novoDadoValidado, null, 4))
                 return novoDadoValidado;
             });
         })();
@@ -371,7 +278,7 @@ export function useFormStep03() {
                         }
                     }
                 }
-                console.log('novoDadoValidado validaMulherDoNetoForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                // console.log('novoDadoValidado validaMulherDoNetoForm() ', JSON.stringify(novoDadoValidado, null, 4))
                 return novoDadoValidado;
             });
         })();
@@ -387,51 +294,99 @@ export function useFormStep03() {
                         legalRepresentatives: []
                     })
                 } else {
-                    novoDadoValidado[activePartnerStep].bisneto[greatNetoSelected] = {
+                    novoDadoValidado[activePartnerStep].bisneto[bisnetoSelected] = {
                         ...values,
-                        legalRepresentatives: novoDadoValidado[activePartnerStep].bisneto[greatNetoSelected].legalRepresentatives
+                        legalRepresentatives: novoDadoValidado[activePartnerStep].bisneto[bisnetoSelected].legalRepresentatives
                     }
                 }
-                console.log('novoDadoValidado validaBisnetoForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                // console.log('novoDadoValidado validaBisnetoForm() ', JSON.stringify(novoDadoValidado, null, 4))
                 return novoDadoValidado;
             });
         })();
     }
     // VALIDACAO FORM LEGAL
     async function validaRepresentanteForm(actualForm: TodosDadosFormDataKeys) {
-        console.log('actualForm validaRepresentanteForm() ', actualForm)
         await representanteForm.handleSubmit((values) => {
             setTodosDadosValidados(prev => {
                 const novoDadoValidado = prev;
-                console.log('legalRepresentatives ', actualForm === 'socio' || actualForm === 'mulher' ? novoDadoValidado[activePartnerStep][actualForm].legalRepresentatives : novoDadoValidado[activePartnerStep][actualForm][filhoSelected].legalRepresentatives)
                 if (actualForm === 'socio' || actualForm === 'mulher') {
-                    novoDadoValidado[activePartnerStep][actualForm].legalRepresentatives = [
-                        ...novoDadoValidado[activePartnerStep][actualForm].legalRepresentatives,
-                        values
-                    ];
-                } else {
-                    novoDadoValidado[activePartnerStep][actualForm][filhoSelected].legalRepresentatives = [
-                        ...novoDadoValidado[activePartnerStep][actualForm][filhoSelected].legalRepresentatives,
-                        values
-                    ];
+                    novoDadoValidado[activePartnerStep][actualForm].legalRepresentatives[activeRepresentativeStep] = values;
+                } 
+                if (actualForm === 'filho' || actualForm === 'mulherDoFilho') {
+                    novoDadoValidado[activePartnerStep][actualForm][filhoSelected].legalRepresentatives[activeRepresentativeStep] = values;
                 }
-                // novoDadoValidado[activePartnerStep][actualForm][actualSelected] = {
-                //     ...novoDadoValidado[activePartnerStep][actualForm][actualSelected]
-                //     legalRepresentatives: values
-                // };
-                // console.log('novoDadoValidado validaRepresentanteForm() ', JSON.stringify(novoDadoValidado, null, 4))
+                if (actualForm === 'neto' || actualForm === 'mulherDoNeto') {
+                    novoDadoValidado[activePartnerStep][actualForm][netoSelected].legalRepresentatives[activeRepresentativeStep] = values;
+                }
+                if (actualForm === 'bisneto') {
+                    novoDadoValidado[activePartnerStep][actualForm][bisnetoSelected].legalRepresentatives[activeRepresentativeStep] = values;
+                }
+                // console.log('novoDadoValidado validaRepresentanteForm() ', JSON.stringify(novoDadoValidado[activePartnerStep], null, 4))
                 return novoDadoValidado;
             });
         })();
     }
+    // 
+    async function validateRepresentanteByType(type: TodosDadosFormDataKeys) {
+        if (representanteForm.formState.isDirty) {
+            const validLegalForm = await representanteForm.trigger()
+            if (!validLegalForm) return
+            await validaRepresentanteForm(type);
+        }
+    }
+    
+    // VALIDA TODOS OS FORMS
+    async function validateDataBeforeNextStep() {
+        if (socioForm.formState.isDirty) {
+            const validForm = await socioForm.trigger()
+            if (!validForm) return
+            await validaSocioForm();
+            await validateRepresentanteByType('socio');
+        }
+        if (mulherForm.formState.isDirty) {
+            const validForm = await mulherForm.trigger()
+            if (!validForm) return
+            await validaMulherForm();
+            await validateRepresentanteByType('mulher');
+        }
+        if (filhoForm.formState.isDirty) {
+            const validForm = await filhoForm.trigger()
+            if (!validForm) return
+            await validaFilhoForm();
+            await validateRepresentanteByType('filho');
+        }
+        if (mulherDoFilhoForm.formState.isDirty) {
+            const validForm = await mulherDoFilhoForm.trigger()
+            if (!validForm) return
+            await validaMulherDoFilhoForm();
+            await validateRepresentanteByType('mulherDoFilho');
+        }
+        if (netoForm.formState.isDirty) {
+            const validForm = await netoForm.trigger()
+            if (!validForm) return
+            await validaNetoForm();
+            await validateRepresentanteByType('neto');
+        }
+        if (mulherDoNetoForm.formState.isDirty) {
+            const validForm = await mulherDoNetoForm.trigger()
+            if (!validForm) return
+            await validaMulherDoNetoForm();
+            await validateRepresentanteByType('mulherDoNeto');
+        }
+        if (bisnetoForm.formState.isDirty) {
+            const validForm = await bisnetoForm.trigger()
+            if (!validForm) return
+            await validaBisnetoForm();
+            await validateRepresentanteByType('bisneto');
+        }        
+    }
+
     // ACOES SOCIO
     function handleAddPartner() {
         socioForm.clearErrors();
         socioForm.reset();
         mulherForm.clearErrors();
         mulherForm.reset();
-        // personForm.reset();
-        // personForm.clearErrors();
         setActivePersonStep(FormType.PERSONAL);
         setActiveFilhoStep(FormType.PERSONAL);
         setActiveNetoStep(FormType.PERSONAL);
@@ -472,8 +427,6 @@ export function useFormStep03() {
     }
 
     function handleChangeActivePartner(index: number) {
-        // console.log('DATA', JSON.stringify(partnerData, null, 4))
-        // console.log('index', index)
         const existingData = todosDadosValidados[index].socio;
 
         // If there's existing data, set it in the form
@@ -494,34 +447,6 @@ export function useFormStep03() {
 
     // ACOES PESSOA
     async function handleChangePerson(type: FormType) {
-        // valido se legalForm tá aberto e se tocou no form
-        if (showLegalForm) {
-            // const validForm = await legalForm.trigger()
-            // if (!validForm) return;
-
-            await legalForm.handleSubmit((values) => {
-                // console.log(values)
-                // console.log('partnerData ', JSON.stringify(partnerData, null, 4))
-                // console.log(activePersonStep)
-                // console.log(type)
-
-                // console.log('activePersonStep', (activePersonStep === FormType.PERSONAL || activePersonStep === FormType.COUPLE))
-                // console.log('partnerData',(partnerData[activePartnerStep][activePersonStep]))
-                setPartnerData(prev => {
-                    const newData = prev;
-                    if (activePersonStep === FormType.PERSONAL || activePersonStep === FormType.COUPLE) {
-                        if (newData[activePartnerStep][activePersonStep]) {
-                            const oldLegalRepresentatives = newData[activePartnerStep][activePersonStep].data.legalRepresentatives || [];
-                            console.log('oldLegalRepresentatives ', oldLegalRepresentatives)
-                            newData[activePartnerStep][activePersonStep].data.legalRepresentatives = [...oldLegalRepresentatives, values]
-                        }
-                    }
-                    // window.localStorage.setItem('partnerData', JSON.stringify(newData))
-                    console.log('newData ', JSON.stringify(newData, null, 4))
-                    return newData;
-                });
-            })();
-        }
 
         // VALIDA O SOCIO FORM
         if (activePersonStep === FormType.PERSONAL || socioForm.formState.isDirty) {
@@ -537,7 +462,17 @@ export function useFormStep03() {
             await validaMulherForm();
         }
 
-        // Check if there's existing data for this type
+        // VALIDA FORM LEGAL
+        if (showLegalForm && representanteForm.formState.isDirty) {
+            const validForm = await representanteForm.trigger()
+            if (!validForm) return;
+            if (activePersonStep !== FormType.CHILD) {
+                await validaRepresentanteForm(activePersonStep === FormType.PERSONAL ? 'socio' : 'mulher');
+                setShowLegalForm(false);
+            }
+        }
+
+        // VALIDA SE TEM DADOS PARA MULHER
         if (type === FormType.COUPLE) {
             const existingData = todosDadosValidados[activePartnerStep].mulher;
             if (existingData) {
@@ -552,8 +487,36 @@ export function useFormStep03() {
             mulherForm.reset();
         }
 
+        // VALIDA SE TEM DADOS PARA LEGAL DO SOCIO
+        if (type === FormType.PERSONAL && todosDadosValidados[activePartnerStep].socio.legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            setActiveRepresentativeStep(0);
+            setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].socio.legalRepresentatives.length);
+            representanteForm.setValue('name', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].name);
+            representanteForm.setValue('email', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].email);
+            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].cpf);
+            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].celphone);
+        } else if (type === FormType.PERSONAL) {
+            setLegalRepresentativesCount(0);
+            setShowLegalForm(false);
+            representanteForm.reset();
+        }
+        // VALIDA SE TEM DADOS PARA LEGAL DO MULHER
+        if (type === FormType.COUPLE && todosDadosValidados[activePartnerStep].mulher.legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            setActiveRepresentativeStep(0);
+            setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].mulher.legalRepresentatives.length);
+            representanteForm.setValue('name', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].name);
+            representanteForm.setValue('email', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].email);
+            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].cpf);
+            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].celphone);
+        } else if (type === FormType.COUPLE) {
+            setLegalRepresentativesCount(0);
+            setShowLegalForm(false);
+            representanteForm.reset();
+        }
+
         setActivePersonStep(type);
-        setShowLegalForm(false);
         if (type === FormType.CHILD) {
             setActiveFilhoStep(FormType.PERSONAL);
             setActiveNetoStep(FormType.PERSONAL);
@@ -561,18 +524,10 @@ export function useFormStep03() {
         if (type === FormType.CHILD && filhoCount === 0) {
             setFilhoCount(1);
         }
-
-        // console.log('partnerData ', JSON.stringify(partnerData, null, 4))
     }
 
     // ACOES FILHO
     async function handleChangeFilho(type: FormType) {
-        // valido se tocou no form ou se é socio
-        if (activePersonStep === FormType.PERSONAL || personForm.formState.isDirty || netoCount !== 0) {
-            // const validForm = await personForm.trigger()
-            // if (!validForm) return;
-        }
-
         // VALIDA O FILHO FORM
         if (activeFilhoStep === FormType.PERSONAL || filhoForm.formState.isDirty) {
             const validForm = await filhoForm.trigger()
@@ -587,7 +542,17 @@ export function useFormStep03() {
             await validaMulherDoFilhoForm();
         }
 
-        // Check if there's existing data for this type
+        // VALIDA FORM LEGAL
+        if (showLegalForm && representanteForm.formState.isDirty) {
+            const validForm = await representanteForm.trigger()
+            if (!validForm) return;
+            if (activeFilhoStep !== FormType.CHILD) {
+                await validaRepresentanteForm(activeFilhoStep === FormType.PERSONAL ? 'filho' : 'mulherDoFilho');
+                setShowLegalForm(false);
+            }
+        }
+
+        // VALIDA SE TEM DADOS PARA MULHER DO FILHO
         if (type === FormType.COUPLE) {
             const existingData = todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected];
             if (existingData) {
@@ -602,9 +567,36 @@ export function useFormStep03() {
             mulherDoFilhoForm.reset();
         }
 
+        // VALIDA SE TEM DADOS PARA LEGAL DO FILHO
+        if (type === FormType.PERSONAL && todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            representanteForm.setValue('name', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].name);
+            representanteForm.setValue('email', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].email);
+            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].cpf);
+            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].celphone);
+            setActiveRepresentativeStep(0);
+            setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives.length);
+        } else if (type === FormType.PERSONAL) {
+            setLegalRepresentativesCount(0);
+            setShowLegalForm(false);
+            representanteForm.reset();
+        }
+        // VALIDA SE TEM DADOS PARA LEGAL DO MULHER DO FILHO
+        if (type === FormType.COUPLE && todosDadosValidados[activePartnerStep].mulherDoFilho && todosDadosValidados[activePartnerStep].mulherDoFilho.length > 0 && todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected] && todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            representanteForm.setValue('name', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].name);
+            representanteForm.setValue('email', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].email);
+            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].cpf);
+            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].celphone);
+            setActiveRepresentativeStep(0);
+            setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives.length);
+        } else if (type === FormType.COUPLE) {
+            setLegalRepresentativesCount(0);
+            setShowLegalForm(false);
+            representanteForm.reset();
+        }
 
         setActiveFilhoStep(type);
-        setShowLegalForm(false);
         if (type === FormType.CHILD) {
             setActiveNetoStep(FormType.PERSONAL);
         }
@@ -653,8 +645,6 @@ export function useFormStep03() {
         setTodosDadosValidados(prev => {
             const novosFilhos = prev[activePartnerStep].filho.slice(0, -1)
             const novasMulheresDoFilho = prev[activePartnerStep].mulherDoFilho.slice(0, -1)
-            console.log('novosFilhos ', novosFilhos)
-            console.log('novasMulheresDoFilho ', novasMulheresDoFilho)
             const newData = prev[activePartnerStep]
             newData.filho = novosFilhos
             newData.mulherDoFilho = novasMulheresDoFilho
@@ -666,15 +656,6 @@ export function useFormStep03() {
         setFilhoCount(filhoCount - 1);
         setFilhoSelected(filhoCount - 2);
         setActiveFilhoStep(FormType.PERSONAL);
-        // console.log('filhos ', partnerData[activePartnerStep][FormType.CHILD].length > 0 ? partnerData[activePartnerStep][FormType.CHILD].length : 0)
-        // if (partnerData[activePartnerStep][FormType.CHILD] && partnerData[activePartnerStep][FormType.CHILD].length > 0) {
-        //     const newData = partnerData[activePartnerStep][FormType.CHILD].slice(-1)
-        //     console.log('newData filhos ', newData[activePartnerStep][FormType.CHILD]?.length)
-        //     if (newData[activePartnerStep][FormType.CHILD]?.length === 0) {
-        //         personForm.reset();
-        //     }
-        //     setPartnerData(newData)
-        // }
     }
 
     async function handleChangeActiveFilho(index: number) {
@@ -684,6 +665,7 @@ export function useFormStep03() {
             if (!validForm) return;
             await validaFilhoForm();
         }
+        // VALIDA MULHER DO FILHO FORM
         if (mulherDoFilhoForm.formState.isDirty) {
             const validForm = await mulherDoFilhoForm.trigger()
             if (!validForm) return;
@@ -715,21 +697,59 @@ export function useFormStep03() {
 
     // ACOES NETO
     async function handleChangeNeto(type: FormType) {
-        // VALIDA NETO FORM E MULHER DO NETO FORM
+        // VALIDA NETO FORM
         if (activeNetoStep === FormType.PERSONAL || netoForm.formState.isDirty) {
             const validForm = await netoForm.trigger()
             if (!validForm) return;
             await validaNetoForm();
         }
+        // VALIDA MULHER DO NETO FORM
         if (mulherDoNetoForm.formState.isDirty) {
             const validForm = await mulherDoNetoForm.trigger()
             if (!validForm) return;
             await validaMulherDoNetoForm();
         }
 
+        // VALIDA FORM LEGAL
+        if (showLegalForm && representanteForm.formState.isDirty) {
+            const validForm = await representanteForm.trigger()
+            if (!validForm) return;
+            if (activeNetoStep !== FormType.CHILD) {
+                await validaRepresentanteForm(activeNetoStep === FormType.PERSONAL ? 'neto' : 'mulherDoNeto');
+                setShowLegalForm(false);
+            }
+        }
+
         
+        // VALIDA LEGAL DO NETO
+        if (type === FormType.PERSONAL && todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            representanteForm.setValue('name', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].name);
+            representanteForm.setValue('email', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].email);
+            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].cpf);
+            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].celphone);
+            setActiveRepresentativeStep(0);
+            setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives.length);
+        } else if (type === FormType.PERSONAL) {
+            setLegalRepresentativesCount(0);
+            setShowLegalForm(false);
+            representanteForm.reset();
+        }
+        // VALIDA LEGAL DO MULHER DO NETO
+        if (type === FormType.COUPLE && todosDadosValidados[activePartnerStep].mulherDoNeto.length > 0 && todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            representanteForm.setValue('name', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].name);
+            representanteForm.setValue('email', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].email);
+            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].cpf);
+            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].celphone);
+            setActiveRepresentativeStep(0);
+            setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives.length);
+        } else if (type === FormType.COUPLE) {
+            setLegalRepresentativesCount(0);
+            setShowLegalForm(false);
+            representanteForm.reset();
+        }
         setActiveNetoStep(type);
-        setShowLegalForm(false);
         if (type === FormType.CHILD && bisnetoCount === 0) {
             setBisnetoCount(1);
         }
@@ -800,24 +820,120 @@ export function useFormStep03() {
             setBisnetoCount(0);
             setNetoSelected(0);
         }
+
+        const existingNeto = todosDadosValidados[activePartnerStep].neto[netoCount - 2]
+        if (existingNeto) {
+            netoForm.setValue('name', existingNeto.name);
+            netoForm.setValue('email', existingNeto.email);
+            netoForm.setValue('cpf', existingNeto.cpf);
+            netoForm.setValue('celphone', existingNeto.celphone);
+        }
+        
+        setTodosDadosValidados(prev => {
+            const novosNetos = prev[activePartnerStep].neto.slice(0, -1)
+            const novasMulheresDoNeto = prev[activePartnerStep].mulherDoNeto.slice(0, -1)
+            const newData = prev[activePartnerStep]
+            newData.neto = novosNetos
+            newData.mulherDoNeto = novasMulheresDoNeto
+            return [
+                ...prev,
+                newData
+            ]
+        })
         setActiveNetoStep(FormType.PERSONAL)
         setNetoCount(netoCount - 1)
         setNetoSelected(netoCount - 2)
     }
 
     // ACOES BISNETO
+    async function handleChangeActiveBisNeto(index: number) {
+        // VALIDA BISNETO FORM
+        if (bisnetoForm.formState.isDirty) {
+            const validForm = await bisnetoForm.trigger()
+            if (!validForm) return;
+            await validaBisnetoForm();
+        }
+
+        // VALIDA LEGAL FORM
+        if (showLegalForm && representanteForm.formState.isDirty) {
+            const validForm = await representanteForm.trigger()
+            if (!validForm) return;
+            await validaRepresentanteForm('bisneto');
+            setShowLegalForm(false);
+        }
+
+        // SETA OS VALORES DO BISNETO SE JA EXISTEM
+        const existingBisNeto = todosDadosValidados[activePartnerStep].bisneto[index]
+        if (existingBisNeto) {
+            bisnetoForm.setValue('name', existingBisNeto.name);
+            bisnetoForm.setValue('email', existingBisNeto.email);
+            bisnetoForm.setValue('cpf', existingBisNeto.cpf);
+            bisnetoForm.setValue('celphone', existingBisNeto.celphone);
+        } else {
+            bisnetoForm.reset();
+        }
+
+        // SETA OS VALORES DO LEGAL SE JA EXISTEM
+        const existingLegal = todosDadosValidados[activePartnerStep].bisneto[index].legalRepresentatives[0]
+        if (existingLegal) {
+            representanteForm.setValue('name', existingLegal.name);
+            representanteForm.setValue('email', existingLegal.email);
+            representanteForm.setValue('cpf', existingLegal.cpf);
+            representanteForm.setValue('celphone', existingLegal.celphone);
+            setActiveRepresentativeStep(0)
+            setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].bisneto[index].legalRepresentatives.length)
+            setShowLegalForm(true)
+        } else {
+            representanteForm.reset();
+            setShowLegalForm(false)
+        }
+
+        setBisnetoSelected(index)
+    }
+
     async function handleAddGreatNeto() {
         const validForm = await bisnetoForm.trigger()
         if (!validForm) return;
         await validaBisnetoForm();
-        setGreatNetoSelected(bisnetoCount)
+
+        if (bisnetoCount === 0) {
+            setBisnetoCount(0);
+        }
+
+        setShowLegalForm(false);
+        representanteForm.reset();
+        setLegalRepresentativesCount(0);
+        setActiveRepresentativeStep(0);
+        setBisnetoSelected(bisnetoCount)
         setBisnetoCount(bisnetoCount + 1)
         bisnetoForm.reset();
     }
 
     function handleRemoveGreatNeto() {
+        if (bisnetoCount === 1) {
+            setBisnetoCount(0);
+            setBisnetoSelected(0);
+        }
+
+        const existingBisNeto = todosDadosValidados[activePartnerStep].bisneto[bisnetoCount - 2]
+        if (existingBisNeto) {
+            bisnetoForm.setValue('name', existingBisNeto.name);
+            bisnetoForm.setValue('email', existingBisNeto.email);
+            bisnetoForm.setValue('cpf', existingBisNeto.cpf);
+            bisnetoForm.setValue('celphone', existingBisNeto.celphone);
+        }
+
+        setTodosDadosValidados(prev => {
+            const novosBisnetos = prev[activePartnerStep].bisneto.slice(0, -1)
+            const newData = prev[activePartnerStep]
+            newData.bisneto = novosBisnetos
+            return [
+                ...prev,
+                newData
+            ]
+        })
         setBisnetoCount(bisnetoCount - 1)
-        setGreatNetoSelected(bisnetoCount - 2)
+        setBisnetoSelected(bisnetoCount - 2)
     }
 
     // ACOES CHECKBOX
@@ -848,38 +964,18 @@ export function useFormStep03() {
 
         setLegalRepresentativesCount(legalRepresentativesCount + 1);
         setActiveRepresentativeStep(legalRepresentativesCount);
-        legalForm.reset();
-        legalForm.clearErrors();
+        representanteForm.reset();
+        representanteForm.clearErrors();
     }
 
     function handleRemoveLegalRepresentative() {
         setActiveRepresentativeStep(legalRepresentativesCount - 2);
         setLegalRepresentativesCount(legalRepresentativesCount - 1);
         if (legalRepresentativesCount === 1) {
+            representanteForm.clearErrors();
             setShowLegalForm(false);
-            legalForm.clearErrors();
         }
     }
-
-    useEffect(() => {
-        if (partnerData[0][FormType.PERSONAL]) {
-            personForm.setValue('name', partnerData[0][FormType.PERSONAL].data.name);
-            personForm.setValue('email', partnerData[0][FormType.PERSONAL].data.email);
-            personForm.setValue('cpf', partnerData[0][FormType.PERSONAL].data.cpf);
-            personForm.setValue('celphone', partnerData[0][FormType.PERSONAL].data.celphone);
-        }
-        if (partnerData[0][FormType.PERSONAL].data.legalRepresentatives && partnerData[0][FormType.PERSONAL].data.legalRepresentatives.length > 0) {
-            setShowLegalForm(true);
-            setLegalRepresentativesCount(partnerData[0][FormType.PERSONAL].data.legalRepresentatives.length)
-            partnerData[0][FormType.PERSONAL].data.legalRepresentatives.map(legal => {
-                legalForm.setValue('name', legal.name);
-                legalForm.setValue('email', legal.email);
-                legalForm.setValue('cpf', legal.cpf);
-                legalForm.setValue('celphone', legal.celphone);
-            })
-        }
-    }, [])
-
 
     const partnerActions = {
         activePartnerStep,
@@ -891,7 +987,6 @@ export function useFormStep03() {
     }
 
     const personActions = {
-        personForm,
         activePersonStep,
         handleChangePerson,
     }
@@ -926,19 +1021,19 @@ export function useFormStep03() {
         handleChangeActiveNeto,
     }
 
-    const greatNetoActions = {
+    const bisnetoActions = {
         bisnetoCount,
         setBisnetoCount,
-        greatNetoSelected,
-        setGreatNetoSelected,
+        bisnetoSelected,
+        setBisnetoSelected,
         showGreatNeto,
         handleGreatNetoCheckboxChange,
         handleAddGreatNeto,
         handleRemoveGreatNeto,
+        handleChangeActiveBisNeto
     }
 
     const legalActions = {
-        legalForm,
         activeRepresentativeStep,
         setActiveRepresentativeStep,
         legalRepresentativesCount,
@@ -964,8 +1059,9 @@ export function useFormStep03() {
         personActions,
         filhoActions,
         netoActions,
-        greatNetoActions,
+        bisnetoActions,
         legalActions,
-        novosForms
+        novosForms,
+        validateDataBeforeNextStep,
     }
 }

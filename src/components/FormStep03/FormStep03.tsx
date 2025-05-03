@@ -21,15 +21,19 @@ interface FormStep03Props {
 }
 
 export default function FormStep03({ handleNextStep, handlePreviousStep }: FormStep03Props) {
-    const { filhoActions, netoActions, greatNetoActions, legalActions, partnerActions, personActions, novosForms } = useFormStep03()
+    const { filhoActions, netoActions, bisnetoActions, legalActions, partnerActions, personActions, novosForms, validateDataBeforeNextStep } = useFormStep03()
     const { filhoCount, activeFilhoStep, filhoSelected, handleChangeFilho, handleChangeActiveFilho, handleAddFilho, handleRemoveFilho, showFilho } = filhoActions
     const { netoCount, activeNetoStep, netoSelected, handleChangeNeto, handleChangeActiveNeto, showNeto, handleAddNeto, handleRemoveNeto } = netoActions
-    const { greatNetoSelected, bisnetoCount, setGreatNetoSelected, showGreatNeto, handleAddGreatNeto, handleRemoveGreatNeto } = greatNetoActions
+    const { bisnetoSelected, bisnetoCount, showGreatNeto, handleAddGreatNeto, handleRemoveGreatNeto, handleChangeActiveBisNeto } = bisnetoActions
     const { activeRepresentativeStep, handleAddLegalRepresentative, handleRemoveLegalRepresentative, legalRepresentativesCount, setActiveRepresentativeStep, showLegalForm, representanteForm } = legalActions
     const { partnerCount, activePartnerStep, handleAddPartner, handleRemovePartner, handleChangeActivePartner } = partnerActions
-    const { activePersonStep, handleChangePerson, personForm } = personActions
+    const { activePersonStep, handleChangePerson } = personActions
     const { socioForm, mulherForm, filhoForm, mulherDoFilhoForm, netoForm, mulherDoNetoForm, bisnetoForm, todosDadosValidados } = novosForms
 
+    async function validateData() {
+        await validateDataBeforeNextStep()
+        handleNextStep()
+    }
 
     return (
         <>
@@ -78,7 +82,6 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
             </header >
 
 
-            <Form {...personForm}>
                 <div className="space-y-5 relative">
 
                     {/* ======================= BOTAO - SELECIONA SOCIO, MULHER, FILHO(A) ======================= */}
@@ -245,13 +248,13 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     {/* =============================== BISNETO =============================== */}
                                     <div className="flex relative justify-center items-center gap-2 w-full">
                                         {Array.from({ length: bisnetoCount }).map((_, index) => (
-                                            <div key={index} onClick={() => setGreatNetoSelected(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                            <div key={index} onClick={() => handleChangeActiveBisNeto(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
                                                 <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
                                                     <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
                                                 </div>
 
                                                 {/* Indica o bisneto atual */}
-                                                {index === greatNetoSelected && (
+                                                {index === bisnetoSelected && (
                                                     <span className="w-full h-[5px] rounded-xs bg-primary" />
                                                 )}
                                             </div>
@@ -889,7 +892,6 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                         )}
                     />
                 </form> */}
-            </Form>
 
             <Form {...representanteForm}>
                 {/* ADICIONAR REPRESENTANTE LEGAL - SEM FUNCIONALIDADE*/}
@@ -1007,7 +1009,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
             {/* NAVEGAÇÃO ENTRE STEPS */}
             <div className="hidden sm:flex sm:flex-1 sm:items-end sm:justify-between">
                 <Button variant="ghost" className="rounded-md h-9 px-2 bg-grey-light text-grey-dark" onClick={handlePreviousStep}>Anterior</Button>
-                <Button type="button" disabled className="rounded-md h-9 px-2" onClick={handleNextStep}>Próximo</Button>
+                <Button type="button" disabled={!todosDadosValidados.every(dado => dado.socio?.name)} className="rounded-md h-9 px-2" onClick={validateData}>Próximo</Button>
             </div>
         </>
     )
