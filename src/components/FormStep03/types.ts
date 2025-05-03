@@ -12,14 +12,22 @@ export enum FormType {
 export const socioSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
 export type SocioFormData = z.infer<typeof socioSchema>;
 
@@ -27,14 +35,22 @@ export type SocioFormData = z.infer<typeof socioSchema>;
 export const mulherSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
 export type MulherFormData = z.infer<typeof mulherSchema>;
 
@@ -42,14 +58,22 @@ export type MulherFormData = z.infer<typeof mulherSchema>;
 export const filhoSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
 export type FilhoFormData = z.infer<typeof filhoSchema>;
 
@@ -57,14 +81,22 @@ export type FilhoFormData = z.infer<typeof filhoSchema>;
 export const mulherDoFilhoSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
 export type MulherDoFilhoFormData = z.infer<typeof mulherDoFilhoSchema>;
 
@@ -72,14 +104,22 @@ export type MulherDoFilhoFormData = z.infer<typeof mulherDoFilhoSchema>;
 export const netoSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
 export type NetoFormData = z.infer<typeof netoSchema>;
 
@@ -87,14 +127,22 @@ export type NetoFormData = z.infer<typeof netoSchema>;
 export const mulherDoNetoSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
 export type MulherDoNetoFormData = z.infer<typeof mulherDoNetoSchema>;
 
@@ -102,62 +150,79 @@ export type MulherDoNetoFormData = z.infer<typeof mulherDoNetoSchema>;
 export const bisnetoSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
 export type BisnetoFormData = z.infer<typeof bisnetoSchema>;
 
 // LEGAL REPRESENTATIVE
-const legalSchema = z.object({
+export const representanteSchema = z.object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
     email: z.string().email("Deve ser um email válido"),
-    cpf: z.string()
-        .min(14, "CPF deve ter 11 dígitos")
+    cpf: z.string().min(14, "CPF deve ter 11 dígitos")
         .transform((cpf) => cpf.replace(/[.|-]/g, ''))
         .refine((cpf) => validateCPF(cpf), "CPF inválido"),
-    celphone: z.string()
-        .min(15, "Telefone deve ter 11 dígitos")
+    celphone: z.string().min(15, "Telefone deve ter 11 dígitos")
         .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
         .refine((phone) => validatePhone(phone), "Telefone inválido"),
+    // email: z.string(),
+    // // .email("Deve ser um email válido"),
+    // cpf: z.string(),
+    //     // .min(14, "CPF deve ter 11 dígitos")
+    //     // .transform((cpf) => cpf.replace(/[.|-]/g, ''))
+    //     // .refine((cpf) => validateCPF(cpf), "CPF inválido"),
+    // celphone: z.string(),
+    //     // .min(15, "Telefone deve ter 11 dígitos")
+    //     // .transform((phone) => phone.replace(/[(|)|\-|\s]/g, ''))
+    //     // .refine((phone) => validatePhone(phone), "Telefone inválido"),
 });
-export type LegalFormData = z.infer<typeof legalSchema>;
+export type RepresentanteFormData = z.infer<typeof representanteSchema>;
 
 // ARRAY DE SOCIOS
 export const todosDadosSchema = z.array(z.object({
     socio: z.object({
         ...socioSchema.shape,
-        legalRepresentatives: z.array(legalSchema),
+        legalRepresentatives: z.array(representanteSchema),
     }),
     mulher: z.object({
         ...mulherSchema.shape,
-        legalRepresentatives: z.array(legalSchema),
+        legalRepresentatives: z.array(representanteSchema),
     }),
     filho: z.array(z.object({
         ...filhoSchema.shape,
-        legalRepresentatives: z.array(legalSchema),
+        legalRepresentatives: z.array(representanteSchema),
     })),
     mulherDoFilho: z.array(z.object({
         ...mulherDoFilhoSchema.shape,
-        legalRepresentatives: z.array(legalSchema),
+        legalRepresentatives: z.array(representanteSchema),
     })),
     neto: z.array(z.object({
         ...netoSchema.shape,
-        legalRepresentatives: z.array(legalSchema),
+        legalRepresentatives: z.array(representanteSchema),
     })),
     mulherDoNeto: z.array(z.object({
         ...mulherDoNetoSchema.shape,
-        legalRepresentatives: z.array(legalSchema),
+        legalRepresentatives: z.array(representanteSchema),
     })),
     bisneto: z.array(z.object({
         ...bisnetoSchema.shape,
-        legalRepresentatives: z.array(legalSchema),
+        legalRepresentatives: z.array(representanteSchema),
     })),
 })
 )
 export type TodosDadosFormData = z.infer<typeof todosDadosSchema>;
+export type TodosDadosFormDataKeys = keyof TodosDadosFormData[0];

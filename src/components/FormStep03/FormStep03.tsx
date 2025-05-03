@@ -25,7 +25,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
     const { filhoCount, activeFilhoStep, filhoSelected, handleChangeFilho, handleChangeActiveFilho, handleAddFilho, handleRemoveFilho, showFilho } = filhoActions
     const { netoCount, activeNetoStep, netoSelected, handleChangeNeto, handleChangeActiveNeto, showNeto, handleAddNeto, handleRemoveNeto } = netoActions
     const { greatNetoSelected, bisnetoCount, setGreatNetoSelected, showGreatNeto, handleAddGreatNeto, handleRemoveGreatNeto } = greatNetoActions
-    const { activeRepresentativeStep, handleAddLegalRepresentative, handleRemoveLegalRepresentative, legalForm, legalRepresentativesCount, setActiveRepresentativeStep, showLegalForm } = legalActions
+    const { activeRepresentativeStep, handleAddLegalRepresentative, handleRemoveLegalRepresentative, legalRepresentativesCount, setActiveRepresentativeStep, showLegalForm, representanteForm } = legalActions
     const { partnerCount, activePartnerStep, handleAddPartner, handleRemovePartner, handleChangeActivePartner } = partnerActions
     const { activePersonStep, handleChangePerson, personForm } = personActions
     const { socioForm, mulherForm, filhoForm, mulherDoFilhoForm, netoForm, mulherDoNetoForm, bisnetoForm, todosDadosValidados } = novosForms
@@ -668,7 +668,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {/* FORM - MULHER DO NETO */}
                 {activePersonStep === FormType.CHILD && filhoCount > 0 && activeFilhoStep === FormType.CHILD && activeNetoStep === FormType.COUPLE && (
                     <Form {...mulherDoNetoForm}>
-                        <h2 className="bg-background text-primary">MULHER DO NETO</h2>
+                        {/* <h2 className="bg-background text-primary">MULHER DO NETO</h2> */}
                         <form className="w-full max-md:max-w-full space-y-6">
                             <FormField
                                 control={mulherDoNetoForm.control}
@@ -744,7 +744,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {/* FORM - BISNETO */}
                 {activePersonStep === FormType.CHILD && filhoCount > 0 && activeFilhoStep === FormType.CHILD && activeNetoStep === FormType.CHILD && (
                     <Form {...bisnetoForm}>
-                        <h2 className="bg-background text-primary">BISNETO</h2>
+                        {/* <h2 className="bg-background text-primary">BISNETO</h2> */}
                         <form className="w-full max-md:max-w-full space-y-6">
                             <FormField
                                 control={bisnetoForm.control}
@@ -891,7 +891,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 </form> */}
             </Form>
 
-            <Form {...legalForm}>
+            <Form {...representanteForm}>
                 {/* ADICIONAR REPRESENTANTE LEGAL - SEM FUNCIONALIDADE*/}
                 <div className="flex self-end items-center gap-1">
                     <p className="mr-2">Representante Legal</p>
@@ -933,7 +933,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                         {/* Representative form fields */}
                         <FormField
-                            control={legalForm.control}
+                            control={representanteForm.control}
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
@@ -946,7 +946,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             )}
                         />
                         <FormField
-                            control={legalForm.control}
+                            control={representanteForm.control}
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
@@ -959,7 +959,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             )}
                         />
                         <FormField
-                            control={legalForm.control}
+                            control={representanteForm.control}
                             name="cpf"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
@@ -980,7 +980,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             )}
                         />
                         <FormField
-                            control={legalForm.control}
+                            control={representanteForm.control}
                             name="celphone"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
