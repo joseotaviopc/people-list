@@ -15,6 +15,8 @@ import DesktopSidebar from "./DesktopSidebar";
 import ProgressBar from "./ProgressBar";
 import FormStep02Content from "../FormStep02/FormStepContent";
 import FormStep03 from "../FormStep03/FormStep03";
+import FormStep04 from "../FormStep04/FormStep04";
+import FormStep05 from "../FormStep05/FormStep05";
 
 export default function FormStepLayout() {
   const [showSteps, setShowSteps] = useState(false)
@@ -76,11 +78,11 @@ export default function FormStepLayout() {
         {/* CONTENT */}
         {!showSteps && (
           <>
-            <div className="flex overflow-y-scroll sm:overflow-auto gap-10 z-0 flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1">
+            <div className="flex overflow-y-scroll sm:overflow-auto gap-10 z-0 grow flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1">
               {activeStep === 1 && <FormStep02Content handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
               {activeStep === 2 && <FormStep03 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 3 && <h1>Etapa 3</h1>}
-              {activeStep === 4 && <h1>Etapa 4</h1>}
+              {activeStep === 3 && <FormStep04 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
+              {activeStep === 4 && <FormStep05 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
               {activeStep === 5 && <h1>Etapa 5</h1>}
               {activeStep === 6 && <h1>Etapa 6</h1>}
               {activeStep === 7 && <h1>Etapa 7</h1>}
