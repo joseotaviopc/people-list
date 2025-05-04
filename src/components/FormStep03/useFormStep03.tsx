@@ -13,6 +13,7 @@ import {
     TodosDadosFormData,
     TodosDadosFormDataKeys
 } from "./types";
+import { cpfMask, phoneMask } from "@/helpers"
 
 
 enum FormType {
@@ -205,7 +206,7 @@ export function useFormStep03() {
                     } else {
                         novoDadoValidado[activePartnerStep].filho[filhoSelected] = {
                             ...values,
-                            legalRepresentatives: novoDadoValidado[activePartnerStep].filho[filhoSelected].legalRepresentatives
+                            legalRepresentatives: novoDadoValidado[activePartnerStep].filho[filhoSelected] ? novoDadoValidado[activePartnerStep].filho[filhoSelected].legalRepresentatives : []
                         }
                     }
                 }
@@ -228,7 +229,7 @@ export function useFormStep03() {
                     } else {
                         novoDadoValidado[activePartnerStep].mulherDoFilho[filhoSelected] = {
                             ...values,
-                            legalRepresentatives: novoDadoValidado[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives
+                            legalRepresentatives: novoDadoValidado[activePartnerStep].mulherDoFilho[filhoSelected] ? novoDadoValidado[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives : []
                         }
                     }
                 }
@@ -251,7 +252,7 @@ export function useFormStep03() {
                     } else {
                         novoDadoValidado[activePartnerStep].neto[netoSelected] = {
                             ...values,
-                            legalRepresentatives: novoDadoValidado[activePartnerStep].neto[netoSelected].legalRepresentatives
+                            legalRepresentatives: novoDadoValidado[activePartnerStep].neto[netoSelected] ? novoDadoValidado[activePartnerStep].neto[netoSelected].legalRepresentatives : []
                         }
                     }
                 }
@@ -274,7 +275,7 @@ export function useFormStep03() {
                     } else {
                         novoDadoValidado[activePartnerStep].mulherDoNeto[netoSelected] = {
                             ...values,
-                            legalRepresentatives: novoDadoValidado[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives
+                            legalRepresentatives: novoDadoValidado[activePartnerStep].mulherDoNeto[netoSelected] ? novoDadoValidado[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives : []
                         }
                     }
                 }
@@ -296,7 +297,7 @@ export function useFormStep03() {
                 } else {
                     novoDadoValidado[activePartnerStep].bisneto[bisnetoSelected] = {
                         ...values,
-                        legalRepresentatives: novoDadoValidado[activePartnerStep].bisneto[bisnetoSelected].legalRepresentatives
+                        legalRepresentatives: novoDadoValidado[activePartnerStep].bisneto[bisnetoSelected] ? novoDadoValidado[activePartnerStep].bisneto[bisnetoSelected].legalRepresentatives : []
                     }
                 }
                 // console.log('novoDadoValidado validaBisnetoForm() ', JSON.stringify(novoDadoValidado, null, 4))
@@ -434,8 +435,8 @@ export function useFormStep03() {
         if (existingData) {
             socioForm.setValue('name', existingData.name);
             socioForm.setValue('email', existingData.email);
-            socioForm.setValue('cpf', existingData.cpf);
-            socioForm.setValue('celphone', existingData.celphone);
+            socioForm.setValue('cpf', cpfMask(existingData.cpf));
+            socioForm.setValue('celphone', phoneMask(existingData.celphone));
         } else {
             socioForm.reset();
         }
@@ -478,8 +479,8 @@ export function useFormStep03() {
             if (existingData) {
                 mulherForm.setValue('name', existingData.name);
                 mulherForm.setValue('email', existingData.email);
-                mulherForm.setValue('cpf', existingData.cpf);
-                mulherForm.setValue('celphone', existingData.celphone);
+                mulherForm.setValue('cpf', cpfMask(existingData.cpf));
+                mulherForm.setValue('celphone', phoneMask(existingData.celphone));
             } else {
                 mulherForm.reset();
             }
@@ -494,8 +495,8 @@ export function useFormStep03() {
             setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].socio.legalRepresentatives.length);
             representanteForm.setValue('name', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].name);
             representanteForm.setValue('email', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].email);
-            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].cpf);
-            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].celphone);
+            representanteForm.setValue('cpf', cpfMask(todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].cpf));
+            representanteForm.setValue('celphone', phoneMask(todosDadosValidados[activePartnerStep].socio.legalRepresentatives[0].celphone));
         } else if (type === FormType.PERSONAL) {
             setLegalRepresentativesCount(0);
             setShowLegalForm(false);
@@ -508,8 +509,8 @@ export function useFormStep03() {
             setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].mulher.legalRepresentatives.length);
             representanteForm.setValue('name', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].name);
             representanteForm.setValue('email', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].email);
-            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].cpf);
-            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].celphone);
+            representanteForm.setValue('cpf', cpfMask(todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].cpf));
+            representanteForm.setValue('celphone', phoneMask(todosDadosValidados[activePartnerStep].mulher.legalRepresentatives[0].celphone));
         } else if (type === FormType.COUPLE) {
             setLegalRepresentativesCount(0);
             setShowLegalForm(false);
@@ -558,8 +559,8 @@ export function useFormStep03() {
             if (existingData) {
                 mulherDoFilhoForm.setValue('name', existingData.name);
                 mulherDoFilhoForm.setValue('email', existingData.email);
-                mulherDoFilhoForm.setValue('cpf', existingData.cpf);
-                mulherDoFilhoForm.setValue('celphone', existingData.celphone);
+                mulherDoFilhoForm.setValue('cpf', cpfMask(existingData.cpf));
+                mulherDoFilhoForm.setValue('celphone', phoneMask(existingData.celphone));
             } else {
                 mulherDoFilhoForm.reset();
             }
@@ -572,8 +573,8 @@ export function useFormStep03() {
             setShowLegalForm(true);
             representanteForm.setValue('name', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].name);
             representanteForm.setValue('email', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].email);
-            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].cpf);
-            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].celphone);
+            representanteForm.setValue('cpf', cpfMask(todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].cpf));
+            representanteForm.setValue('celphone', phoneMask(todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives[0].celphone));
             setActiveRepresentativeStep(0);
             setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].filho[filhoSelected].legalRepresentatives.length);
         } else if (type === FormType.PERSONAL) {
@@ -586,8 +587,8 @@ export function useFormStep03() {
             setShowLegalForm(true);
             representanteForm.setValue('name', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].name);
             representanteForm.setValue('email', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].email);
-            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].cpf);
-            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].celphone);
+            representanteForm.setValue('cpf', cpfMask(todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].cpf));
+            representanteForm.setValue('celphone', phoneMask(todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives[0].celphone));
             setActiveRepresentativeStep(0);
             setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].mulherDoFilho[filhoSelected].legalRepresentatives.length);
         } else if (type === FormType.COUPLE) {
@@ -637,8 +638,8 @@ export function useFormStep03() {
         if (existingData) {
             filhoForm.setValue('name', existingData.name);
             filhoForm.setValue('email', existingData.email);
-            filhoForm.setValue('cpf', existingData.cpf);
-            filhoForm.setValue('celphone', existingData.celphone);
+            filhoForm.setValue('cpf', cpfMask(existingData.cpf));
+            filhoForm.setValue('celphone', phoneMask(existingData.celphone));
             filhoForm.clearErrors();
         }
 
@@ -677,8 +678,8 @@ export function useFormStep03() {
         if (existingFilho) {
             filhoForm.setValue('name', existingFilho.name);
             filhoForm.setValue('email', existingFilho.email);
-            filhoForm.setValue('cpf', existingFilho.cpf);
-            filhoForm.setValue('celphone', existingFilho.celphone);
+            filhoForm.setValue('cpf', cpfMask(existingFilho.cpf));
+            filhoForm.setValue('celphone', phoneMask(existingFilho.celphone));
         } else {
             filhoForm.reset();
         }
@@ -686,8 +687,8 @@ export function useFormStep03() {
         if (existingMulher) {
             mulherDoFilhoForm.setValue('name', existingMulher.name);
             mulherDoFilhoForm.setValue('email', existingMulher.email);
-            mulherDoFilhoForm.setValue('cpf', existingMulher.cpf);
-            mulherDoFilhoForm.setValue('celphone', existingMulher.celphone);
+            mulherDoFilhoForm.setValue('cpf', cpfMask(existingMulher.cpf));
+            mulherDoFilhoForm.setValue('celphone', phoneMask(existingMulher.celphone));
         } else {
             mulherDoFilhoForm.reset();
         }
@@ -726,8 +727,8 @@ export function useFormStep03() {
             setShowLegalForm(true);
             representanteForm.setValue('name', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].name);
             representanteForm.setValue('email', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].email);
-            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].cpf);
-            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].celphone);
+            representanteForm.setValue('cpf', cpfMask(todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].cpf));
+            representanteForm.setValue('celphone', phoneMask(todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives[0].celphone));
             setActiveRepresentativeStep(0);
             setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives.length);
         } else if (type === FormType.PERSONAL) {
@@ -740,8 +741,8 @@ export function useFormStep03() {
             setShowLegalForm(true);
             representanteForm.setValue('name', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].name);
             representanteForm.setValue('email', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].email);
-            representanteForm.setValue('cpf', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].cpf);
-            representanteForm.setValue('celphone', todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].celphone);
+            representanteForm.setValue('cpf', cpfMask(todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].cpf));
+            representanteForm.setValue('celphone', phoneMask(todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives[0].celphone));
             setActiveRepresentativeStep(0);
             setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].mulherDoNeto[netoSelected].legalRepresentatives.length);
         } else if (type === FormType.COUPLE) {
@@ -775,8 +776,8 @@ export function useFormStep03() {
         if (existingNeto) {
             netoForm.setValue('name', existingNeto.name);
             netoForm.setValue('email', existingNeto.email);
-            netoForm.setValue('cpf', existingNeto.cpf);
-            netoForm.setValue('celphone', existingNeto.celphone);
+            netoForm.setValue('cpf', cpfMask(existingNeto.cpf));
+            netoForm.setValue('celphone', phoneMask(existingNeto.celphone));
         } else {
             netoForm.reset();
         }
@@ -786,8 +787,8 @@ export function useFormStep03() {
         if (existingMulher) {
             mulherDoNetoForm.setValue('name', existingMulher.name);
             mulherDoNetoForm.setValue('email', existingMulher.email);
-            mulherDoNetoForm.setValue('cpf', existingMulher.cpf);
-            mulherDoNetoForm.setValue('celphone', existingMulher.celphone);
+            mulherDoNetoForm.setValue('cpf', cpfMask(existingMulher.cpf));
+            mulherDoNetoForm.setValue('celphone', phoneMask(existingMulher.celphone));
         } else {
             mulherDoNetoForm.reset();
         }
@@ -825,8 +826,8 @@ export function useFormStep03() {
         if (existingNeto) {
             netoForm.setValue('name', existingNeto.name);
             netoForm.setValue('email', existingNeto.email);
-            netoForm.setValue('cpf', existingNeto.cpf);
-            netoForm.setValue('celphone', existingNeto.celphone);
+            netoForm.setValue('cpf', cpfMask(existingNeto.cpf));
+            netoForm.setValue('celphone', phoneMask(existingNeto.celphone));
         }
         
         setTodosDadosValidados(prev => {
@@ -867,8 +868,8 @@ export function useFormStep03() {
         if (existingBisNeto) {
             bisnetoForm.setValue('name', existingBisNeto.name);
             bisnetoForm.setValue('email', existingBisNeto.email);
-            bisnetoForm.setValue('cpf', existingBisNeto.cpf);
-            bisnetoForm.setValue('celphone', existingBisNeto.celphone);
+            bisnetoForm.setValue('cpf', cpfMask(existingBisNeto.cpf));
+            bisnetoForm.setValue('celphone', phoneMask(existingBisNeto.celphone));
         } else {
             bisnetoForm.reset();
         }
@@ -878,8 +879,8 @@ export function useFormStep03() {
         if (existingLegal) {
             representanteForm.setValue('name', existingLegal.name);
             representanteForm.setValue('email', existingLegal.email);
-            representanteForm.setValue('cpf', existingLegal.cpf);
-            representanteForm.setValue('celphone', existingLegal.celphone);
+            representanteForm.setValue('cpf', cpfMask(existingLegal.cpf));
+            representanteForm.setValue('celphone', phoneMask(existingLegal.celphone));
             setActiveRepresentativeStep(0)
             setLegalRepresentativesCount(todosDadosValidados[activePartnerStep].bisneto[index].legalRepresentatives.length)
             setShowLegalForm(true)
@@ -919,8 +920,8 @@ export function useFormStep03() {
         if (existingBisNeto) {
             bisnetoForm.setValue('name', existingBisNeto.name);
             bisnetoForm.setValue('email', existingBisNeto.email);
-            bisnetoForm.setValue('cpf', existingBisNeto.cpf);
-            bisnetoForm.setValue('celphone', existingBisNeto.celphone);
+            bisnetoForm.setValue('cpf', cpfMask(existingBisNeto.cpf));
+            bisnetoForm.setValue('celphone', phoneMask(existingBisNeto.celphone));
         }
 
         setTodosDadosValidados(prev => {
