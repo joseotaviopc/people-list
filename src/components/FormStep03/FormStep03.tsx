@@ -53,25 +53,27 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 <p className="text-xs text-zinc-400">legalRepresentativesCount: {legalRepresentativesCount} - activeRepresentativeStep: {activeRepresentativeStep}</p>
             </div>
 
-            <header className="flex justify-center items-start gap-4 w-full relative">
+            <header className="flex flex-col-reverse sm:flex-row justify-center items-center gap-4 w-full relative">
                 {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
-                {Array.from({ length: partnerCount }).map((_, index) => (
-                    <div key={index} onClick={() => handleChangeActivePartner(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                        <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                            <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
-                        </div>
+                <div className="flex gap-2">
+                    {Array.from({ length: partnerCount }).map((_, index) => (
+                        <div key={index} onClick={() => handleChangeActivePartner(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                            <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                            </div>
 
-                        {/* Indica o sócio atual */}
-                        {index === activePartnerStep && (
-                            <span className="w-full h-[5px] rounded-xs bg-primary" />
-                        )}
-                    </div>
-                ))}
+                            {/* Indica o sócio atual */}
+                            {index === activePartnerStep && (
+                                <span className="w-full h-[5px] rounded-xs bg-primary" />
+                            )}
+                        </div>
+                    ))}
+                </div>
 
                 {/* ADICIONA OU REMOVE SÓCIO, AO REMOVER, LIMPAR TODOS OS DADOS */}
-                <div className="flex gap-1 absolute right-0 top-0">
+                <div className="flex self-end gap-2 sm:absolute right-0 top-0">
                     {partnerCount > 1 && (
-                        < Button onClick={handleRemovePartner} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                        < Button onClick={handleRemovePartner} variant="destructive" className="h-[35px] text-background rounded-md bg-background/10 hover:bg-background/10 my-0 py-0 has-[>svg]:px-2">
                             <Trash2 size={16} />
                         </Button>
                     )}
@@ -93,7 +95,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
                             >
                                 <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                    <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && filhoCount > 0 && `(${filhoCount.toString().padStart(2, '0')})`}</span>
+                                    <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium"><span className="hidden sm:block">{step.icon()}</span> {step.label} {step.type === FormType.CHILD && filhoCount > 0 && `(${filhoCount.toString().padStart(2, '0')})`}</span>
                                 </div>
                                 {step.type === activePersonStep && (
                                     <span className="w-full h-[5px] rounded-xs bg-primary" />
@@ -133,25 +135,27 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             {/* ======================= FILHO ======================= */}
                             {showFilho && (
                                 <>
-                                    <div className="relative flex justify-center gap-2 items-center w-full">
+                                    <div className="relative flex flex-col-reverse sm:flex-row justify-center gap-2 items-center w-full">
                                         <>
-                                            {Array.from({ length: filhoCount }).map((_, index) => (
-                                                <div key={index} onClick={() => handleChangeActiveFilho(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                                                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                                        <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                            <div className="flex gap-2">
+                                                {Array.from({ length: filhoCount }).map((_, index) => (
+                                                    <div key={index} onClick={() => handleChangeActiveFilho(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                                        <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                                            <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                                        </div>
+
+                                                        {/* Indica o filho atual */}
+                                                        {index === filhoSelected && (
+                                                            <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                        )}
                                                     </div>
+                                                ))}
+                                            </div>
 
-                                                    {/* Indica o filho atual */}
-                                                    {index === filhoSelected && (
-                                                        <span className="w-full h-[5px] rounded-xs bg-primary" />
-                                                    )}
-                                                </div>
-                                            ))}
-
-                                            <div className="flex gap-1 absolute right-0 top-0">
+                                            <div className="flex self-end gap-2 sm:absolute right-0 top-0">
                                                 {/* Remove person button in each person's form */}
                                                 {filhoCount > 0 && (
-                                                    < Button onClick={handleRemoveFilho} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                                    < Button onClick={handleRemoveFilho} variant="destructive" className="h-[35px] rounded-md bg-background/10 hover:bg-background/10 my-0 py-0 has-[>svg]:px-2">
                                                         <Trash2 size={16} />
                                                     </Button>
                                                 )}
@@ -165,7 +169,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     {/* BOTOES FILHO */}
                                     {filhoCount > 0 && (
                                         <>
-                                            <p className="flex items-center w-full">Nome do filho dinamico</p>
+                                            {filhoCount > 1 && <p className="flex items-center w-full">{todosDadosValidados[activePartnerStep].filho[filhoSelected] &&todosDadosValidados[activePartnerStep].filho[filhoSelected].name}</p>}
                                             <nav className="flex justify-center items-center gap-4 w-full">
                                                 {personSteps.map((step, index) => (
                                                     <div
@@ -174,7 +178,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                                         className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
                                                     >
                                                         <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                                            <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label} {step.type === FormType.CHILD && netoCount > 0 && `(${netoCount.toString().padStart(2, '0')})`}</span>
+                                                            <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium"><span className="hidden sm:block">{step.icon()}</span> {step.label} {step.type === FormType.CHILD && netoCount > 0 && `(${netoCount.toString().padStart(2, '0')})`}</span>
                                                         </div>
                                                         {step.type === activeFilhoStep && (
                                                             <span className="w-full h-[5px] rounded-xs bg-primary" />
@@ -192,24 +196,26 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     {/* <hr className="border-t border-t-orange-400" />
                                     <span className="text-orange-400">Netos</span> */}
                                     {/* =============================== NETO =============================== */}
-                                    <div className="flex relative justify-center items-center gap-2 w-full">
-                                        {Array.from({ length: netoCount }).map((_, index) => (
-                                            <div key={index} onClick={() => handleChangeActiveNeto(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                                                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                                    <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                    <div className="flex flex-col-reverse sm:flex-row relative justify-center items-center gap-2 w-full">
+                                        <div className="flex gap-2">
+                                            {Array.from({ length: netoCount }).map((_, index) => (
+                                                <div key={index} onClick={() => handleChangeActiveNeto(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                                        <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                                    </div>
+
+                                                    {/* Indica o neto atual */}
+                                                    {index === netoSelected && (
+                                                        <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                    )}
                                                 </div>
+                                            ))}
+                                        </div>
 
-                                                {/* Indica o neto atual */}
-                                                {index === netoSelected && (
-                                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
-                                                )}
-                                            </div>
-                                        ))}
-
-                                        <div className="flex gap-1 absolute right-0 top-0">
+                                        <div className="flex self-end gap-2 sm:absolute right-0 top-0">
                                             {/* Remove person button in each person's form */}
                                             {netoCount > 0 && (
-                                                < Button onClick={handleRemoveNeto} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                                < Button onClick={handleRemoveNeto} variant="destructive" className="h-[35px] rounded-md bg-background/10 hover:bg-background/10 my-0 py-0 has-[>svg]:px-2">
                                                     <Trash2 size={16} />
                                                 </Button>
                                             )}
@@ -229,7 +235,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                                     className="flex flex-col justify-between items-center w-full h-[49px] cursor-pointer"
                                                 >
                                                     <div className="flex items-center justify-center w-full h-[35px] rounded-md bg-background/10">
-                                                        <span className="flex gap-2 items-center text-background font-medium">{step.icon()} {step.label}</span>
+                                                        <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium"><span className="hidden sm:block">{step.icon()}</span> {step.label}</span>
                                                     </div>
                                                     {step.type === activeNetoStep && (
                                                         <span className="w-full h-[5px] rounded-xs bg-primary" />
@@ -246,24 +252,26 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     {/* <hr className="border-t border-t-orange-400" />
                                     <span className="text-orange-400">Bisnetos</span> */}
                                     {/* =============================== BISNETO =============================== */}
-                                    <div className="flex relative justify-center items-center gap-2 w-full">
-                                        {Array.from({ length: bisnetoCount }).map((_, index) => (
-                                            <div key={index} onClick={() => handleChangeActiveBisNeto(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                                                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                                    <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                    <div className="flex flex-col-reverse sm:flex-row relative justify-center items-center gap-2 w-full">
+                                        <div className="flex gap-2">
+                                            {Array.from({ length: bisnetoCount }).map((_, index) => (
+                                                <div key={index} onClick={() => handleChangeActiveBisNeto(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                                        <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                                    </div>
+
+                                                    {/* Indica o bisneto atual */}
+                                                    {index === bisnetoSelected && (
+                                                        <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                                    )}
                                                 </div>
+                                            ))}
+                                        </div>
 
-                                                {/* Indica o bisneto atual */}
-                                                {index === bisnetoSelected && (
-                                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
-                                                )}
-                                            </div>
-                                        ))}
-
-                                        <div className="flex gap-1 absolute right-0 top-0">
+                                        <div className="flex self-end gap-2 sm:absolute right-0 top-0">
                                             {/* Remove person button in each person's form */}
                                             {bisnetoCount > 0 && (
-                                                < Button onClick={handleRemoveGreatNeto} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                                                < Button onClick={handleRemoveGreatNeto} variant="destructive" className="h-[35px] rounded-md bg-background/10 hover:bg-background/10 my-0 py-0 has-[>svg]:px-2">
                                                     <Trash2 size={16} />
                                                 </Button>
                                             )}
@@ -922,7 +930,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer"
                                 >
                                     <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                        <span className="flex gap-2 items-center text-background font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                        <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
                                     </div>
 
                                     {/* Indicação do representante legal atual */}
