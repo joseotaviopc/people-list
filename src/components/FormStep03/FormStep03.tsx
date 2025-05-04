@@ -288,8 +288,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                 {/* TEXTO RELATIVO AOS BOTOES */}
                 <div className="flex flex-col gap-2 w-full">
-                    <h2 className="text-background font-bold text-2xl">Dados Pessoais</h2>
-                    <p className="text-background">
+                    <h2 className="text-background font-bold text-xl sm:text-2xl">Dados Pessoais</h2>
+                    <p className="text-background text-sm sm:text-base">
                         {activePersonStep === FormType.PERSONAL && 'Informe seus dados pessoais'}
                         {activePersonStep === FormType.COUPLE && 'Informe os dados pessoais do seu cônjuge'}
                         {activePersonStep === FormType.CHILD && 'Informe os dados pessoais do seu filho(a)'}
@@ -306,8 +306,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -319,8 +319,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -332,8 +332,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="cpf"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="000.000.000-00"
@@ -353,8 +353,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="celphone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                        <FormControl className="text-base px-0">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="(00) 00000-0000"
@@ -382,8 +382,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -395,8 +395,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -408,8 +408,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="cpf"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="000.000.000-00"
@@ -429,8 +429,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="celphone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                        <FormControl className="text-base px-0">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="(00) 00000-0000"
@@ -458,8 +458,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -471,8 +471,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -484,8 +484,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="cpf"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="000.000.000-00"
@@ -505,8 +505,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="celphone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                        <FormControl className="text-base px-0">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="(00) 00000-0000"
@@ -534,8 +534,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -547,8 +547,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -560,8 +560,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="cpf"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="000.000.000-00"
@@ -581,8 +581,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="celphone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                        <FormControl className="text-base px-0">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="(00) 00000-0000"
@@ -610,8 +610,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -623,8 +623,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -636,8 +636,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="cpf"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="000.000.000-00"
@@ -657,8 +657,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="celphone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                        <FormControl className="text-base px-0">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="(00) 00000-0000"
@@ -686,8 +686,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -699,8 +699,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -712,8 +712,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="cpf"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="000.000.000-00"
@@ -733,8 +733,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="celphone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                        <FormControl className="text-base px-0">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="(00) 00000-0000"
@@ -762,8 +762,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -775,8 +775,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -788,8 +788,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="cpf"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                        <FormControl className="px-0 text-base">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="000.000.000-00"
@@ -809,8 +809,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                 name="celphone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                        <FormControl className="text-base px-0">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
                                             <Input
                                                 className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                                 placeholder="(00) 00000-0000"
@@ -947,8 +947,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-primary font-bold px-0">Nome</FormLabel>
-                                    <FormControl className="px-0 text-base">
+                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                    <FormControl className="px-0 text-xs sm:text-base">
                                         <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
@@ -960,8 +960,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-primary font-bold px-0">Email</FormLabel>
-                                    <FormControl className="px-0 text-base">
+                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                    <FormControl className="px-0 text-xs sm:text-base">
                                         <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-xs" />
@@ -973,8 +973,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             name="cpf"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel className="text-primary font-bold px-0">CPF</FormLabel>
-                                    <FormControl className="px-0 text-base">
+                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                    <FormControl className="px-0 text-xs sm:text-base">
                                         <Input
                                             className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                             placeholder="000.000.000-00"
@@ -994,8 +994,8 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                             name="celphone"
                             render={({ field }) => (
                                 <FormItem className="flex-1">
-                                    <FormLabel className="text-primary font-bold px-0">Celular</FormLabel>
-                                    <FormControl className="text-base px-0">
+                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                    <FormControl className="text-xs sm:text-base px-0">
                                         <Input
                                             className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
                                             placeholder="(00) 00000-0000"
