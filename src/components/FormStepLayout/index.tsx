@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
+import React, { useState, Suspense } from "react";
 import { Tutorial, IconAtividades } from "@/assets";
 import { Button } from "../ui/button";
 import {
@@ -13,12 +12,13 @@ import {
 import LogoImage from "@/assets/Logo.png"
 import DesktopSidebar from "./DesktopSidebar";
 import ProgressBar from "./ProgressBar";
-import FormStep02Content from "../FormStep02/FormStepContent";
-import FormStep03 from "../FormStep03/FormStep03";
-import FormStep04 from "../FormStep04/FormStep04";
-import FormStep05 from "../FormStep05/FormStep05";
-import FormStep06 from "../FormStep06/FormStep06";
-import FormStep07 from "../FormStep07/FormStep07";
+
+const FormStep02Content = React.lazy(() => import("../FormStep02/FormStepContent"));
+const FormStep03 = React.lazy(() => import("../FormStep03/FormStep03"));
+const FormStep04 = React.lazy(() => import("../FormStep04/FormStep04"));
+const FormStep05 = React.lazy(() => import("../FormStep05/FormStep05"));
+const FormStep06 = React.lazy(() => import("../FormStep06/FormStep06"));
+const FormStep07 = React.lazy(() => import("../FormStep07/FormStep07"));
 
 export default function FormStepLayout() {
   const [showSteps, setShowSteps] = useState(false)
@@ -80,7 +80,7 @@ export default function FormStepLayout() {
         {/* CONTENT */}
         {!showSteps && (
           <>
-            <>
+            <Suspense fallback={<div className="flex overflow-y-scroll sm:overflow-auto gap-4 sm:gap-10 z-0 grow flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1 text-grey-light">Carregando...</div>}>
               {activeStep === 1 && <FormStep02Content handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
               {activeStep === 2 && <FormStep03 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
               {activeStep === 3 && <FormStep04 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
@@ -105,14 +105,7 @@ export default function FormStepLayout() {
               {activeStep === 23 && <h1>Etapa 23</h1>}
               {activeStep === 24 && <h1>Etapa 24</h1>}
               {activeStep === 25 && <h1>Etapa 25</h1>}
-            </>
-
-            {/* Mobile footer*/}
-            {/* <footer className="w-full sm:hidden flex z-10 gap-4 justify-between items-center">
-              <Button variant={activeStep === 1 ? 'ghost' : 'default'} className={`flex-1 rounded-md h-9 px-2 ${activeStep === 1 ? 'bg-grey-light text-grey-dark' : ''}`} onClick={activeStep === 1 ? undefined : handlePreviousStep}>Anterior</Button>
-              <Button variant="ghost" className="flex-1 bg-background/10 rounded-md text-grey-light h-9 px-2">Etapa {activeStep < 10 ? `0${activeStep}` : activeStep}/25</Button>
-              <Button variant={activeStep === 25 ? 'ghost' : 'default'} className={`flex-1 rounded-md h-9 px-2 ${activeStep === 25 ? 'bg-grey-light text-grey-dark' : ''}`} onClick={activeStep === 25 ? undefined : handleNextStep}>Próximo</Button>
-            </footer> */}
+            </Suspense>
           </>
         )}
 
