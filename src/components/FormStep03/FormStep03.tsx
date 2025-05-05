@@ -53,7 +53,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 <p className="text-xs text-zinc-400">legalRepresentativesCount: {legalRepresentativesCount} - activeRepresentativeStep: {activeRepresentativeStep}</p>
             </div>
 
-            <header className="flex flex-col-reverse sm:flex-row justify-center items-center gap-4 w-full relative">
+            <header className="flex flex-col-reverse sm:flex-row justify-center items-center gap-1 sm:gap-4 w-full relative">
                 {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
                 <div className="flex gap-2">
                     {Array.from({ length: partnerCount }).map((_, index) => (
@@ -84,7 +84,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
             </header >
 
 
-                <div className="space-y-5 relative">
+                <div className="space-y-4 sm:space-y-5 relative">
 
                     {/* ======================= BOTAO - SELECIONA SOCIO, MULHER, FILHO(A) ======================= */}
                     <nav className="flex justify-center items-center gap-4 w-full">
@@ -300,7 +300,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {activePersonStep === FormType.PERSONAL && (
                     <Form {...socioForm}>
                         {/* <h2 className="bg-background text-primary">SOCIO</h2> */}
-                        <form className="w-full max-md:max-w-full space-y-6">
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                             <FormField
                                 control={socioForm.control}
                                 name="name"
@@ -376,7 +376,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {activePersonStep === FormType.COUPLE && (
                     <Form {...mulherForm}>
                         {/* <h2 className="bg-background text-primary">MULHER</h2> */}
-                        <form className="w-full max-md:max-w-full space-y-6">
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                             <FormField
                                 control={mulherForm.control}
                                 name="name"
@@ -452,7 +452,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {activePersonStep === FormType.CHILD && filhoCount > 0 && activeFilhoStep === FormType.PERSONAL && (
                     <Form {...filhoForm}>
                         {/* <h2 className="bg-background text-primary">FILHO</h2> */}
-                        <form className="w-full max-md:max-w-full space-y-6">
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                             <FormField
                                 control={filhoForm.control}
                                 name="name"
@@ -528,7 +528,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {activePersonStep === FormType.CHILD && filhoCount > 0 && activeFilhoStep === FormType.COUPLE && (
                     <Form {...mulherDoFilhoForm}>
                         {/* <h2 className="bg-background text-primary">MULHER DO FILHO</h2> */}
-                        <form className="w-full max-md:max-w-full space-y-6">
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                             <FormField
                                 control={mulherDoFilhoForm.control}
                                 name="name"
@@ -604,7 +604,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {activePersonStep === FormType.CHILD && filhoCount > 0 && activeFilhoStep === FormType.CHILD && activeNetoStep === FormType.PERSONAL && (
                     <Form {...netoForm}>
                         {/* <h2 className="bg-background text-primary">NETO</h2> */}
-                        <form className="w-full max-md:max-w-full space-y-6">
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                             <FormField
                                 control={netoForm.control}
                                 name="name"
@@ -680,7 +680,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {activePersonStep === FormType.CHILD && filhoCount > 0 && activeFilhoStep === FormType.CHILD && activeNetoStep === FormType.COUPLE && (
                     <Form {...mulherDoNetoForm}>
                         {/* <h2 className="bg-background text-primary">MULHER DO NETO</h2> */}
-                        <form className="w-full max-md:max-w-full space-y-6">
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                             <FormField
                                 control={mulherDoNetoForm.control}
                                 name="name"
@@ -756,7 +756,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 {activePersonStep === FormType.CHILD && filhoCount > 0 && activeFilhoStep === FormType.CHILD && activeNetoStep === FormType.CHILD && (
                     <Form {...bisnetoForm}>
                         {/* <h2 className="bg-background text-primary">BISNETO</h2> */}
-                        <form className="w-full max-md:max-w-full space-y-6">
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                             <FormField
                                 control={bisnetoForm.control}
                                 name="name"
@@ -830,7 +830,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                 )}
 
                 {/* FORMULÁRIO */}
-                {/* <form className="w-full max-md:max-w-full space-y-6">
+                {/* <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
                     <FormField
                         control={personForm.control}
                         name="name"
@@ -919,7 +919,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
                 {/* Legal representative form */}
                 {showLegalForm && (
-                    <form className="w-full max-md:max-w-full space-y-6">
+                    <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
 
                         {/* Representative tabs - SEM FUNCIONALIDADE */}
                         <nav className="flex justify-center items-center gap-4 w-full">
