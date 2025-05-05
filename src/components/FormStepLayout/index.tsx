@@ -44,7 +44,7 @@ export default function FormStepLayout() {
   };
 
   return (
-    <main className="flex relative flex-col p-2.5 items-center bg-blend-normal h-dvh sm:h-auto text-background">
+    <main className="flex relative flex-col p-0 sm:p-2.5 items-center bg-blend-normal h-dvh sm:h-auto text-background">
       <div className="fixed inset-0 h-screen overflow-hidden">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/a957b64922e04ac2a23d8b53cd42fbd2/7b111fbabf0891ab0a671a7888ec71303d82a0de?placeholderIfAbsent=true"
@@ -52,7 +52,7 @@ export default function FormStepLayout() {
           className="object-cover h-screen w-full"
         />
       </div>
-      <article className="flex flex-col sm:flex-row gap-6 px-6 py-5 sm:py-16 overflow-y-scroll sm:overflow-y-autorelative sm:justify-center h-full min-h-full sm:min-h-fit w-full">
+      <article className="flex flex-col sm:flex-row gap-6 px-4 sm:px-6 py-5 sm:py-16 overflow-y-scroll sm:overflow-y-autorelative sm:justify-center h-full min-h-full sm:min-h-fit w-full">
 
         {/* Mobile Header */}
         <header className="flex flex-col z-10 sm:hidden w-full">
@@ -88,7 +88,7 @@ export default function FormStepLayout() {
         {/* CONTENT */}
         {!showSteps && (
           <>
-            <div className="flex overflow-y-scroll sm:overflow-auto gap-10 z-0 grow flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1">
+            <div className="flex overflow-y-scroll sm:overflow-auto gap-4 sm:gap-10 z-0 grow flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1">
               {activeStep === 1 && <FormStep02Content handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
               {activeStep === 2 && <FormStep03 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
               {activeStep === 3 && <FormStep04 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
