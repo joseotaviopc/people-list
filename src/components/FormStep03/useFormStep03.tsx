@@ -198,7 +198,7 @@ export function useFormStep03() {
             setTodosDadosValidados(prev => {
                 const novoDadoValidado = prev;
                 if (activeFilhoStep === FormType.PERSONAL || activeFilhoStep === FormType.COUPLE) {
-                    if (novoDadoValidado[activePartnerStep].filho.length === 0) { 
+                    if (novoDadoValidado[activePartnerStep].filho.length === 0) {
                         novoDadoValidado[activePartnerStep].filho.push({
                             ...values,
                             legalRepresentatives: []
@@ -221,7 +221,7 @@ export function useFormStep03() {
             setTodosDadosValidados(prev => {
                 const novoDadoValidado = prev;
                 if (activeFilhoStep === FormType.PERSONAL || activeFilhoStep === FormType.COUPLE) {
-                    if (novoDadoValidado[activePartnerStep].mulherDoFilho.length === 0) { 
+                    if (novoDadoValidado[activePartnerStep].mulherDoFilho.length === 0) {
                         novoDadoValidado[activePartnerStep].mulherDoFilho.push({
                             ...values,
                             legalRepresentatives: []
@@ -244,7 +244,7 @@ export function useFormStep03() {
             setTodosDadosValidados(prev => {
                 const novoDadoValidado = prev;
                 if (activeNetoStep === FormType.PERSONAL || activeNetoStep === FormType.COUPLE) {
-                    if (novoDadoValidado[activePartnerStep].neto.length === 0) { 
+                    if (novoDadoValidado[activePartnerStep].neto.length === 0) {
                         novoDadoValidado[activePartnerStep].neto.push({
                             ...values,
                             legalRepresentatives: []
@@ -267,7 +267,7 @@ export function useFormStep03() {
             setTodosDadosValidados(prev => {
                 const novoDadoValidado = prev;
                 if (activeNetoStep === FormType.PERSONAL || activeNetoStep === FormType.COUPLE) {
-                    if (novoDadoValidado[activePartnerStep].mulherDoNeto.length === 0) { 
+                    if (novoDadoValidado[activePartnerStep].mulherDoNeto.length === 0) {
                         novoDadoValidado[activePartnerStep].mulherDoNeto.push({
                             ...values,
                             legalRepresentatives: []
@@ -289,7 +289,7 @@ export function useFormStep03() {
         await bisnetoForm.handleSubmit((values) => {
             setTodosDadosValidados(prev => {
                 const novoDadoValidado = prev;
-                if (novoDadoValidado[activePartnerStep].bisneto.length === 0) { 
+                if (novoDadoValidado[activePartnerStep].bisneto.length === 0) {
                     novoDadoValidado[activePartnerStep].bisneto.push({
                         ...values,
                         legalRepresentatives: []
@@ -312,7 +312,7 @@ export function useFormStep03() {
                 const novoDadoValidado = prev;
                 if (actualForm === 'socio' || actualForm === 'mulher') {
                     novoDadoValidado[activePartnerStep][actualForm].legalRepresentatives[activeRepresentativeStep] = values;
-                } 
+                }
                 if (actualForm === 'filho' || actualForm === 'mulherDoFilho') {
                     novoDadoValidado[activePartnerStep][actualForm][filhoSelected].legalRepresentatives[activeRepresentativeStep] = values;
                 }
@@ -335,7 +335,7 @@ export function useFormStep03() {
             await validaRepresentanteForm(type);
         }
     }
-    
+
     // VALIDA TODOS OS FORMS
     async function validateDataBeforeNextStep() {
         if (socioForm.formState.isDirty) {
@@ -379,11 +379,82 @@ export function useFormStep03() {
             if (!validForm) return
             await validaBisnetoForm();
             await validateRepresentanteByType('bisneto');
-        }        
+        }
     }
 
     // ACOES SOCIO
-    function handleAddPartner() {
+    async function handleAddPartner() {
+        console.log('handleAddPartner')
+        // VALIDA O SOCIO FORM
+        if (socioForm.formState.isDirty) {
+            console.log('validando socioForm')
+            const validForm = await socioForm.trigger()
+            if (!validForm) return;
+            await validaSocioForm();
+            socioForm.clearErrors();
+            socioForm.reset();
+        }
+
+        // VALIDA O MULHER FORM
+        if (mulherForm.formState.isDirty) {
+            console.log('validando mulherForm')
+            const validForm = await mulherForm.trigger()
+            if (!validForm) return;
+            await validaMulherForm();
+            mulherForm.clearErrors();
+            mulherForm.reset();
+        }
+
+        // VALIDA FILHO FORM
+        if (filhoForm.formState.isDirty) {
+            console.log('validando filhoForm')
+            const validForm = await filhoForm.trigger()
+            if (!validForm) return;
+            await validaFilhoForm();
+            filhoForm.clearErrors();
+            filhoForm.reset();
+        }
+
+        // VALIDA MULHER DO FILHO FORM
+        if (mulherDoFilhoForm.formState.isDirty) {
+            console.log('validando mulherDoFilhoForm')
+            const validForm = await mulherDoFilhoForm.trigger()
+            if (!validForm) return;
+            await validaMulherDoFilhoForm();
+            mulherDoFilhoForm.clearErrors();
+            mulherDoFilhoForm.reset();
+        }
+
+        // VALIDA NETO FORM
+        if (netoForm.formState.isDirty) {
+            console.log('validando netoForm')
+            const validForm = await netoForm.trigger()
+            if (!validForm) return;
+            await validaNetoForm();
+            netoForm.clearErrors();
+            netoForm.reset();
+        }
+
+        // VALIDA MULHER DO NETO FORM
+        if (mulherDoNetoForm.formState.isDirty) {
+            console.log('validando mulherDoNetoForm')
+            const validForm = await mulherDoNetoForm.trigger()
+            if (!validForm) return;
+            await validaMulherDoNetoForm();
+            mulherDoNetoForm.clearErrors();
+            mulherDoNetoForm.reset();
+        }
+
+        // VALIDA BISNETO FORM
+        if (bisnetoForm.formState.isDirty) {
+            console.log('validando bisnetoForm')
+            const validForm = await bisnetoForm.trigger()
+            if (!validForm) return;
+            await validaBisnetoForm();
+            bisnetoForm.clearErrors();
+            bisnetoForm.reset();
+        }
+
         socioForm.clearErrors();
         socioForm.reset();
         mulherForm.clearErrors();
@@ -415,8 +486,8 @@ export function useFormStep03() {
         if (existingData) {
             socioForm.setValue('name', existingData.name);
             socioForm.setValue('email', existingData.email);
-            socioForm.setValue('cpf', existingData.cpf);
-            socioForm.setValue('celphone', existingData.celphone);
+            socioForm.setValue('cpf', cpfMask(existingData.cpf));
+            socioForm.setValue('celphone', phoneMask(existingData.celphone));
         }
         setTodosDadosValidados(prev => {
             // window.localStorage.setItem('partnerData', JSON.stringify(prev.slice(0, -1)))
@@ -427,12 +498,83 @@ export function useFormStep03() {
         setActiveNetoStep(FormType.PERSONAL);
     }
 
-    function handleChangeActivePartner(index: number) {
+    async function handleChangeActivePartner(index: number) {
+        // VALIDA O SOCIO FORM
+        if (socioForm.formState.isDirty) {
+            console.log('validando socioForm', 'activePartnerStep', activePartnerStep, 'index', index)
+            const validForm = await socioForm.trigger()
+            if (!validForm) return;
+            await validaSocioForm();
+            socioForm.clearErrors();
+            socioForm.reset();
+        }
+
+        // VALIDA O MULHER FORM
+        if (mulherForm.formState.isDirty) {
+            console.log('validando mulherForm')
+            const validForm = await mulherForm.trigger()
+            if (!validForm) return;
+            await validaMulherForm();
+            mulherForm.clearErrors();
+            mulherForm.reset();
+        }
+
+        // VALIDA FILHO FORM
+        if (filhoForm.formState.isDirty) {
+            console.log('validando filhoForm')
+            const validForm = await filhoForm.trigger()
+            if (!validForm) return;
+            await validaFilhoForm();
+            filhoForm.clearErrors();
+            filhoForm.reset();
+        }
+
+        // VALIDA MULHER DO FILHO FORM
+        if (mulherDoFilhoForm.formState.isDirty) {
+            console.log('validando mulherDoFilhoForm')
+            const validForm = await mulherDoFilhoForm.trigger()
+            if (!validForm) return;
+            await validaMulherDoFilhoForm();
+            mulherDoFilhoForm.clearErrors();
+            mulherDoFilhoForm.reset();
+        }
+
+        // VALIDA NETO FORM
+        if (netoForm.formState.isDirty) {
+            console.log('validando netoForm')
+            const validForm = await netoForm.trigger()
+            if (!validForm) return;
+            await validaNetoForm();
+            netoForm.clearErrors();
+            netoForm.reset();
+        }
+
+        // VALIDA MULHER DO NETO FORM
+        if (mulherDoNetoForm.formState.isDirty) {
+            console.log('validando mulherDoNetoForm')
+            const validForm = await mulherDoNetoForm.trigger()
+            if (!validForm) return;
+            await validaMulherDoNetoForm();
+            mulherDoNetoForm.clearErrors();
+            mulherDoNetoForm.reset();
+        }
+
+        // VALIDA BISNETO FORM
+        if (bisnetoForm.formState.isDirty) {
+            console.log('validando bisnetoForm')
+            const validForm = await bisnetoForm.trigger()
+            if (!validForm) return;
+            await validaBisnetoForm();
+            bisnetoForm.clearErrors();
+            bisnetoForm.reset();
+        }
+
         const existingData = todosDadosValidados[index].socio;
+        console.log('changeActivePartner todosDadosValidados', todosDadosValidados);
 
         // If there's existing data, set it in the form
-        socioForm.clearErrors();
-        socioForm.reset();
+        // socioForm.clearErrors();
+        // socioForm.reset();
         // VALIDA DADOS DO SOCIO
         if (existingData) {
             socioForm.setValue('name', existingData.name);
@@ -467,7 +609,6 @@ export function useFormStep03() {
 
     // ACOES PESSOA
     async function handleChangePerson(type: FormType) {
-
         // VALIDA O SOCIO FORM
         if (activePersonStep === FormType.PERSONAL || socioForm.formState.isDirty) {
             const validForm = await socioForm.trigger()
@@ -631,7 +772,7 @@ export function useFormStep03() {
             if (!validForm) return;
             await validaMulherDoFilhoForm();
         }
-        
+
         if (filhoCount === 0) {
             setNetoCount(0);
             setBisnetoCount(0);
@@ -691,7 +832,7 @@ export function useFormStep03() {
             if (!validForm) return;
             await validaMulherDoFilhoForm();
         }
-        
+
         // SETA OS VALORES DO FILHO E MULHER DO FILHO SE JA EXISTEM
         const existingFilho = todosDadosValidados[activePartnerStep].filho[index]
         if (existingFilho) {
@@ -740,7 +881,7 @@ export function useFormStep03() {
             }
         }
 
-        
+
         // VALIDA LEGAL DO NETO
         if (type === FormType.PERSONAL && todosDadosValidados[activePartnerStep].neto[netoSelected].legalRepresentatives.length > 0) {
             setShowLegalForm(true);
@@ -782,14 +923,14 @@ export function useFormStep03() {
             if (!validForm) return;
             await validaNetoForm();
         }
-        
+
         // VALIDA MULHER DO NETO FORM
         if (mulherDoNetoForm.formState.isDirty) {
             const validForm = await mulherDoNetoForm.trigger()
             if (!validForm) return;
             await validaMulherDoNetoForm();
         }
-        
+
         // SETA OS VALORES DO NETO SE JA EXISTEM
         const existingNeto = todosDadosValidados[activePartnerStep].neto[index]
         if (existingNeto) {
@@ -811,7 +952,7 @@ export function useFormStep03() {
         } else {
             mulherDoNetoForm.reset();
         }
-        
+
         setActiveNetoStep(FormType.PERSONAL);
         setNetoSelected(index);
     }
@@ -848,7 +989,7 @@ export function useFormStep03() {
             netoForm.setValue('cpf', cpfMask(existingNeto.cpf));
             netoForm.setValue('celphone', phoneMask(existingNeto.celphone));
         }
-        
+
         setTodosDadosValidados(prev => {
             const novosNetos = prev[activePartnerStep].neto.slice(0, -1)
             const novasMulheresDoNeto = prev[activePartnerStep].mulherDoNeto.slice(0, -1)
