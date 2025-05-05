@@ -28,35 +28,35 @@ export default function FormStep05({ handleNextStep, handlePreviousStep }: FormS
                 </h2>
                 <div className="flex  flex-col justify-center text-xs sm:text-sm gap-4 w-full">
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['trabalhista'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, trabalhista: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['trabalhista'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, trabalhista: !!checked })} />
                         Trabalhista
                     </div>
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['familiar'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, familiar: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['familiar'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, familiar: !!checked })} />
                         Familiar
                     </div>
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['tributario'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, tributario: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['tributario'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, tributario: !!checked })} />
                         Tributário
                     </div>
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['execucao'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, execucao: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['execucao'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, execucao: !!checked })} />
                         Execução
                     </div>
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['recuperacao_judicial'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, recuperacao_judicial: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['recuperacao_judicial'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, recuperacao_judicial: !!checked })} />
                         Recuperação Judicial
                     </div>
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['improbabilidade_administrativa'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, improbabilidade_administrativa: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['improbabilidade_administrativa'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, improbabilidade_administrativa: !!checked })} />
                         Improbabilidade Administrativa
                     </div>
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['outros'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, outros: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['outros'] === true} onCheckedChange={(checked) => setFormStepOption({ ...formStepOption, nao_possuo: false, outros: !!checked })} />
                         Outros
                     </div>
                     <div className="flex items-center gap-2 text-nowrap">
-                        <Checkbox checked={formStepOption['nao_possuo'] === true} onCheckedChange={(checked) => setFormStepOption({ ...initialFormStepOption, nao_possuo: !!checked })} />
+                        <Checkbox className="data-[state=checked]:text-background" checked={formStepOption['nao_possuo'] === true} onCheckedChange={(checked) => setFormStepOption({ ...initialFormStepOption, nao_possuo: !!checked })} />
                         Não Possuo
                     </div>
                 </div>
