@@ -19,6 +19,7 @@ const FormStep04 = React.lazy(() => import("../FormStep04/FormStep04"));
 const FormStep05 = React.lazy(() => import("../FormStep05/FormStep05"));
 const FormStep06 = React.lazy(() => import("../FormStep06/FormStep06"));
 const FormStep07 = React.lazy(() => import("../FormStep07/FormStep07"));
+const FormStep08 = React.lazy(() => import("../FormStep08/FormStep08"));
 
 export default function FormStepLayout() {
   const [showSteps, setShowSteps] = useState(false)
@@ -87,24 +88,8 @@ export default function FormStepLayout() {
               {activeStep === 4 && <FormStep05 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
               {activeStep === 5 && <FormStep06 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
               {activeStep === 6 && <FormStep07 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
-              {activeStep === 7 && <h1>Etapa 8</h1>}
-              {activeStep === 8 && <h1>Etapa 9</h1>}
-              {activeStep === 9 && <h1>Etapa 10</h1>}
-              {activeStep === 10 && <h1>Etapa 11</h1>}
-              {activeStep === 11 && <h1>Etapa 12</h1>}
-              {activeStep === 12 && <h1>Etapa 13</h1>}
-              {activeStep === 13 && <h1>Etapa 14</h1>}
-              {activeStep === 14 && <h1>Etapa 15</h1>}
-              {activeStep === 15 && <h1>Etapa 16</h1>}
-              {activeStep === 16 && <h1>Etapa 17</h1>}
-              {activeStep === 18 && <h1>Etapa 18</h1>}
-              {activeStep === 19 && <h1>Etapa 19</h1>}
-              {activeStep === 20 && <h1>Etapa 20</h1>}
-              {activeStep === 21 && <h1>Etapa 21</h1>}
-              {activeStep === 22 && <h1>Etapa 22</h1>}
-              {activeStep === 23 && <h1>Etapa 23</h1>}
-              {activeStep === 24 && <h1>Etapa 24</h1>}
-              {activeStep === 25 && <h1>Etapa 25</h1>}
+              {activeStep === 7 && <FormStep08 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
+              {activeStep >= 8 && <FormStep08 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
             </Suspense>
           </>
         )}
