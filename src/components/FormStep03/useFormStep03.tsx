@@ -575,15 +575,19 @@ export function useFormStep03() {
         // If there's existing data, set it in the form
         // socioForm.clearErrors();
         // socioForm.reset();
+        setActivePersonStep(FormType.PERSONAL);
+        setActiveFilhoStep(FormType.PERSONAL);
+        setActiveNetoStep(FormType.PERSONAL);
+        setActivePartnerStep(index);
         // VALIDA DADOS DO SOCIO
         if (existingData) {
+            setFilhoCount(todosDadosValidados[index].filho.length);
+            setNetoCount(todosDadosValidados[index].neto.length);
+            setBisnetoCount(todosDadosValidados[index].bisneto.length);
             socioForm.setValue('name', existingData.name);
             socioForm.setValue('email', existingData.email);
             socioForm.setValue('cpf', cpfMask(existingData.cpf));
             socioForm.setValue('celphone', phoneMask(existingData.celphone));
-            setFilhoCount(todosDadosValidados[index].filho.length);
-            setNetoCount(todosDadosValidados[index].neto.length);
-            setBisnetoCount(todosDadosValidados[index].bisneto.length);
         } else {
             socioForm.reset();
         }
@@ -601,10 +605,6 @@ export function useFormStep03() {
             setShowLegalForm(false);
             representanteForm.reset();
         }
-        setActivePersonStep(FormType.PERSONAL);
-        setActiveFilhoStep(FormType.PERSONAL);
-        setActiveNetoStep(FormType.PERSONAL);
-        setActivePartnerStep(index);
     }
 
     // ACOES PESSOA
