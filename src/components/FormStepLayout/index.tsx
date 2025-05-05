@@ -81,7 +81,7 @@ export default function FormStepLayout() {
         {!showSteps && (
           <>
             <Suspense fallback={<div className="flex overflow-y-scroll sm:overflow-auto gap-4 sm:gap-10 z-0 grow flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1 text-grey-light">Carregando...</div>}>
-              {activeStep === 1 && <FormStep02Content handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
+              {activeStep === 1 && <FormStep02Content handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
               {activeStep === 2 && <FormStep03 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
               {activeStep === 3 && <FormStep04 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
               {activeStep === 4 && <FormStep05 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} activeStep={activeStep} />}
