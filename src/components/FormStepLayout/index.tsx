@@ -19,14 +19,6 @@ import FormStep04 from "../FormStep04/FormStep04";
 import FormStep05 from "../FormStep05/FormStep05";
 import FormStep06 from "../FormStep06/FormStep06";
 import FormStep07 from "../FormStep07/FormStep07";
-import FormStep08 from "../FormStep08/FormStep08";
-import FormStep09 from "../FormStep09/FormStep09";
-import FormStep10 from "../FormStep10/FormStep10";
-import FormStep11 from "../FormStep11/FormStep11";
-import FormStep12 from "../FormStep12/FormStep12";
-import FormStep13 from "../FormStep13/FormStep13";
-import FormStep14 from "../FormStep14/FormStep14";
-import FormStep15 from "../FormStep15/FormStep15";
 
 export default function FormStepLayout() {
   const [showSteps, setShowSteps] = useState(false)
@@ -95,14 +87,14 @@ export default function FormStepLayout() {
               {activeStep === 4 && <FormStep05 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
               {activeStep === 5 && <FormStep06 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
               {activeStep === 6 && <FormStep07 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 7 && <FormStep08 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 8 && <FormStep09 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 9 && <FormStep10 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 10 && <FormStep11 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 11 && <FormStep12 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 12 && <FormStep13 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 13 && <FormStep14 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
-              {activeStep === 14 && <FormStep15 handleNextStep={handleNextStep} handlePreviousStep={handlePreviousStep} />}
+              {activeStep === 7 && <h1>Etapa 8</h1>}
+              {activeStep === 8 && <h1>Etapa 9</h1>}
+              {activeStep === 9 && <h1>Etapa 10</h1>}
+              {activeStep === 10 && <h1>Etapa 11</h1>}
+              {activeStep === 11 && <h1>Etapa 12</h1>}
+              {activeStep === 12 && <h1>Etapa 13</h1>}
+              {activeStep === 13 && <h1>Etapa 14</h1>}
+              {activeStep === 14 && <h1>Etapa 15</h1>}
               {activeStep === 15 && <h1>Etapa 16</h1>}
               {activeStep === 16 && <h1>Etapa 17</h1>}
               {activeStep === 18 && <h1>Etapa 18</h1>}
