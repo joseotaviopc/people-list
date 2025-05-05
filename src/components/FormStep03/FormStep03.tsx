@@ -18,9 +18,10 @@ import { FormType } from "./types";
 interface FormStep03Props {
     handleNextStep: () => void,
     handlePreviousStep: () => void,
+    activeStep: number
 }
 
-export default function FormStep03({ handleNextStep, handlePreviousStep }: FormStep03Props) {
+export default function FormStep03({ handleNextStep, handlePreviousStep, activeStep }: FormStep03Props) {
     const { filhoActions, netoActions, bisnetoActions, legalActions, partnerActions, personActions, novosForms, validateDataBeforeNextStep } = useFormStep03()
     const { filhoCount, activeFilhoStep, filhoSelected, handleChangeFilho, handleChangeActiveFilho, handleAddFilho, handleRemoveFilho, showFilho } = filhoActions
     const { netoCount, activeNetoStep, netoSelected, handleChangeNeto, handleChangeActiveNeto, showNeto, handleAddNeto, handleRemoveNeto } = netoActions
@@ -37,51 +38,52 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
 
     return (
         <>
-            {/* RESUMO STATES */}
-            <div className="hidden space-y-1 py-0 my-0">
-                <p className="text-xs text-zinc-400">todosDadosValidados.length: {todosDadosValidados.length} - activePartnerStep: {activePartnerStep}</p>
-                <p className="text-xs text-zinc-400">activePersonStep: {activePersonStep}</p>
-                <hr className="border-t border-t-zinc-400" />
-                <p className="text-xs text-zinc-400">filhoCount: {filhoCount} - activeFilhoStep: {activeFilhoStep}</p>
-                <p className="text-xs text-zinc-400">filhoSelected: {filhoSelected}</p>
-                <hr className="border-t border-t-zinc-400" />
-                <p className="text-xs text-zinc-400">netoCount: {netoCount} - activeNetoStep: {activeNetoStep}</p>
-                <p className="text-xs text-zinc-400">bisnetoCount: {bisnetoCount}</p>
-                <p className="text-xs text-zinc-400">showNeto: {`${showNeto}`} - showGreatNeto: {`${showGreatNeto}`}</p>
-                <hr className="border-t border-t-zinc-400" />
-                <p className="text-xs text-zinc-400">showLegalForm: {`${showLegalForm}`}</p>
-                <p className="text-xs text-zinc-400">legalRepresentativesCount: {legalRepresentativesCount} - activeRepresentativeStep: {activeRepresentativeStep}</p>
-            </div>
+            <div className="flex overflow-y-scroll sm:overflow-auto gap-4 sm:gap-10 z-0 grow flex-col p-5 sm:px-10 sm:pt-6 rounded-xl shadow-lg bg-background/10 w-full sm:max-w-[700px] sm:h-[886px] sm:flex-1">
+                {/* RESUMO STATES */}
+                <div className="hidden space-y-1 py-0 my-0">
+                    <p className="text-xs text-zinc-400">todosDadosValidados.length: {todosDadosValidados.length} - activePartnerStep: {activePartnerStep}</p>
+                    <p className="text-xs text-zinc-400">activePersonStep: {activePersonStep}</p>
+                    <hr className="border-t border-t-zinc-400" />
+                    <p className="text-xs text-zinc-400">filhoCount: {filhoCount} - activeFilhoStep: {activeFilhoStep}</p>
+                    <p className="text-xs text-zinc-400">filhoSelected: {filhoSelected}</p>
+                    <hr className="border-t border-t-zinc-400" />
+                    <p className="text-xs text-zinc-400">netoCount: {netoCount} - activeNetoStep: {activeNetoStep}</p>
+                    <p className="text-xs text-zinc-400">bisnetoCount: {bisnetoCount}</p>
+                    <p className="text-xs text-zinc-400">showNeto: {`${showNeto}`} - showGreatNeto: {`${showGreatNeto}`}</p>
+                    <hr className="border-t border-t-zinc-400" />
+                    <p className="text-xs text-zinc-400">showLegalForm: {`${showLegalForm}`}</p>
+                    <p className="text-xs text-zinc-400">legalRepresentativesCount: {legalRepresentativesCount} - activeRepresentativeStep: {activeRepresentativeStep}</p>
+                </div>
 
-            <header className="flex flex-col-reverse sm:flex-row justify-center items-center gap-1 sm:gap-4 w-full relative">
-                {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
-                <div className="flex gap-2">
-                    {Array.from({ length: partnerCount }).map((_, index) => (
-                        <div key={index} onClick={() => handleChangeActivePartner(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
-                            <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                <header className="flex flex-col-reverse sm:flex-row justify-center items-center gap-1 sm:gap-4 w-full relative">
+                    {/* QUANTIDADE DE SÓCIOS - SEM FUNCIONALIDADE */}
+                    <div className="flex gap-2">
+                        {Array.from({ length: partnerCount }).map((_, index) => (
+                            <div key={index} onClick={() => handleChangeActivePartner(index)} className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer">
+                                <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                    <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                </div>
+
+                                {/* Indica o sócio atual */}
+                                {index === activePartnerStep && (
+                                    <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                )}
                             </div>
-
-                            {/* Indica o sócio atual */}
-                            {index === activePartnerStep && (
-                                <span className="w-full h-[5px] rounded-xs bg-primary" />
-                            )}
-                        </div>
-                    ))}
-                </div>
-
-                {/* ADICIONA OU REMOVE SÓCIO, AO REMOVER, LIMPAR TODOS OS DADOS */}
-                <div className="flex self-end gap-2 sm:absolute right-0 top-0">
-                    {partnerCount > 1 && (
-                        < Button onClick={handleRemovePartner} variant="destructive" className="h-[35px] text-background rounded-md bg-background/10 hover:bg-background/10 my-0 py-0 has-[>svg]:px-2">
-                            <Trash2 size={16} />
-                        </Button>
-                    )}
-                    <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={handleAddPartner} >
-                        <Plus />
+                        ))}
                     </div>
-                </div>
-            </header >
+
+                    {/* ADICIONA OU REMOVE SÓCIO, AO REMOVER, LIMPAR TODOS OS DADOS */}
+                    <div className="flex self-end gap-2 sm:absolute right-0 top-0">
+                        {partnerCount > 1 && (
+                            < Button onClick={handleRemovePartner} variant="destructive" className="h-[35px] text-background rounded-md bg-background/10 hover:bg-background/10 my-0 py-0 has-[>svg]:px-2">
+                                <Trash2 size={16} />
+                            </Button>
+                        )}
+                        <div className="flex items-center justify-center w-[35px] h-[35px] bg-primary rounded-md cursor-pointer" onClick={handleAddPartner} >
+                            <Plus />
+                        </div>
+                    </div>
+                </header >
 
 
                 <div className="space-y-4 sm:space-y-5 relative">
@@ -169,7 +171,7 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                                     {/* BOTOES FILHO */}
                                     {filhoCount > 0 && (
                                         <>
-                                            {filhoCount > 1 && <p className="flex items-center w-full">{todosDadosValidados[activePartnerStep].filho[filhoSelected] &&todosDadosValidados[activePartnerStep].filho[filhoSelected].name}</p>}
+                                            {filhoCount > 1 && <p className="flex items-center w-full">{todosDadosValidados[activePartnerStep].filho[filhoSelected] && todosDadosValidados[activePartnerStep].filho[filhoSelected].name}</p>}
                                             <nav className="flex justify-center items-center gap-4 w-full">
                                                 {personSteps.map((step, index) => (
                                                     <div
@@ -901,124 +903,131 @@ export default function FormStep03({ handleNextStep, handlePreviousStep }: FormS
                     />
                 </form> */}
 
-            <Form {...representanteForm}>
-                {/* ADICIONAR REPRESENTANTE LEGAL - SEM FUNCIONALIDADE*/}
-                <div className="flex self-end items-center gap-1">
-                    <p className="mr-2">Representante Legal</p>
-                    {/* Remove legal representative button in each representative's form */}
-                    {legalRepresentativesCount > 0 && (
-                        // <Button onClick={handleRemoveLegalRepresentative} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
-                        <Button onClick={handleRemoveLegalRepresentative} variant="destructive" className="rounded-none h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0 has-[>svg]:px-1">
-                            <Trash2 size={16} />
+                <Form {...representanteForm}>
+                    {/* ADICIONAR REPRESENTANTE LEGAL - SEM FUNCIONALIDADE*/}
+                    <div className="flex self-end items-center gap-1">
+                        <p className="mr-2">Representante Legal</p>
+                        {/* Remove legal representative button in each representative's form */}
+                        {legalRepresentativesCount > 0 && (
+                            // <Button onClick={handleRemoveLegalRepresentative} variant="destructive" className="h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0">
+                            <Button onClick={handleRemoveLegalRepresentative} variant="destructive" className="rounded-none h-[35px] text-background bg-transparent hover:bg-transparent my-0 py-0 has-[>svg]:px-1">
+                                <Trash2 size={16} />
+                            </Button>
+                        )}
+                        <Button onClick={handleAddLegalRepresentative} variant="link" className="rounded-none h-[35px] text-background my-0 py-0 has-[>svg]:px-1">
+                            <Plus />
                         </Button>
-                    )}
-                    <Button onClick={handleAddLegalRepresentative} variant="link" className="rounded-none h-[35px] text-background my-0 py-0 has-[>svg]:px-1">
-                        <Plus />
-                    </Button>
-                </div>
+                    </div>
 
-                {/* Legal representative form */}
-                {showLegalForm && (
-                    <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
+                    {/* Legal representative form */}
+                    {showLegalForm && (
+                        <form className="w-full max-md:max-w-full space-y-4 sm:space-y-6">
 
-                        {/* Representative tabs - SEM FUNCIONALIDADE */}
-                        <nav className="flex justify-center items-center gap-4 w-full">
-                            {Array.from({ length: legalRepresentativesCount }).map((_, index) => (
-                                <div
-                                    key={index}
-                                    onClick={() => setActiveRepresentativeStep(index)}
-                                    className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer"
-                                >
-                                    <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
-                                        <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                            {/* Representative tabs - SEM FUNCIONALIDADE */}
+                            <nav className="flex justify-center items-center gap-4 w-full">
+                                {Array.from({ length: legalRepresentativesCount }).map((_, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={() => setActiveRepresentativeStep(index)}
+                                        className="flex flex-col justify-between items-center w-[35px] h-[49px] cursor-pointer"
+                                    >
+                                        <div className={`flex items-center justify-center w-[35px] h-[35px] rounded-md bg-background/10`}>
+                                            <span className="flex gap-2 items-center text-background text-xs sm:text-base font-medium">{(index + 1).toString().padStart(2, '0')}</span>
+                                        </div>
+
+                                        {/* Indicação do representante legal atual */}
+                                        {index === activeRepresentativeStep && (
+                                            <span className="w-full h-[5px] rounded-xs bg-primary" />
+                                        )}
                                     </div>
+                                ))}
+                            </nav>
 
-                                    {/* Indicação do representante legal atual */}
-                                    {index === activeRepresentativeStep && (
-                                        <span className="w-full h-[5px] rounded-xs bg-primary" />
-                                    )}
-                                </div>
-                            ))}
-                        </nav>
+                            {/* Representative form fields */}
+                            <FormField
+                                control={representanteForm.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
+                                            <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
+                                        </FormControl>
+                                        <FormMessage className="text-xs" />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={representanteForm.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
+                                            <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
+                                        </FormControl>
+                                        <FormMessage className="text-xs" />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={representanteForm.control}
+                                name="cpf"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
+                                        <FormControl className="px-0 text-xs sm:text-base">
+                                            <Input
+                                                className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
+                                                placeholder="000.000.000-00"
+                                                {...field}
+                                                onChange={(e) => {
+                                                    const maskedValue = cpfMask(e.target.value);
+                                                    field.onChange(maskedValue);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="text-xs" />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={representanteForm.control}
+                                name="celphone"
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
+                                        <FormControl className="text-xs sm:text-base px-0">
+                                            <Input
+                                                className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
+                                                placeholder="(00) 00000-0000"
+                                                {...field}
+                                                onChange={(e) => {
+                                                    const maskedValue = phoneMask(e.target.value);
+                                                    field.onChange(maskedValue);
+                                                }}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="text-xs" />
+                                    </FormItem>
+                                )}
+                            />
+                        </form>
+                    )}
+                </Form>
 
-                        {/* Representative form fields */}
-                        <FormField
-                            control={representanteForm.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Nome</FormLabel>
-                                    <FormControl className="px-0 text-xs sm:text-base">
-                                        <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="Digite o nome completo" {...field} />
-                                    </FormControl>
-                                    <FormMessage className="text-xs" />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={representanteForm.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Email</FormLabel>
-                                    <FormControl className="px-0 text-xs sm:text-base">
-                                        <Input className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0" placeholder="exemplo@email.com" {...field} />
-                                    </FormControl>
-                                    <FormMessage className="text-xs" />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={representanteForm.control}
-                            name="cpf"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">CPF</FormLabel>
-                                    <FormControl className="px-0 text-xs sm:text-base">
-                                        <Input
-                                            className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
-                                            placeholder="000.000.000-00"
-                                            {...field}
-                                            onChange={(e) => {
-                                                const maskedValue = cpfMask(e.target.value);
-                                                field.onChange(maskedValue);
-                                            }}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className="text-xs" />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={representanteForm.control}
-                            name="celphone"
-                            render={({ field }) => (
-                                <FormItem className="flex-1">
-                                    <FormLabel className="text-primary font-bold text-sm sm:text-base px-0">Celular</FormLabel>
-                                    <FormControl className="text-xs sm:text-base px-0">
-                                        <Input
-                                            className="placeholder:text-background/60 border-0 border-b border-b-background rounded-none focus-visible:ring-0"
-                                            placeholder="(00) 00000-0000"
-                                            {...field}
-                                            onChange={(e) => {
-                                                const maskedValue = phoneMask(e.target.value);
-                                                field.onChange(maskedValue);
-                                            }}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className="text-xs" />
-                                </FormItem>
-                            )}
-                        />
-                    </form>
-                )}
-            </Form>
-
-            {/* NAVEGAÇÃO ENTRE STEPS */}
-            <div className="hidden sm:flex sm:flex-1 sm:items-end sm:justify-between">
-                <Button variant="ghost" className="rounded-md h-9 px-2 bg-grey-light text-grey-dark" onClick={handlePreviousStep}>Anterior</Button>
-                <Button type="button" disabled={!todosDadosValidados.every(dado => dado.socio?.name)} className="rounded-md h-9 px-2" onClick={validateData}>Próximo</Button>
+                {/* NAVEGAÇÃO ENTRE STEPS */}
+                <div className="hidden sm:flex sm:flex-1 sm:items-end sm:justify-between">
+                    <Button variant="ghost" className="rounded-md h-9 px-2 bg-grey-light text-grey-dark" onClick={handlePreviousStep}>Anterior</Button>
+                    <Button type="button" disabled={!todosDadosValidados.every(dado => dado.socio?.name)} className="rounded-md h-9 px-2" onClick={validateData}>Próximo</Button>
+                </div>
             </div>
+            {/* Mobile footer*/}
+            <footer className="w-full sm:hidden flex z-10 gap-4 justify-between items-center">
+                <Button variant={activeStep === 1 ? 'ghost' : 'default'} className={`flex-1 rounded-md h-9 px-2 ${activeStep === 1 ? 'bg-grey-light text-grey-dark' : ''}`} onClick={activeStep === 1 ? undefined : handlePreviousStep}>Anterior</Button>
+                <Button variant="ghost" className="flex-1 bg-background/10 hover:bg-background/10 cursor-default rounded-md hover:text-grey-light text-grey-light h-9 px-2">Etapa {activeStep < 10 ? `0${activeStep}` : activeStep}/25</Button>
+                <Button variant={activeStep === 25 ? 'ghost' : 'default'} disabled={!todosDadosValidados.every(dado => dado.socio?.name)} className={`flex-1 rounded-md h-9 px-2 ${activeStep === 25 ? 'bg-grey-light text-grey-dark' : ''}`} onClick={activeStep === 25 ? undefined : handleNextStep}>Próximo</Button>
+            </footer>
         </>
     )
 }
