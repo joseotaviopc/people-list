@@ -64,4 +64,29 @@ const validatePhone = (phone: string): boolean => {
     return true;
 };
 
-export { cpfMask, validateCPF, phoneMask, validatePhone };
+// Currency mask utility (Brazilian Real - BRL)
+const currencyMask = (value: string): string => {
+    // Remove all non-digit characters
+    const numericValue = value.replace(/\D/g, '');
+
+    // Return 'R$ 0,00' if the input is empty or becomes empty after cleaning
+    if (!numericValue) {
+        return 'R$ 0,00';
+    }
+
+    // Convert the numeric string to a number, treating it as cents, then divide by 100
+    const numberValue = parseFloat(numericValue) / 100;
+
+    // Format the number as BRL currency
+    return numberValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+};
+
+// Function to extract only numbers from a string
+const getOnlyNumbers = (value: string): string => {
+    // Return empty string if input is null, undefined, or not a string
+    if (value === null || value === undefined || typeof value !== 'string') return '';
+    console.log(value, value.replace(/\D/g, ''))
+    return value.replace(/\D/g, ''); // Remove all non-digit characters
+};
+
+export { cpfMask, validateCPF, phoneMask, validatePhone, currencyMask, getOnlyNumbers };
