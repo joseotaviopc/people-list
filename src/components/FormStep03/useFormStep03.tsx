@@ -432,13 +432,32 @@ export function useFormStep03() {
 
         // If there's existing data, set it in the form
         socioForm.clearErrors();
+        socioForm.reset();
+        // VALIDA DADOS DO SOCIO
         if (existingData) {
             socioForm.setValue('name', existingData.name);
             socioForm.setValue('email', existingData.email);
             socioForm.setValue('cpf', cpfMask(existingData.cpf));
             socioForm.setValue('celphone', phoneMask(existingData.celphone));
+            setFilhoCount(todosDadosValidados[index].filho.length);
+            setNetoCount(todosDadosValidados[index].neto.length);
+            setBisnetoCount(todosDadosValidados[index].bisneto.length);
         } else {
             socioForm.reset();
+        }
+        // VALIDA SE TEM DADOS PARA LEGAL DO SOCIO
+        if (todosDadosValidados[index].socio.legalRepresentatives.length > 0) {
+            setShowLegalForm(true);
+            setActiveRepresentativeStep(0);
+            setLegalRepresentativesCount(todosDadosValidados[index].socio.legalRepresentatives.length);
+            representanteForm.setValue('name', todosDadosValidados[index].socio.legalRepresentatives[0].name);
+            representanteForm.setValue('email', todosDadosValidados[index].socio.legalRepresentatives[0].email);
+            representanteForm.setValue('cpf', cpfMask(todosDadosValidados[index].socio.legalRepresentatives[0].cpf));
+            representanteForm.setValue('celphone', phoneMask(todosDadosValidados[index].socio.legalRepresentatives[0].celphone));
+        } else {
+            setLegalRepresentativesCount(0);
+            setShowLegalForm(false);
+            representanteForm.reset();
         }
         setActivePersonStep(FormType.PERSONAL);
         setActiveFilhoStep(FormType.PERSONAL);
